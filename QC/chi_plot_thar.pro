@@ -47,7 +47,6 @@ usersymbol, 'circle', /fill, size_of_sym = 0.5
 restore, '/tous/mir7/logstructs/20'+strmid(date, 0, 2)+'/'+date+'log.dat'
 thfile = where(strt(log.object) eq 'ThAr' and strt(log.ccdsum) eq '3 1')
 
-stop
 if keyword_set(postplot) then begin
    thick, 2
    pdir = dir+'plots/'
@@ -66,5 +65,4 @@ if keyword_set(postplot) then begin
    spawn, 'convert -density 200 '+afn+'.eps '+afn+'.png'
 endif
 
-stop
 end;chi_plot_thar.pro

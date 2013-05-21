@@ -172,7 +172,7 @@ chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin11, dir = qdir
 chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin11, dir = qdir
 chi_plot_counts, log, postplot=~keyword_set(skipplots), dir = qdir
 chi_thar_log, log, postplot=~keyword_set(skipplots), dir = qdir
-chi_plot_thar, log, postplot=~keyword_set(skipplots), dir = qdir
+chi_plot_thar, postplot=~keyword_set(skipplots), dir = qdir, date = date
 if file_test('/tous/mir7/logs/guider/guider'+date+'.log') then begin
 guidrms = chi_guider_plot(log, postplot=~keyword_set(skipplots), dir = qdir)
 endif
