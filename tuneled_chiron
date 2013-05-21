@@ -1,0 +1,16 @@
+#!/bin/csh -f
+#
+#
+set user = "observer"
+set host = "ctioe1.ctio.noao.edu"
+set vncno = "09"
+
+if ("$1" != "") then
+	set vncno = "$1"
+endif
+
+set conport = "59""$vncno"":localhost:59""$vncno"
+echo "ssh -f -L $conport $user@$host sleep 20 < /dev/null"
+#now, let's make the tunnel to the firewall
+ssh -f -L "$conport" $user@$host sleep 20 < /dev/null
+vncviewer  -shared localhost:$vncno &
