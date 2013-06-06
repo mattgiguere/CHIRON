@@ -57,7 +57,7 @@ thar_soln=thar_soln, getthid=getthid, mode = mode, obsnm=obsnm, $
 
 
 angstrom = '!6!sA!r!u!9 %!6!n'
-redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/pro1/ctio.par')
+redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/ctio.par')
 redpar.imdir = night+'/'  ; pass night into redpar
 redpar.date = night
 redpar.versiond=systime()

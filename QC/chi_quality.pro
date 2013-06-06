@@ -71,24 +71,24 @@ normmedbias11thres = 1150d ;normal median overscan 1x1 threshold
 ;envinonmental parameters:
 if date gt 130301 then begin
   ;1. INSTTEMP LOG:
-  gratingtempmax = 23.25d
-  gratingtempmin = 22.5d
-  tabcentempmin = 22.5d
-  tabcentempmax = 23.6d
-  encltempmin = 21.4d
-  encltempmax = 22.5d
+  gratingtempmax = 24d
+  gratingtempmin = 22d
+  tabcentempmin = 22d
+  tabcentempmax = 24d
+  encltempmin = 19.5d
+  encltempmax = 23d
   enclsetpmin = 22d
   enclsetpmax = 22d
-  encl2tempmin = 21.3d
-  encl2tempmax = 22.1d
+  encl2tempmin = 19d
+  encl2tempmax = 23d
   iodtempmin = 39.8d
   iodtempmax = 40.2d
   iodspmin = 40d
   iodspmax = 40d
-  tablowmin = 22.5d
-  tablowmax = 23.65d
-  structtempmin = 22.5d
-  structtempmax = 23.3d
+  tablowmin = 22d
+  tablowmax = 24d
+  structtempmin = 22d
+  structtempmax = 24d
   instsetpmin = 23d
   instsetpmax = 23d
   insttempmin = 22.0d

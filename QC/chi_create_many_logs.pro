@@ -479,8 +479,13 @@ datearr=[ $
 '130513', $
 '130514', $
 '130515', $
-'130516' $
+'130516', $
 ;'130517' $<-NO DATA; POURING RAIN ALL NIGHT
+'130518', $
+'130519', $
+'130520', $
+'130521', $
+'130522' $
 ]
 
 if ~keyword_set(startdate) then startdate = datearr[0]

@@ -186,16 +186,19 @@ log_init = create_struct($
 'ZD', '', $
 'AIRMASS', '', $
 'WEATIME', '', $
+'WEATIMEJD', 0D, $
 'OUTTEMP', '', $
 'OUTHUM', '', $
 'OUTPRESS', '', $
 'WNDSPEED', '', $
 'WNDDIR', '', $
 'SEETIME', '', $
+'SEETIMEJD', 0D, $
 'SEEING', '', $
 'SAIRMASS', '', $
 'SNRBP5500', 0d, $
 'RESOLUTION', 0d, $
+'THARFNAME', '', $
 'CREATED', systime(), $
 'SEQNUM', '', $
 'PREFIX', '', $
@@ -220,67 +223,45 @@ log_init = create_struct($
 'NTIMGT5', 0D, $
 'TTIMGT5', 0D, $
 'IBTIME', 0D, $
-'COBNM', 0D, $
+'OBNM', '', $
 'CMNVEL', 0D, $
 'CERRVEL', 0D, $
 'CMDVEL', 0D, $
+'CCTS', 0D, $
 'JMNVEL', 0D, $
 'JERRVEL', 0D, $
 'JMDVEL', 0D, $
 'SENSDEPTHSARR', DBLARR(7), $
 'STABDEPTHSARR', DBLARR(7), $
 'CCSHIFTARR', DBLARR(7), $
-'BARYCOR', 0D) 
-
-;TAGS TO ADD:
-;sun_angular_distance
-;moon_angular_distance
-;moon_illumination
-;O_BZERO 
-;ROOTDIR 
-;LOGDIR  
-;LOGSTDIR
-;IODSPECD
-;PLOTSDIR
-;FITSDIR 
-;THIDDIR 
-;THIDFILE
-;RAWDIR  
-;IMDIR   
-;DATE    
-;SEQNUM  
-;VERSIOND
-;VERSIONN
-;PREFIX_T
-;PREFIX  
-;FLATDIR 
-;BIASDIR 
-;BIASMODE
-;ORDERDIR
-;BARYDIR 
-;XTRIM   
-;YTRIM   
-;READMODE
-;NLC     
-;GAINS   
-;RON     
-;GAIN    
-;BINNING 
-;MODE    
-;FLATNORM
-;MINFLATV
-;SLICERFL
-;PKCOEFS 
-;PKCOEFS1
-;NORDS   
-;MODES   
-;XWIDS   
-;DPKS    
-;BINNINGS
-;DEBUG   
-;THARFNAM
-;SEETIMEJD
-;WEATTIMEJD
+'BARYCOR', 0D, $ ;barycentric correction
+'SUNANG', 0d, $ ;the angle between the sun and target
+'MOONANG', 0d, $ ;the angle between the moon and target
+'SUNALT', 0d, $ ;the altitude of the sun at the time of the weighted midpoint
+'MOONILLUM', 0d, $ ;the illumination of the moon
+'VERSIOND', '', $
+'VERSIONN', '', $
+'BIASMODE', '', $
+'XTRIM   ', '', $
+'YTRIM   ', '', $
+'READMODE', '', $
+'NLC     ', '', $
+'GAINS   ', '', $
+'RON     ', '', $
+'GAIN    ', '', $
+'BINNING ', '', $
+'MODE    ', '', $
+'FLATNORM', '', $
+'MINFLATV', '', $
+'SLICERFL', '', $
+'PKCOEFS ', '', $
+'PKCOEFS1', '', $
+'NORDS   ', '', $
+'MODES   ', '', $
+'XWIDS   ', '', $
+'DPKS    ', '', $
+'BINNINGS', '', $
+'DEBUG   ', '') 
 
 
 rdir = '/mir7/raw/'+date
