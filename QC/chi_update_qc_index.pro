@@ -166,7 +166,10 @@ nodata = [$
 '130409',  $ ;Bad weather
 '130430',  $ ;Bad weather all night
 '130512', $ ;bad weather
-'130517' $ ;pouring rain all night
+'130517', $ ;pouring rain all night
+'130527', $ ;rain all night
+'130529', $ ;unexpected vacation
+'130530' $ ;unexpected vacation
 ]
 
 checked = [$
