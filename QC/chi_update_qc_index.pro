@@ -169,7 +169,14 @@ nodata = [$
 '130517', $ ;pouring rain all night
 '130527', $ ;rain all night
 '130529', $ ;unexpected vacation
-'130530' $ ;unexpected vacation
+'130530', $ ;unexpected vacation
+'130606', $ ;unexpected vacation, SIMON only
+'130607', $ ;unexpected vacation, SIMON only
+'130608', $ ;unexpected vacation, SIMON only
+'130609', $ ;unexpected vacation, SIMON only
+'130610', $ ;unexpected vacation, SIMON only
+'130611', $ ;unexpected vacation, SIMON only
+'130612' $ ;unexpected vacation, SIMON only
 ]
 
 checked = [$
