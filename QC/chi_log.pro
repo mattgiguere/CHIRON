@@ -231,9 +231,9 @@ log_init = create_struct($
 'JMNVEL', 0D, $
 'JERRVEL', 0D, $
 'JMDVEL', 0D, $
-'SENSDEPTHSARR', DBLARR(7), $
-'STABDEPTHSARR', DBLARR(7), $
-'CCSHIFTARR', DBLARR(7), $
+'SENSDEPTHSARR', ptr_new(0d), $
+'STABDEPTHSARR', ptr_new(0d), $
+'CCSHIFTARR', ptr_new(0d), $
 'BARYCOR', 0D, $ ;barycentric correction
 'SUNANG', 0d, $ ;the angle between the sun and target
 'MOONANG', 0d, $ ;the angle between the moon and target
