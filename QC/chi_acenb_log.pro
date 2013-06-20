@@ -48,7 +48,7 @@ date = log[0].date
 objname = '128621'
 year = '20'+strmid(date,0,2)
 ldir = '/home/matt/data/CHIRPS'
-arxdir = '/home/matt/data_archive/CHIRPS/logstructs'
+arxdir = '/home/matt/Data_archive/CHIRPS/logstructs'
 mdir = '/starlogs/'
 spawn, 'hostname', host
 ;if strmid(host, 13,14, /reverse) eq 'astro.yale.edu' then ldir = '/tous'+ldir

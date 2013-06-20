@@ -485,7 +485,34 @@ datearr=[ $
 '130519', $
 '130520', $
 '130521', $
-'130522' $
+'130522', $
+'130523', $
+'130524', $
+'130525', $
+'130526', $
+'130527', $
+'130528', $
+;'130529', $ unexpected vacation
+;'130530', $ unexpected vacation
+'130531', $
+'130601', $
+'130602', $
+'130603', $
+'130604', $
+'130605', $
+;'130606', $ ;unexpected vacation, SIMON only
+;'130607', $ ;unexpected vacation, SIMON only
+;'130608', $ ;unexpected vacation, SIMON only
+;'130609', $ ;unexpected vacation, SIMON only
+;'130610', $ ;unexpected vacation, SIMON only
+;'130611', $ ;unexpected vacation, SIMON only
+;'130612', $ ;unexpected vacation, SIMON only
+'130613', $
+'130614', $
+'130615', $
+'130616', $
+'130617', $
+'130618' $
 ]
 
 if ~keyword_set(startdate) then startdate = datearr[0]
@@ -504,7 +531,7 @@ for i=0, n_elements(datearr)-1 do begin
 	  print, 'Now running chi_count_check on date ',datearr[i],' ', systime()
 	  chi_count_check, log
 	endif else restore, ldir+datearr[i]+'log.dat'
-    print, 'Now running chi_thar_log on date ',datearr[i],' ', systime()
+    print, 'Now running specialty log on date ',datearr[i],' ', systime()
 	if keyword_set(justthars) then chi_thar_log, log
     ;print, 'Now running chi_acena_log on date ',datearr[i],' ', systime()
 	if keyword_set(justacena) then chi_acena_log, log
