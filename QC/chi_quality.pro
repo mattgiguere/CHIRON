@@ -406,7 +406,7 @@ printf, 2, 'Delay of Start '
 printf, 2, '</td>'
 printf, 2, '<td>'
 ;additional minutes before nautical dusk and after nautical dawn:
-addmin = 11d
+addmin = 12d
 dshoursfull=(obssttmjd-(stimes.nautset - addmin/(60d *24d)))*24d
 if dshoursfull gt 0 then dshours=floor(dshoursfull) else dshours=ceil(dshoursfull)
 dsmins = round((obssttmjd-stimes.nautset - dshours/24d)*24d*60d)
