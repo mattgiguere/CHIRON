@@ -48,8 +48,6 @@ arxdir = '/home/matt/data_archive/CHIRPS/logstructs'
 mdir = '/starlogs/'
 spawn, 'hostname', host
 ;if strmid(host, 13,14, /reverse) eq 'astro.yale.edu' then ldir = '/tous'+ldir
-;first test the ologs date directory, and make it for the new year if need be:
-if ~file_test(ldir+'/ologs', /directory) then spawn, 'mkdir '+ldir+'/ologs'
 ;now test the mdir directory, and make it for the new year if need be:
 if ~file_test(ldir+mdir, /directory) then spawn, 'mkdir '+ldir+mdir
 lfn = ldir+mdir+'10700log.dat'
