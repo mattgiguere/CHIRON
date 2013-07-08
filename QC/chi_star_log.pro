@@ -14,6 +14,7 @@
 ;      chi_star_log
 ;
 ;  INPUTS:
+;		HDNUM: The Henry Draper Catalog (HD) number of the star of interest.
 ;
 ;  OPTIONAL INPUTS:
 ;
@@ -31,6 +32,7 @@
 ;
 ;-
 pro chi_star_log, $
+log, $
 postplot = postplot, $
 hdnum = hdnum
 
@@ -50,8 +52,8 @@ if file_test(lfn) then begin
   endfor
 endif else starlog = log[newstarob]
 
-save, acenalog, filename=lfn
-save, acenalog, filename=ldir+objname+'log'+date+'.dat'
+save, starlog, filename=lfn
+save, starlog, filename=ldir+objname+'log'+date+'.dat'
 spawn, 'chmod 777 '+lfn
 spawn, 'chmod 777 '+ldir+objname+'log'+date+'.dat'
 stop

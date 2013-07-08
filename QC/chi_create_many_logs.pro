@@ -16,6 +16,20 @@
 ;  INPUTS:
 ;
 ;  OPTIONAL INPUTS:
+;		HDNUM: Set this to the HD (Henry Draper Catalog) number of the CHIRPS
+;			target you'd like to create a star log for. If not set, no log
+;			will be created for that star.
+;		STARTDATE: The start date, in the format of yymmdd, of when you want to start
+;			creating logs for. If this is not set, it was start checking on the first 
+;			date in the date array below (currently set to 120302)
+;		ENDDATE: The end date, in the format of yymmdd, of when you want to end
+;			creating logs for. If not set, it will create logs until the end date of
+;			the date arr. This routing will only create logs until whichever is earliest
+;			in time, either the set enddate keyword, OR the latest date in the datearr
+;			array. This means if you want to create logs until 130905, but the datearr
+;			only goes until 130715, then you'll need to add those dates to datearr. To
+;			determine which dates to comment out, consult either the QC pages, or
+;			chi_update_qc_index.
 ;
 ;  OUTPUTS:
 ;
@@ -39,7 +53,8 @@ justacenb = justacenb, $
 justtau = justtau, $
 justquality = justquality, $
 startdate = startdate, $
-enddate = enddate
+enddate = enddate, $
+hdnum = hdnum
 
 datearr=[ $
 '120302', $ 
@@ -518,7 +533,19 @@ datearr=[ $
 '130621', $
 '130622', $
 '130623', $
-'130624' $
+'130624', $
+'130625', $
+'130626', $
+;'130627', $;bad weather all night
+;'130628', $;bad weather all night
+'130629', $
+'130701', $
+'130702', $
+'130703', $
+;'130704', $;bad weather all night
+;'130705', $;bad weather all night
+'130706', $
+'130707' $
 ]
 
 if ~keyword_set(startdate) then startdate = datearr[0]
@@ -543,6 +570,7 @@ for i=0, n_elements(datearr)-1 do begin
 	if keyword_set(justacena) then chi_acena_log, log
 	if keyword_set(justacenb) then chi_acenb_log, log
 	if keyword_set(justtau) then chi_tauceti_log, log
+    if keyword_set(hdnum) then chi_star_log, log, hdnum = hdnum
     if keyword_set(justquality) then chi_quality, date = datearr[i]
 endfor
 
