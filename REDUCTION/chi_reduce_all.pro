@@ -93,44 +93,43 @@ for i=0, 3 do begin
 endfor
 
 if ~keyword_set(skipbary) then begin
-print, '**************************************************'
-print, 'NOW ADDING OBSERVATIONS TO THE BARYLOG...'
-print, '**************************************************'
+  print, '**************************************************'
+  print, 'NOW ADDING OBSERVATIONS TO THE BARYLOG...'
+  print, '**************************************************'
 
-;No Dot Prefix (ndpref) - The prefix without the dot (e.g. 'chi120402')
-ndpref = strmid(pref, 0, strlen(pref)-1)
-qbarylog, lfn, prefix=ndpref
-barystruct_dbl, observatory='ctio'
+  ;No Dot Prefix (ndpref) - The prefix without the dot (e.g. 'chi120402')
+  ndpref = strmid(pref, 0, strlen(pref)-1)
+  qbarylog, lfn, prefix=ndpref
+  barystruct_dbl, observatory='ctio'
 endif ;~KW(skipbary)
 
 
 if keyword_set(doppler) then begin
-print, '**************************************************'
-print, 'NOW RUNNING THE DOPPLER CODE...'
-print, '**************************************************'
+  print, '**************************************************'
+  print, 'NOW RUNNING THE DOPPLER CODE...'
+  print, '**************************************************'
 
-print, '**********************'
-print, 'NARROW SLIT DOPPLER CODE'
-print, '**********************'
-sorting_hat, date, run=run, $
-mode='narrow', $
-/doppler, doptag='t'
+  print, '**********************'
+  print, 'NARROW SLIT DOPPLER CODE'
+  print, '**********************'
+  sorting_hat, date, run=run, $
+  mode='narrow', $
+  /doppler, doptag='t'
 
-print, '**********************'
-print, 'SLICER DOPPLER CODE'
-print, '**********************'
-;sorting_hat, date, run=run, $
-;mode='slicer', $
-;/doppler, doptag = 'ks'
-
+  print, '**********************'
+  print, 'SLICER DOPPLER CODE'
+  print, '**********************'
+  ;sorting_hat, date, run=run, $
+  ;mode='slicer', $
+  ;/doppler, doptag = 'ks'
 endif ;KW(doppler)
 
 if ~keyword_set(skipdistrib) then begin
-print, '******************************'
-print, 'NOW DISTRIBUTING THE DATA'
-print, '******************************'
-print, systime()
-chi_que_distrib, date=date
+  print, '******************************'
+  print, 'NOW DISTRIBUTING THE DATA'
+  print, '******************************'
+  print, systime()
+  chi_que_distrib, date=date
 endif;KW(skipdistrib)
 
 if ~keyword_set(skipqc) then begin

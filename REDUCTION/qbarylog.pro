@@ -59,25 +59,15 @@ if ( n_elements(logfile) eq 0 ) then begin
 endif
 
 ; HANDLE PARAMETER DEFAULTS & FILE PATHS
-;
 if ( ~ keyword_set(baryDir) ) then baryDir = '/tous/mir7/bary/'  ; DF revision Mar2012
 if ( keyword_set(test) ) then baryFile = 'qbcvel.test.ascii' else baryFile = 'qbcvel.ascii'
 
 bcFile = baryDir + baryFile
 structFile = 'ctio_st.dat'
 
-;
 ; Verify that the neccessary files exist
-;
 if (n_elements(file_search(structFile)) eq 0) then message,structFile+ ' is missing.'
 if (n_elements(file_search(bcFile)) eq 0) then message,bcFile+ ' is missing.'
-
-;
-; Legacy
-;
-;defaultLogDir = '/mir7/logsheets/'
-defaultLogDir = '/tous/mir7/logsheets/2012/'   ; DF revision Mar2012
-if ( strpos(logFile,'/') eq -1 ) then logFile = defaultLogDir + logFile
 
 ;VARIABLE DECLARATIONS:
 noerror=1	& chk=''		& du=''		& dum=''	& dummy=''	&  req=''  

@@ -50,7 +50,7 @@ spawn, 'hostname', host
 ;if strmid(host, 13,14, /reverse) eq 'astro.yale.edu' then ldir = '/tous'+ldir
 lfn = ldir+'/tharlog.dat'
 ;test the mdir directory, and make it for the new year if need be:
-if ~file_test(ldir+mdir, /directory) then spawn, 'mkdir '+ldir+mdir
+;if ~file_test(ldir+mdir, /directory) then spawn, 'mkdir '+ldir+mdir
 
 newthar = where(strt(log.object) eq objname, newtharct)
 if file_test(lfn) then begin
