@@ -170,13 +170,22 @@ nodata = [$
 '130527', $ ;rain all night
 '130529', $ ;unexpected vacation
 '130530', $ ;unexpected vacation
+'130602', $ ;network errors, data missing (they weren't in /data/ or /data/130602/.)
 '130606', $ ;unexpected vacation, SIMON only
 '130607', $ ;unexpected vacation, SIMON only
 '130608', $ ;unexpected vacation, SIMON only
 '130609', $ ;unexpected vacation, SIMON only
 '130610', $ ;unexpected vacation, SIMON only
 '130611', $ ;unexpected vacation, SIMON only
-'130612' $ ;unexpected vacation, SIMON only
+'130612', $ ;unexpected vacation, SIMON only
+'130622', $ ;bad weather
+'130627', $ ;bad weather
+'130704', $
+'130705', $
+'130709', $
+'130710', $
+'130719', $
+'130721' $
 ]
 
 checked = [$
