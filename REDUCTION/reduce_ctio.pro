@@ -141,8 +141,10 @@ endelse
 ;       if redpar.debug then stop, 'REDUCE_CTIO: debug stop before getting flat' 
         flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
         name = redpar.rootdir+redpar.flatdir+prefix+mode+'.flat'
+        fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
 
         wdsk, flat, name, /new
+        rdsk2fits, filename=fitsname, data = flat
         print, 'REDUCE_CTIO: extracted flat field is written to '+name  
         FF = flat[*,*,0] ; the actual flat
         if redpar.debug ge 2 then stop, 'Debug stop after flat field, .c to continue'
