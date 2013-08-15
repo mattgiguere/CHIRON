@@ -100,20 +100,23 @@ endif
 
 ;save the original spec
 spec_o = spec
+
+if redpar.debug ge 1 then begin
 print, '***********************************************'
 print, 'RIGHT BEFORE FLAT-FIELDING...'
 print, '***********************************************'
+endif
+
 if redpar.debug ge 2 then stop
 ; flat-field correction
   if keyword_set(flat) and redpar.flatnorm le 1 then spec = double(spec)/flat else print, 'CTIO_SPEC: WARNING: no flat-field correction!'
- 
 
-!p.multi=[0, 1, 3]
 i=0
 specsz = size(spec)
 nords = specsz[2]
 
 if redpar.debug ge 1 and redpar.debug le 2 then begin
+  !p.multi=[0, 1, 3]
   fdir = redpar.plotsdir + 'extracts/'
   spawn, 'mkdir '+fdir
   fdir = redpar.plotsdir + 'extracts/' + redpar.imdir
@@ -129,10 +132,12 @@ for i=0, nords-1 do begin
 	 ps_open, fname, /encaps, /color
   endif;debug plots
   
-  plot, spec_o[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Extracted', /xsty, /ysty, ytitle='Flux'
-  plot, flat[*,i], title=redpar.date+' '+redpar.modes[redpar.mode]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
-  plot, spec[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Spec/Flat', /xsty, /ysty, $
-  xtitle='Dispersion Direction [pix]', ytitle='Flux'
+  if redpar.debug gt 1 then begin
+	plot, spec_o[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Extracted', /xsty, /ysty, ytitle='Flux'
+	plot, flat[*,i], title=redpar.date+' '+redpar.modes[redpar.mode]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
+	plot, spec[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Spec/Flat', /xsty, /ysty, $
+	xtitle='Dispersion Direction [pix]', ytitle='Flux'
+  endif
   
   if redpar.debug ge 1 and redpar.debug le 2 then begin
 	 ps_close
