@@ -3,6 +3,7 @@ import pylab
 #import sys
 import numpy as np
 import asciitable
+from scipy.interpolate import interp1d
 
 def CompSpecFlux(im, hd):
     """
@@ -13,14 +14,14 @@ def CompSpecFlux(im, hd):
     #Planck's Constant (erg s):
     h = 6.626e-27
     #speed of light
-    c = 2.99792458
+    c = 2.99792458e10
     
     #1.5m area:
-    area = 1.3 * 10**4
+    area = 1.3135 * 10**4
     
     exptime = hd['EXPTIME']
     spec = im[:,:,1]
-    wav = im[:,:,0]
+    wav = 1e-10 * im[:,:,0]
 
     z = im.shape
     fluxarrnu = np.zeros((z[0],z[1]))
@@ -56,22 +57,7 @@ def plotFluxOrder(wav, spec, ord):
     
 def getExtinction():
     extinctionfn = "/Users/matt/projects/CHIRON/EFFICIENCY/extinction.txt"
-    #my_file = open(extinctionfn, "r+")
-    #print my_file.read()
-    #my_file.close()
     curve = asciitable.read(extinctionfn, data_start=0, delimiter="\s")
-    #print "curve shape: "
-    #print curve.shape
-    #curve = ''
-    #print curve[0]
-    #print "The type is: "
-    #print type(curve)
-    #print curve[1]
-    #print curve.dtype
-    #print curve['col1']
-    #wavs = curve['col1']
-    #print wavs.shape
-    #print wavs[0]
     #pylab.plot(curve['col1'], curve['col2'])
     #pylab.show()
     return curve
@@ -79,12 +65,14 @@ def getExtinction():
 def getMags(star):
     magsfn = "/Users/matt/projects/CHIRON/EFFICIENCY/"+star+"_hamuy1992.txt"
     magarr = asciitable.read(magsfn,delimiter="\s")
-    #print magarr
-    #print magarr.dtype
-    #print magarr.shape
     #pylab.plot(magarr.wav, magarr.mag)
     #pylab.show()
     return magarr
+    
+def magsToFlux(magarr):
+	#Solve for f_nu in Hamuy 92 Eqn 2:
+	measflux = 10**(-0.4*(magarr.mag + 48.590))
+	return measflux
     
 def getImage(fileName):
     im = pyfits.getdata(fileName, 0)
@@ -101,36 +89,124 @@ def getAirmass(hd):
     print "Airmass is: "+str(airmass)
     return airmass
     
-def calculateEff(im, fluxarrnu, exinctionarr, magarr,airmass):
+def calculateEff(im, fluxarrnu, extinctionarr, magarr,airmass, peakarr, seqnum):
     imd = im.shape
     wav = im[:,:,0]
-    ord = 0
-    idx = pylab.where(fluxarrnu[ord,:] == max(fluxarrnu[ord,:]))
-    print idx, max(fluxarrnu[ord][:])
-    print fluxarrnu[ord,idx]
-    #for ord in range(imd[0]):
-    #    idx = pylab.where(fluxarrnu[ord,:] == max(fluxarrnu[ord,:]))
-    #    print idx, max(fluxarrnu[ord][:])
-    return 0
+    interpext = interp1d(extinctionarr.col1, extinctionarr.col2, kind='cubic')
+    medarr = np.zeros(imd[0])
+    peakwav = np.zeros(imd[0])
+    for ord in range(imd[0]):
+    	medarr[ord] = np.median(fluxarrnu[ord, (peakarr[ord]-4):(peakarr[ord]+3)])
+    	peakwav[ord] = wav[ord,peakarr[ord]]
+    #the extinction, in magnitudes = airmass*extinction value:
+    extval = interpext(peakwav)
+    mext = np.zeros(extval.shape[0])
+    for i in range(extval.shape[0]):
+    	mext[i] = float(airmass) * extval[i]
+    ftrue =  medarr*10**(0.4*mext)
+    fmeas = interp1d(magarr.wav, magsToFlux(magarr), kind='cubic')
+    fmeasinterp = fmeas(peakwav)
+    eff = ftrue/fmeasinterp
+    #pylab.plot(peakwav, eff*100.)
+    #pylab.xlabel('Wavelength [A]')
+    #pylab.ylabel('Efficiency (%)')
+    #pylab.savefig.dpi=300
+    #pylab.savefig('fig_eff_'+seqnum+'.eps')
+    #pylab.show()
+    return peakwav, eff
 
 def peakLocations(date, hd):
     mode = "fiber"
     flatname = "/tous/mir7/flats/chi"+date+"."+mode+"flat.fits"
     flat = pyfits.getdata(flatname)
+    peakarr = np.zeros(flat.shape[1])
+    for zaidx in range(flat.shape[1]):
+    	maxspot = pylab.transpose(pylab.where(flat[2,zaidx,:] == max(flat[2,zaidx,:])))
+        peakarr[zaidx] = maxspot[0]
+    return peakarr
     
-    peakarr = 0
-    return peakarr, flat
-    
-star = 'hr8634'
+def makeEff(star, date, seqnum, fileName):
+	im = getImage(fileName)
+	hd = getHeader(fileName)
+	fluxarrnu = CompSpecFlux(im, hd)
+	extinctionarr = getExtinction()
+	magarr = getMags(star)
+	airmass = getAirmass(hd)
+	peakarr = peakLocations(date,hd)
+	peakwav, eff = calculateEff(im, fluxarrnu, extinctionarr, magarr,airmass, peakarr, seqnum)
+	return peakwav, eff
+	
 date = '130801'
-fileName = '/tous/mir7/fitspec/'+date+'/achi'+date+'.1133.fits'    
-im = getImage(fileName)
-hd = getHeader(fileName)
-fluxarrnu = CompSpecFlux(im, hd)
-exinctionarr = getExtinction()
-magarr = getMags(star)
-airmass = getAirmass(hd)
-calculateEff(im, fluxarrnu, exinctionarr, magarr,airmass)
 
-#plotOrder(im, 39)
-#plotFluxOrder(im[:,:,0],fluxarrnu, 29)
+def createPlots():
+	#For the first star:
+	star = 'hr7596'
+	seqarr = ['1130', '1131', '1132']
+	effarr = np.zeros((9,62))
+	effidx = 0
+	#pylab.xlabel('Wavelength [A]')
+	#pylab.ylabel('Efficiency (%)')
+	for seq in seqarr:
+		seqnum = seq
+		fileName = '/tous/mir7/fitspec/'+date+'/achi'+date+'.'+seqnum+'.fits'
+		peakwav, eff = makeEff(star, date, seqnum, fileName)
+		peakwav.shape
+		peakwav.dtype
+		iodrange = ((peakwav > 5000.) & (peakwav < 6000.))
+		print "median efficiency "+str(effidx)+": "+str(np.median(eff[iodrange]))
+		print "max efficiency: "+str(max(eff))
+		maxwav = eff == max(eff)
+		print "wav @ max: "+str(peakwav[maxwav])
+		#pylab.plot(peakwav, eff*100.)
+		effarr[effidx,:] = eff
+		effidx += 1
+	#pylab.text(7500,7, star)
+	#pylab.savefig('fig_eff_'+star+'_all.eps')
+	#pylab.clf()
+
+	#For the second star:
+	star = 'hr8634'
+	seqarr = ['1133', '1134', '1135']
+	#pylab.xlabel('Wavelength [A]')
+	#pylab.ylabel('Efficiency (%)')
+	for seq in seqarr:
+		seqnum = seq
+		fileName = '/tous/mir7/fitspec/'+date+'/achi'+date+'.'+seqnum+'.fits'
+		peakwav, eff = makeEff(star, date, seqnum, fileName)
+		#pylab.plot(peakwav, eff*100.)
+		effarr[effidx,:] = eff
+		effidx += 1
+	#pylab.text(7500,7, star)
+	#pylab.savefig('fig_eff_'+star+'_all.eps')
+	#pylab.clf()
+
+	#For the third star:
+	star = 'hr9087'
+	seqarr = ['1149', '1150', '1151']
+	#pylab.xlabel('Wavelength [$\AA$]')
+	#pylab.ylabel('Efficiency (%)')
+	for seq in seqarr:
+		seqnum = seq
+		fileName = '/tous/mir7/fitspec/'+date+'/achi'+date+'.'+seqnum+'.fits'
+		peakwav, eff = makeEff(star, date, seqnum, fileName)
+		#pylab.plot(peakwav, eff*100.)
+		effarr[effidx,:] = eff
+		effidx += 1
+	#pylab.text(7500,6, star)
+	#pylab.savefig('fig_eff_'+star+'_all.eps')
+	#pylab.clf()
+	medeff = np.median(effarr, axis=0)
+	pylab.clf()
+	pylab.xlabel('Wavelength [$\AA$]')
+	pylab.ylabel('Efficiency (%)')
+	pylab.plot(peakwav, medeff*100.,color='k', linewidth=2.0)
+	pylab.savefig('fig_medeff.eps')
+	iodrange = ((peakwav > 5000.) & (peakwav < 6000.))
+	print "=== FOR THE MEDIAN ARR==="
+	print "max efficiency: "+str(max(medeff))
+	mwav = pylab.transpose(pylab.where(medeff == max(medeff)))
+	print "wavelength of max: "+str(peakwav[mwav])
+	print "median efficiency: "+str(np.median(medeff[iodrange]))
+	for i in range(9):
+		iodrange = ((peakwav > 5000.) & (peakwav < 6000.))
+		print "median efficiency "+str(i)+": "+str(np.median(effarr[i,iodrange]))

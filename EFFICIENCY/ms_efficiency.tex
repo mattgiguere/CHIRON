@@ -65,194 +65,151 @@
 %\received{?}
 %\accepted{2013}
 
-\shorttitle{Stellar Activity Analysis}
+\shorttitle{CHIRON Efficiency}
 \shortauthors{Giguere et al.}
 \begin{document}
 
-\title{The Characterization and Removal of Stellar Activity Signals in the Search for Rocky Planets Orbiting Nearby Stars}
+\title{CHIRON Efficiency as of August 2013}
 
-\author{Matthew J. Giguere\altaffilmark{1}, Debra A. Fischer\altaffilmark{1}}	
+\author{Matthew J. Giguere\altaffilmark{1}}	
 
 \begin{abstract}
-To detect planets with velocity semi-amplitudes less than 1\ms, one can no longer ignore the affects of stellar activity, regardless of how chromospherically quiet the star. In this work we explore methods, namely line depth ratios and line bisectors, for characterizing and removing stellar activity signals from radial velocity data.
+This document discusses the efficiency of CHIRON after the GAM mirror cleaning and tip-tilt module installation. The efficiency was calculated by observing 3 secondary standards on the night of 130801. We find that the efficiency was largely unchanged relative to the efficiency calculation from June 2012. The median efficiency between 5000 and 6000 \AA was 6.5 \%.
+
 \end{abstract}
 
-\keywords{planetary systems}
+\keywords{instrumentation}
 
 \altaffiltext{1}{Department of Astronomy, Yale University, 260 Whitney Ave, New Haven, CT 06511, USA}
 \ \
 
 
 \section{Introduction}
-Hundreds of planets with velocity semi-amplitudes greater than 1 \ms have been detected using the radial velocity technique. However, the velocity semi-amplitude imparted by the motion of the Earth about the sun is only 8.9 \cms. Therefore to push the radial velocity technique further along, we need to push to lower and lower velocity precision. A major problem with the radial velocity technique is disentangling the contributions of stellar activities from the contributions of planets in time series radial velocity measurements. For years stellar activity has been handled by adding an estimate for the contribution to the radial velocities due to stellar activity, dubbed astrophysical jitter, in quadrature to the measurement error\citep{Isaacson:2010gk}. More recently, detailed work has been carried out to quantify the contributions due to the various physical mechanisms that impart changes in the measured disk integrated radial velocity of each star \citep{2011A&A...525A.140D, 2011A&A...527A..82D}. From this work, it has been shown that there are several sources of stellar activity that all contribute at the level of tens of \cms, for early type K dwarfs, which are the least active type of star. 
+In April of 2013 a new tip-tilt module was installed in the front end module (FEM) of CHIRON with the goal of improving guiding on Alpha Cen A \& B. While the tip-tilt was being installed, it was discovered that the mirror on the guider-acquisition module (GAM) had a thick layer of dust on it. Both the cleaning of the GAM mirror and the installation of the tip-tilt module were expected to have increased the throughput of CHIRON. This work discusses a new calculation of the efficiency of CHIRON.
 
-Here we explore two methods, line depth ratios (LDR) and line bisectors, for measuring the affects of activity in each radial velocity observation. These methods can be used to disentangle the planetary and activity contributions to each velocity measurement.
+\section{Observations \& Reduction}
 
-Line depth ratios make use of a combination of temperature sensitive and temperature stable lines to measure the effective temperature of a star. A single line depth ratio has been demonstrated to reach a precision of 10K in temperature \citep{Gray1991}. Here we have identified several more temperature sensitive and temperature stable line pairs, which are discussed in section \ref{sec:ldr}. We then use these LDRs to measure the stellar activity of stars in our planet search sample.
+To determine the efficiency of CHIRON, 3 secondary standards were observed that were selected from \citep{1992PASP..104..533H, 1994PASP..106..566H} based on the seasonal observability of the targets in August. All observations were taken on August 1st, 2013. The Yale Bright Star Catalog (HR) numbers of the chosen targets, along with spectral types, B and V apparent magnitudes, and mean airmass when observed are listed in Table \ref{tab:targets}. All exposures were taken in the unmasked fiber mode to maximize throughput. The data were extracted using the standard CHIRON reduction pipeline that all CHIRON observations are processed through, which extracts from 4500 \AA~to 8800 \AA.
 
-Another method of measuring stellar activity is through line bisectors. We also discuss the method we use for measuring line bisectors and discuss how we use them to quantify the contributions to velocity due to stellar activity. We discuss our methods of using line bisectors in section \ref{sec:bis}.
- 
-\section{Line Depth Ratios}
-\label{sec:ldr}
+%% The values (usually only l,r and c) in the last part of
+%% \begin{deluxetable}{} command tell LaTeX how many columns
+%% there are and how to align them.
+\begin{deluxetable}{ccccc}
 
-The first reported work with line depth ratios was, to our knowledge, from \citep{Gray1991}, where they demonstrated a single line pair precision of 10 K. Here we use the ratio of depths of several lines, some also reported in \citep{Gray1991}, others from the thesis of Sareen et al. 2008, and others we found through a study of different temperature models created using \sme. 
+%% Keep a portrait orientation
+
+%% Over-ride the default font size
+%% Use Default (12pt)
+
+%% Use \tablewidth{?pt} to over-ride the default table width.
+%% If you are unhappy with the default look at the end of the
+%% *.log file to see what the default was set at before adjusting
+%% this value.
+
+%% This is the title of the table.
+\tablecaption{Secondary Standards Observed for Efficiency Calculation \label{tab:targets}}
+
+%% This command over-rides LaTeX's natural table count
+%% and replaces it with this number.  LaTeX will increment 
+%% all other tables after this table based on this number
+\tablenum{1}
+
+%% The \tablehead gives provides the column headers.  It
+%% is currently set up so that the column labels are on the
+%% top line and the units surrounded by ()s are in the 
+%% bottom line.  You may add more header information by writing
+%% another line between these lines. For each column that requries
+%% extra information be sure to include a \colhead{text} command
+%% and remember to end any extra lines with \\ and include the 
+%% correct number of &s.
+\tablehead{\colhead{OBJECT} & \colhead{Sp} & \colhead{B} & \colhead{V} & \colhead{Airmass}} 
+
+%% All data must appear between the \startdata and \enddata commands
+\startdata
+HR 7596 &  A0III & 5.704 &  5.628 &  1.563 \\
+HR 8634 &  B8V & 3.313 &  3.390 &  1.328 \\
+HR 9087 &  B7III-IV & 4.998 &  5.119 &  1.353 \\
+\enddata
+
+%% Include any \tablenotetext{key}{text}, \tablerefs{ref list},
+%% or \tablecomments{text} between the \enddata and 
+%% \end{deluxetable} commands
+
+%% No \tablecomments indicated
+
+%% No \tablerefs indicated
+
+\end{deluxetable}
+
+\section{Methods}
+
+The standard CHIRON reduction pipeline applies the gain to convert counts to photoelectrons. The final product of each reduced observation is a FITS file with 2 layers: the first layer being the wavelength solution based on the nearest ThAr exposure taken in the respective mode, and the second layer being the spectrum, in photoelectrons. To convert from photoelectrons to monochromatic flux, $f_{\nu}$, in erg~cm$^{-2}$~s$^{-1}$~Hz$^{-1}$, the following equation was used
+
+\begin{equation}
+f_{\nu} = \frac{n_{\gamma} h c}{A w \lambda t_{exp} }
+\end{equation}
+
+where $n_{\gamma}$ is the number of photoelectrons per pixel, h is Planck's constant, $\lambda$ is the wavelength corresponding to each pixel, A is the area of the telescope, w is the width of each pixel in frequency space, and $t_{exp}$ is the exposure time. The total light gathering area of the 1.5 m is 13135 cm$^{2}$, which takes into account the secondary obstruction, which is 0.38 m in radius.
+
+\citet{1994PASP..106..566H} list the monochromatic magnitudes in 16 \AA~ steps from 3300\AA~ to 10420 \AA~ for each of these 3 stars. To convert from monochromatic magnitudes to monochromatic fluxes, the same zero point was used as in their work.
+
+\begin{equation}
+f_{\nu} = 10^{-0.4(m_{\nu} + 48.590)}
+\end{equation}
+
+For each of the 62 orders, the blaze peak was determined using the max value of the polynomial fit to each order in the master flat. The monochromatic flux at blaze peak was then determined by taking the median value of the seven pixels nearest to the blaze peak. The atmospheric extinction correction was calculated by performing a cubic spline interpolation to the wavelength corresponding to blaze peak from the extinction curve for CTIO from \citep{Stritzinger:2005dt}, which is shown in Figure \ref{fig:extinction}.
 
 \begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/line_pair_plot.eps}
-\caption{\label{fig:line_pair_plot} Two spectral synthesis models generated with \sme. All parameter are the same except the effective temperatures, where the blue (solid line) model has an effective temperature of 5800 K, and the red (dot dash line) model has an effective temperature of 5500 K. The orange (dashed) vertical lines show the locations of temperature sensitive lines and the purple (dot dot dot dashed) vertical line shows the location of a temperature stable atomic transition. In this work we describe our method of using the ratio of the depths of temperature sensitive to temperature stable lines for activity analysis.}
+\includegraphics[scale=0.4,angle=0]{fig_Exinction.eps}
+\caption{\label{fig:extinction} The atmospheric extinction from \citet{Stritzinger:2005dt}, as seen from CTIO.}
+\end{figure}
+
+The monochromatic flux with the atmospheric extinction taken into account, $f_{cor}$, is then
+
+\begin{equation}
+f_{cor} = f_{\nu}10^{0.4m_{ext}}
+\end{equation}
+
+The efficiency was then calculated by taking a ratio of $f_{cor}$ to the monochromatic flux from \citep{1994PASP..106..566H}, where again a cubic spline interpolation was used to get the monochromatic flux at the wavelength corresponding to blaze peak. The results for HR~7596, HR~8634, and HR~9087 can be seen in Figures \ref{fig:hr7596}, \ref{fig:hr8634}, and \ref{fig:hr9087}, respectively. 
+
+\section{Results \& Discussion}
+
+After calculating the efficiency as a function of wavelength for all the wavelengths at blaze peak, a median overall efficiency was computed by taking of the median efficiency value of the 9 results at each wavelength element. The result can be seen, plotted over all nine curves in Figure \ref{fig:effall}, and alone in Figure \ref{fig:medeff}. This shows a median efficiency between 5000 \AA~and 6000 \AA~of 6.5\%, with a peak of 6.6\% at 5600\AA. Comparing this result to the efficiency calculation from June 13, 2012, the overall efficiency of CHIRON after cleaning the GAM mirror and inclusion of a tip-tilt mechanism has not changed significantly. 
+
+While the telescope operator reported conditions as clear, with 1"-1".2 seeing, there was large variability between observations. There was a comment in the end of night report from the night these observations were taken stating there were problems with dome movement. This large variability could have been due to occultation of the dome, or perhaps overpassing cirrus during the efficiency observations. It would be useful to take additional observations of at least one of the targets on a separate clear night without dome movement failures to confirm the calculated efficiency.  
+
+\begin{figure}[ht]
+\includegraphics[scale=0.4,angle=0]{fig_eff_hr7596_all.eps}
+\caption{\label{fig:hr7596} The efficiency of CHIRON based on 3 observations of HR~7596, a bright secondary standard star, all taken on August 1st, 2013.}
 \end{figure}
 
 \begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/Activity_RES_chi_narrow.eps}
-\caption{\label{fig:Activity_RES_chi_narrow} The Effective Temperature as a function of line depth ratio (LDR) for the 7 lines described in \citet{Gray1991} and Sareen et al. (2008). The lower the value for the slope, which implies a larger change in the LDR for a given change in effective temperature, the more sensitive, and therefore more useful, the line pair. }
-\end{figure}
-
-Out of the seven initial line pairs used, only six of them gave a large enough range in the line depth ratio as a function of temperature to be useful; the sixth line pair changed very little, and was therefore discarded for the rest of the analysis. Fitting the effective temperature as a function of LDR with a linear model gave the following results:
-
-\begin{eqnarray*}
-T_{eff} = 4684.5 + 1258.2\Gamma_{1} \\
-T_{eff} = 4675.1 + 1359.2\Gamma_{2} \\
-T_{eff} = 4834.9 + 1218.2\Gamma_{3} \\
-T_{eff} = 3918.0 + 1627.3\Gamma_{4} \\
-T_{eff} = 4669.7 + 2596.3\Gamma_{5} \\
-T_{eff} = 4371.6 + 587.9\Gamma_{7} \\
-\end{eqnarray*}
-
-
-where \teff is the effective temperature of the stellar model and $\Gamma_{i}$ is the line depth ratio of the $i^{th}$ line pair.
-
-I've since used synthetic spectra from \sme~ to help identify additional lines in the blue (non-Iodine) region of the extracted spectra. I found an additional 216 lines, which I combined with the 7 lines I already had and the 38 lines Debra identified. I then generated 27 synthetic spectra using \sme~ where the only parameter changed was the effective temperature. I was originally using only 7 spectra from \sme, ranging from 5500-5800. I recreated the spectra for two reasons. The stars we are interested in are the late-K and early-G types, so I wanted models that reflected that temperature range, and when fitting the line depth ratios to solve for the effective temperature as a function of LDR, I was having trouble with single outliers severely influencing the fit. Having only 7 synthetic spectra to model (i.e. 7 data points), and trying to fit $n^{th}$ order polynomials to it is troublesome. With 27 models ranging from 4600K - 5250K I could identify lines that are better suited for our targets and get more reliable polynomial fits.
-
-Once the 27 models were created, I fit 1st through 5th order polynomials to them, and then compared the residuals. As one increased the polynomial order, the fit became dramatically better. I used the 27 spectra to find the coefficients for each model, and then tested it on an additional synthetically generated spectrum with an effective temperature that differed from the other 27 models to see how well I could recover the effective temperature. At first the result was good, but not great.
-\section{Line Bisectors}
-\label{sec:bis}
-
-Line bisection is accomplished by first breaking the echelle orders of each spectrum into large chunks, each chunk being on the order of 1000 pixels in size. For CHIRON, this corresponds to a wavelength range of approximately 15 Angstroms per chunk, and there are 3 chunks per echelle order. An example of what one echelle order looks like can be seen in figure \ref{fig:order}.
-
-\textbf{Unresolved questions:}
-How much do you expect the temperature to change?
-
-How do plages contribute to this?
-
-How does the intensity change?
-The star actually gets brighter during these times in the V band. Although there are spots, there's an increase in overall intensity.
-
-How much does it change for the Sun? How about for K-type stars?
-
-How much does the disk-integrated temperature change in the red vs the blue vs the IR?
-Looking at blackbody models, where you have 2 blackbodies that differ in temperature by several hundred Kelvin, there'd be a larger difference in intensity in the blue. However, the change in line depth is going to be strongly dependent on the atomic transition (e.g. Vanadium vs Iron), so it is difficult to say if the red would be more sensitive or the blue. However, not taking that into account, one would expect the blue to more sensitive for 2 reasons: There's a larger difference in intensity between spots and not spotty regions in the blue, and there are more lines to use per angstrom on average to use for this analysis, so there are probably more temperature sensitive/stable line pairs.
-
-An interesting plot would be to break down the precision in 50 angstrom chunks, and how each 50 angstrom chunk contributes to the overall uncertainty.
-
-How does the precision change as a function of resolution and sampling? 
-
-
-Does the temperature profile of the star change at all? How so?
-
-\textbf{Factors to look into}
-\textbf{How does the precision change as a function of the following parameters:}
-\begin{itemize}
-\item Resolution
-\item Sampling
-\item SNR
-\item Rotational Velocity
-\item Number of lines used
-\end{itemize}
-
-
-\begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/order.eps}
-\caption{\label{fig:order} One of the Iodine-free orders from CHIRON for an observation of \acenb.}
-\end{figure}
-
-
-We only use orders that are outside of the molecular iodine range, since each of our spectra used for radial velocity work has iodine lines superimposed, and these iodine lines obviously would not impart the same asymmetries as spectral lines, and would therefore interfere with the analysis. The breaking of each spectrum into chunks is carried out in the routine \cbers. \cbers first normalizes each order by dividing by a sixth order polynomial fit to the master flat field for the night of the observation. After breaking the orders into chunks, a chunk from the observation of interest, and the same chunk from a different observation of the same star are cross-correlated. \cbers then passes the resulting cross-correlation function into the subroutine \cbis, which handles the actual line bisection of the cross-correlation function of each chunk. An example of two chunks cross-correlated for \acenb can be seen in figure \ref{fig:chunks}. 
-
-\begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/chunks.eps}
-\caption{\label{fig:chunks} A chunk from one of the Iodine-free orders from CHIRON for an observation of \acenb. The red shows the observation of interest. The black shows another observation of the same star, \acenb. All observations are cross correlated with the black observation.}
-\end{figure}
-
-The resulting cross-correlation of two chunks for \acenb can be seen in figure \ref{fig:ccx}. All chunks are cross-correlated with the same chunk from a different observation of the same star, and the secondary observation is the same for every observation analyzed.
-
-\begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/ccx.eps}
-\caption{\label{fig:ccx} The cross-correlation function for a chunk from one of the Iodine-free orders from CHIRON for an observation of \acenb cross-correlated with the same chunk from a different observation of the same star.}
-\end{figure}
-
-\cbis works by first finding the center of the peak of the cross correlation function. This identifies the two halves of the cross correlation peak. Each half is then used to interpolate the corresponding ordinate, or y-value, in the cross correlation function on the other side of the peak. The distance half way in between each pair of positions (the original and interpolated position), is then stored as part of the line bisector. An example of the resulting interpolated right-hand side of the CCF, and the resulting bisector for a single chunk can be seen in figure \ref{fig:ccfpeak}, where the CCF appears highly symmetrical with an almost vertical bisector. Zooming in to just the resulting bisector, which is shown in figure \ref{fig:bisector} however, shows that it's not completely symmetrical.
-
-\begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/ccfpeak.eps}
-\caption{\label{fig:ccfpeak} The central peak of the cross-correlation function for a chunk from one of the Iodine-free orders from CHIRON for an observation of \acenb cross-correlated with the same chunk from a different observation of the same star. The bisector based off of interpolation of the left-hand side of the CCF peak is shown in orange.}
+\includegraphics[scale=0.4,angle=0]{fig_eff_hr8634_all.eps}
+\caption{\label{fig:hr8634} The efficiency of CHIRON based on 3 observations of HR~8634, a bright secondary standard star, all taken on August 1st, 2013.}
 \end{figure}
 
 \begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/bisector.eps}
-\caption{\label{fig:bisector} A zoom into the bisector of the cross correlation function for a chunk of an order of a spectrum of \acenb.}
+\includegraphics[scale=0.4,angle=0]{fig_eff_hr9087_all.eps}
+\caption{\label{fig:hr9087} The efficiency of CHIRON based on 3 observations of HR~9087, a bright secondary standard star, all taken on August 1st, 2013.}
 \end{figure}
-
-Repeating the interpolation process for the other side of the cross correlation function, that is, using the lag and peak from the right-hand side of the cross correlation peak to interpolate values for the left-hand side, and then finding the bisector, the result for both sides can be seen in Figure \ref{fig:both_bisectors}. The orange curve is from an interpolation of the right-hand side to get the same heights as the left-hand side before bisection. The green curve is for an interpolation on the left-hand side to get the same heights as the samples on the right-hand side of the CCF before bisection. There is excellent agreement between the results. The points with a CCF value greater than 98\% were thrown out, as the cubic spline interpolation begins to fail at the very top with so few points to base the interpolation off of.
-
-The extrema in lag of the CCF bisector are dominated by the top of the CCF peak (as seen in Figure \ref{fig:bisector}) and the bottom (as seen in Figure \ref{fig:bisector} and Figure \ref{fig:both_bisectors}). Near the top is where cubic spline interpolation is the least accurate, which is why a cut was placed on the top 2\% as previously described. The position of the bottom of the CCF bisector is strongly dependent on where one places a cut on the bottom of the peak. In this work we found where the slope of the CCF function went from negative to positive, and then placed a cut keeping only the greatest 80\% of the data of the CCF (throwing out the bottom 20\% of the CCF peak). The bisector results below this CCF amount were dominated by noise.
 
 \begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/both_bisectors.eps}
-\caption{\label{fig:both_bisectors} A zoom into bisectors of the cross correlation function for a chunk of an order of a spectrum of \acenb. The orange dots are from an interpolation of the right-hand side based on data from the left-hand side, and the green dots are from an interpolation of the left-hand side based on heights from the right-hand side. In both cases only the lower 98\% of data were kept, eliminating the points near the top where the cubic spline interpolation is less accurate. }
+\includegraphics[scale=0.4,angle=0]{fig_medeff_all.eps}
+\caption{\label{fig:effall} The combined CHIRON efficiency calculation of all 9 exposures (3 of each of the 3 targets). The thick black line is the median of all 9 exposures.}
 \end{figure}
-
-Perhaps a better method for quantifying the CCF bisector is to perform a polynomial fit to the resulting bisector, and save and compare the polynomial coeffcients for each observation. This will be carried out, and the correlation between the velocities and the top-bottom of the CCF will be compared to the correlation between the velocities and each of the bisector fit polynomial coefficients.
 
 \begin{figure}[ht]
-\includegraphics[scale=0.35,angle=0]{figs/bis_fit.eps}
-\caption{\label{fig:bis_fit} A zoom into the bisector of the cross correlation function for a chunk of an order of a spectrum of \acenb.}
+\includegraphics[scale=0.4,angle=0]{fig_medeff.eps}
+\caption{\label{fig:medeff} The combined median CHIRON efficiency based on 9 exposures (3 exposures each of 3 targets). The median efficiency between 5000 and 6000 \AA~was 6.5\%.}
 \end{figure}
 
-After testing various models, a ninth order polynomial fit to the bisector was the lowest order that would fit the bisector of the first chunk adequately. Figure \ref{fig:bis_fit} shows the best fit to the line bisector, where the black points show the bisector for the combined left and ride side interpolations, and the red points show the ninth order polynomial fit to the CCF bisector. After continued testing on additional chunks, it was clear that polynomial models wouldn't fit every bisector. Figures \ref{fig:bis_fits1}, \ref{fig:bis_fits1}, and \ref{fig:bis_fits1} show the bisectors and their best fits, along with the reduced chi squared values for the fit to each chunk.
 
-\begin{figure*}[ht]
-\includegraphics[scale=0.8,angle=0]{figs/bis_fits1.eps}
-\caption{\label{fig:bis_fits1} The bisectors and their respective fits for the first twelve chunks of a spectrum of \acenb.}
-\end{figure*}
-
-\begin{figure*}[ht]
-\includegraphics[scale=0.8,angle=0]{figs/bis_fits2.eps}
-\caption{\label{fig:bis_fits2} The same as figure \ref{fig:bis_fits1}, but for the next twelve chunks.}
-\end{figure*}
-
-\begin{figure*}[ht]
-\includegraphics[scale=0.8,angle=0]{figs/bis_fits3.eps}
-\caption{\label{fig:bis_fits3} The same as figure \ref{fig:bis_fits1}, but for the last twelve chunks.}
-\end{figure*}
-
-From here it was clear that a polynomial model wouldn't work. We then turned to using b-splines for modeling the bisectors. The results of the bspline fits to each chunk CCF bisector are shown in Figures 
-
-\begin{figure*}[ht]
-\includegraphics[scale=0.8,angle=0]{figs/bis_bsplinefits1.eps}
-\caption{\label{fig:bis_bsplinefits1} The bisectors (black) and their respective bspline fits (red) for the first twelve chunks of a spectrum of \acenb.}
-\end{figure*}
-
-\begin{figure*}[ht]
-\includegraphics[scale=0.8,angle=0]{figs/bis_bsplinefits2.eps}
-\caption{\label{fig:bis_bsplinefits2} Same as Figure \ref{fig:bis_bsplinefits1}, but for the next twelve chunks.}
-\end{figure*}
-
-\begin{figure*}
-\includegraphics[scale=0.8,angle=0]{figs/bis_bsplinefits3.eps}
-\caption{\label{fig:bis_bsplinefits3} Same as Figure \ref{fig:bis_bsplinefits1}, but for the last twelve chunks.}
-\end{figure*}
-
-The bspline method results in a much better fit with a lower \chisq, but it's still not great. 
-
-\section{Summary \& Discussion}
-\label{sec:disc}
-
-\acknowledgements
-We thank the anonymous referee for useful comments and suggestions. This work was supported by NASA grant NNX12AC01G, NSF grant AST-1109727 and NASA  Headquarters under the NASA Earth and Space Science Fellowship Program - Grant NNX....
-
+\section{Acknowledgements}
+This research has made use of the SIMBAD database,
+operated at CDS, Strasbourg, France.
 
 \bibliographystyle{apj}
-\bibliography{apj-jour,biblib_activity}
+\bibliography{apj-jour,biblib_chirps}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                                                 TABLES                                                                         %%%

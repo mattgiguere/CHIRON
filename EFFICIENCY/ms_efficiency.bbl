@@ -1,0 +1,19 @@
+\begin{thebibliography}{}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Hamuy {et~al.}(1994)Hamuy, Suntzeff, Heathcote, Walker, Gigoux, \&
+  Phillips}]{1994PASP..106..566H}
+Hamuy, M., Suntzeff, N.~B., Heathcote, S.~R., {et~al.} 1994, Astronomical
+  Society of the Pacific, 106, 566
+
+\bibitem[{Hamuy {et~al.}(1992)Hamuy, Walker, Suntzeff, Gigoux, Heathcote, \&
+  Phillips}]{1992PASP..104..533H}
+Hamuy, M., Walker, A.~R., Suntzeff, N.~B., {et~al.} 1992, Astronomical Society
+  of the Pacific, 104, 533
+
+\bibitem[{Stritzinger {et~al.}(2005)Stritzinger, Suntzeff, Hamuy, Challis,
+  Demarco, Germany, \& Soderberg}]{Stritzinger:2005dt}
+Stritzinger, M., Suntzeff, N.~B., Hamuy, M., {et~al.} 2005, Publications of the
+  Astronomical Society of the Pacific, 117, 810
+
+\end{thebibliography}

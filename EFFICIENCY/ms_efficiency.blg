@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2012)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ms_efficiency.aux
+The style file: apj.bst
+Database file #1: ms_efficiencyNotes.bib
+Database file #2: apj-jour.bib
+Database file #3: biblib_chirps.bib
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+You've used 3 entries,
+            3085 wiz_defined-function locations,
+            1500 strings with 14383 characters,
+and the built_in function-call counts, 1759 in all, are:
+= -- 145
+> -- 149
+< -- 0
++ -- 53
+- -- 59
+* -- 157
+:= -- 341
+add.period$ -- 3
+call.type$ -- 3
+change.case$ -- 31
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 57
+empty$ -- 85
+format.name$ -- 59
+if$ -- 335
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 3
+newline$ -- 13
+num.names$ -- 12
+pop$ -- 34
+preamble$ -- 1
+purify$ -- 31
+quote$ -- 0
+skip$ -- 46
+stack$ -- 0
+substring$ -- 63
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 27
+warning$ -- 0
+while$ -- 12
+width$ -- 0
+write$ -- 33

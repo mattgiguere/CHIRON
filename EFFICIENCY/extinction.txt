@@ -1,5 +1,6 @@
 # From Stritzinger et al. 2005, PASP, 117, 810 (Table 2)  
 #
+#wav    mag
 3050.00	1.395
 3084.65	1.283
 3119.31	1.181
