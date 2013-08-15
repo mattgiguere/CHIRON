@@ -296,12 +296,17 @@ log[i].CCDSUM   = sxpar(hd, 'CCDSUM  ')
 log[i].ROIREQ   = sxpar(hd, 'ROIREQ  ')
 utst            = sxpar(hd, 'UTSHUT  ')
 log[i].UTSHUT = utst
-log[i].UTSHUTJD = julday(strmid(utst, 5,2), $ ;month
-						 strmid(utst, 8,2), $ ;day
-						 strmid(utst, 0,4), $ ;year
-						 strmid(utst, 11,2), $ ;hour
-						 strmid(utst, 14,2), $ ;minute
-						 strmid(utst, 17,6))   ;second
+if strt(utst) eq '' then begin
+   print, 'WARNING! UTSHUT was blank!'
+   stop
+endif else begin
+   log[i].UTSHUTJD = julday(strmid(utst, 5,2), $ ;month
+							strmid(utst, 8,2), $ ;day
+							strmid(utst, 0,4), $ ;year
+							strmid(utst, 11,2), $ ;hour
+							strmid(utst, 14,2), $ ;minute
+							strmid(utst, 17,6))   ;second
+endelse
 log[i].DATEHD     = sxpar(hd, 'DATE    ')
 log[i].NAMPSYX  = sxpar(hd, 'NAMPSYX ')
 log[i].AMPLIST  = sxpar(hd, 'AMPLIST ')
