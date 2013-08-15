@@ -132,7 +132,7 @@ for i=0, nords-1 do begin
 	 ps_open, fname, /encaps, /color
   endif;debug plots
   
-  if redpar.debug gt 1 then begin
+  if redpar.debug ge 1 then begin
 	plot, spec_o[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Extracted', /xsty, /ysty, ytitle='Flux'
 	plot, flat[*,i], title=redpar.date+' '+redpar.modes[redpar.mode]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
 	plot, spec[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Spec/Flat', /xsty, /ysty, $
