@@ -1909,7 +1909,8 @@ for i=0, nscs-1 do begin
 	if (((maxcts lt 5.5d4) and (maxcts gt 1049d)) $
 	 or (strt(log[scs[i]].object) eq 'ThAr') $
 	 or (strt(log[scs[i]].object) eq 'bias') $
-	 or (strt(log[scs[i]].object) eq 'dark')) then begin
+	 or (strt(log[scs[i]].object) eq 'dark') $
+	 or (strt(log[scs[i]].object) eq 'junk')) then begin
 	printf, 2, '<td bgcolor =#5CEC21 align=center>'
 	endif else printf, 2, '<td bgcolor =#EC020B align=center>'
 	printf, 2, strt(maxcts, f='(E15.2)')
@@ -1920,7 +1921,8 @@ for i=0, nscs-1 do begin
 	if ((mxcts11 lt mxmaxthresh) and (mxcts11 gt mxminthresh) $
 	 or (strt(log[scs[i]].object) eq 'ThAr') $
 	 or (strt(log[scs[i]].object) eq 'bias') $
-	 or (strt(log[scs[i]].object) eq 'dark')) then begin
+	 or (strt(log[scs[i]].object) eq 'dark') $
+	 or (strt(log[scs[i]].object) eq 'junk')) then begin
 	printf, 2, greencol
 	endif else printf, 2, redcol
 	printf, 2, strt(mxcts11, f='(E15.2)')
@@ -1929,7 +1931,8 @@ for i=0, nscs-1 do begin
 	if ((mxcts12 lt mxmaxthresh) and (mxcts12 gt mxminthresh) $
 	 or (strt(log[scs[i]].object) eq 'ThAr') $
 	 or (strt(log[scs[i]].object) eq 'bias') $
-	 or (strt(log[scs[i]].object) eq 'dark')) then begin
+	 or (strt(log[scs[i]].object) eq 'dark') $
+	 or (strt(log[scs[i]].object) eq 'junk')) then begin
 	printf, 2, greencol
 	endif else printf, 2, redcol
 	printf, 2, strt(mxcts12, f='(E15.2)')
@@ -1938,7 +1941,8 @@ for i=0, nscs-1 do begin
 	if ((mxcts21 lt mxmaxthresh) and (mxcts21 gt mxminthresh) $
 	 or (strt(log[scs[i]].object) eq 'ThAr') $
 	 or (strt(log[scs[i]].object) eq 'bias') $
-	 or (strt(log[scs[i]].object) eq 'dark')) then begin
+	 or (strt(log[scs[i]].object) eq 'dark') $
+	 or (strt(log[scs[i]].object) eq 'junk')) then begin
 	printf, 2, greencol
 	endif else printf, 2, redcol
 	printf, 2, strt(mxcts21, f='(E15.2)')
@@ -1947,7 +1951,8 @@ for i=0, nscs-1 do begin
 	if ((mxcts22 lt mxmaxthresh) and (mxcts22 gt mxminthresh) $
 	 or (strt(log[scs[i]].object) eq 'ThAr') $
 	 or (strt(log[scs[i]].object) eq 'bias') $
-	 or (strt(log[scs[i]].object) eq 'dark')) then begin
+	 or (strt(log[scs[i]].object) eq 'dark') $
+	 or (strt(log[scs[i]].object) eq 'junk')) then begin
 	printf, 2, greencol
 	endif else printf, 2, redcol
 	printf, 2, strt(mxcts22, f='(E15.2)')
@@ -2079,17 +2084,17 @@ if file_test(qdir+pdir+'/tps/'+year+'/'+date+'chipressweek.png') then begin
   printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'dettempweek.png" width=80% />'
   printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'chipressweek.png" width=80% />'
 endif
-printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620totlt.png" width=80% />'
-printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620tpslt.png" width=80% />'
-printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128621totlt.png" width=80% />'
-printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128621tpslt.png" width=80% />'
-printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/thar/'+year+'/'+date+'ThArtotlt.png" width=80% />'
-printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/thar/'+year+'/'+date+'ThArtpslt.png" width=80% />'
+;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620totlt.png" width=80% />'
+;printf, 2, '<br>'
+;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620tpslt.png" width=80% />'
+;printf, 2, '<br>'
+;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128621totlt.png" width=80% />'
+;printf, 2, '<br>'
+;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128621tpslt.png" width=80% />'
+;printf, 2, '<br>'
+;printf, 2, '<img src="'+pdir+'/thar/'+year+'/'+date+'ThArtotlt.png" width=80% />'
+;printf, 2, '<br>'
+;printf, 2, '<img src="'+pdir+'/thar/'+year+'/'+date+'ThArtpslt.png" width=80% />'
 printf, 2, '<br>'
 printf, 2, '<br>'
 printf, 2, '<a href="http://exoplanets.astro.yale.edu/~jspronck/chiron/CHIRTEMP.html" target="new">'
