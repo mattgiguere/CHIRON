@@ -45,48 +45,48 @@ endif
 ;The +/- 10000 is to force argument of LONG to be positive before truncation.
 
   if awid le 1 then begin			;awid is an order fraction
-    if onum lt awid or onum gt maxo-awid then begin ;onum must be covered by orc
-      message,'Requested order not covered by order location coefficients.'
-    endif 
+	 if onum lt awid or onum gt maxo-awid then begin ;onum must be covered by orc
+	   message,'Requested order not covered by order location coefficients.'
+	 endif 
 
-    ob=onum-awid/2.0				;order # of bottom edge of arc
-;    ob=onum-awid				;order # of bottom edge of arc
-    obi=long(ob+10000)-10000			;next lowest integral order #A
-    cb=orc(*,obi)+(ob-obi)*(orc(*,obi+1)-orc(*,obi))
-    yb=poly(ix,cb)				;row # of bottom edge of swath
-    ybi=long(yb+10000)-10000			;lowest pixel number in swath
-    ybfrac=yb-ybi				;fraction of ybi to exclude
-    if min(yb) lt 0 then begin			;check if arc is off bottom
-      trace,0,'GETARC: Warning - requested arc is above top of image.'
-      return
-    endif
+	 ob=onum-awid/2.0				;order # of bottom edge of arc
+	 ;ob=onum-awid				;order # of bottom edge of arc
+	 obi=long(ob+10000)-10000			;next lowest integral order #A
+	 cb=orc(*,obi)+(ob-obi)*(orc(*,obi+1)-orc(*,obi))
+	 yb=poly(ix,cb)				;row # of bottom edge of swath
+	 ybi=long(yb+10000)-10000			;lowest pixel number in swath
+	 ybfrac=yb-ybi				;fraction of ybi to exclude
+	 if min(yb) lt 0 then begin			;check if arc is off bottom
+	   trace,0,'GETARC: Warning - requested arc is above top of image.'
+	   return
+	 endif
 
-    ot=onum+awid/2.0				;order # of top edge of arc
-;    ot=onum+awid				;order # of top edge of arc
-    oti=long(ot+10000)-10000			;next lowest integral order #
-    ct=orc(*,oti)+(ot-oti)*(orc(*,oti+1)-orc(*,oti))
-    yt=poly(ix,ct)				;row # of top edge of swath
-    yti=long(yt+10001)-10000			;highest pixel number in swath
-    ytfrac=yti-yt				;fraction of yti to exclude
-    if max(yt) gt nrow-1 then begin		;check if arc is off top of im
-      trace,0,'GETARC: Warning - requested arc is below bottom of image.'
-      return
-    endif
+	 ot=onum+awid/2.0				;order # of top edge of arc
+	 ;ot=onum+awid				;order # of top edge of arc
+	 oti=long(ot+10000)-10000			;next lowest integral order #
+	 ct=orc(*,oti)+(ot-oti)*(orc(*,oti+1)-orc(*,oti))
+	 yt=poly(ix,ct)				;row # of top edge of swath
+	 yti=long(yt+10001)-10000			;highest pixel number in swath
+	 ytfrac=yti-yt				;fraction of yti to exclude
+	 if max(yt) gt nrow-1 then begin		;check if arc is off top of im
+	   trace,0,'GETARC: Warning - requested arc is below bottom of image.'
+	   return
+	 endif
   endif else begin				;awid is number of pixels
-    if onum lt 0 or onum gt maxo then begin	;onum must be covered by orc
-      message,'Requested order not covered by order location coefficients.'
-    endif 
-    ob=onum					;order # of middle of arc
-    obi=long(ob+10000)-10000			;next lowest integral order #
-    cb=orc(*,obi)+(ob-obi)*(orc(*,obi+1)-orc(*,obi))
-    yb=poly(ix,cb)-awid/2.0			;row # of bottom edge of swath
-    ybi=long(yb+10000)-10000			;lowest pixel number in swath
-    ybfrac=yb-ybi				;fraction of ybi to exclude
-    if min(yb) lt 0 then begin			;check if arc is off bottom
-      trace,0,'GETARC: Warning - requested arc is above top of image.'
-      stop
-      return
-    endif
+	 if onum lt 0 or onum gt maxo then begin	;onum must be covered by orc
+	   message,'Requested order not covered by order location coefficients.'
+	 endif 
+	 ob=onum					;order # of middle of arc
+	 obi=long(ob+10000)-10000			;next lowest integral order #
+	 cb=orc(*,obi)+(ob-obi)*(orc(*,obi+1)-orc(*,obi))
+	 yb=poly(ix,cb)-awid/2.0			;row # of bottom edge of swath
+	 ybi=long(yb+10000)-10000			;lowest pixel number in swath
+	 ybfrac=yb-ybi				;fraction of ybi to exclude
+	 if min(yb) lt 0 then begin			;check if arc is off bottom
+	   trace,0,'GETARC: Warning - requested arc is above top of image.'
+	   stop
+	   return
+	 endif
   endelse
 
     ot=onum					;order # of middle of arc
