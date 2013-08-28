@@ -62,41 +62,20 @@ if ncol ne ncolf  then begin
   stop
 endif
 
-;ORDER LOCATIONS finding: Use saved locations
-;	rdsk,orc,prefix + '.ord'			;restore  order locs
-
-    if ~keyword_set(xwid) then begin
-       print, 'CTIO_SPEC: extraction width is undefined! Try to find optimum width from the spectrum'
-		 xwid = getxwd(im, orc)
-       print, 'New extraction width: ',xwid
-       print, 'Type ".c" to continue...'
-       stop
-    endif
-
 ;OLD SCHOOL WAY OF FLAT FIELDING:
   if keyword_set(flat) and redpar.flatnorm eq 2 then spec = im/flat 
 
-; Scattered light subtraction	
-	IF not keyword_set(nosky) then begin                
-		getsky,im,orc,sky = sky              	;determine and subtract sky
-	ENDIF ELSE BEGIN
-		sky=im*0.
-        ENDELSE
-
-; Find vertical offset of orders (optional, not used)
-;   ordshift, im, orc, 20, xwid
-
 ;EXTRACT SPECTRUM
-    if not keyword_set(thar) then begin
-		getspec, im, orc, xwid, spec, sky=sky, $
-				 cosmics=cosmics, optspec=optspec, $
-				 diff=replace, gain=redpar.gain, ron=redpar.ron, $
-				 redpar = redpar
-    endif else begin
-      ; ThAR - no cosmic removal
-    	getspec,im,orc,xwid,spec, gain=redpar.gain, ron=redpar.ron, $
-    	redpar = redpar
-    endelse
+if not keyword_set(thar) then begin
+	getspec, im, orc, xwid, spec, sky=sky, $
+			 cosmics=cosmics, optspec=optspec, $
+			 diff=replace, gain=redpar.gain, ron=redpar.ron, $
+			 redpar = redpar
+endif else begin
+  ; ThAR - no cosmic removal
+	getspec,im,orc,xwid,spec, gain=redpar.gain, ron=redpar.ron, $
+	redpar = redpar
+endelse
 
 ;save the original spec
 spec_o = spec
@@ -110,7 +89,6 @@ endif
 if redpar.debug ge 2 then stop
 ; flat-field correction
   if keyword_set(flat) and redpar.flatnorm le 1 then spec = double(spec)/flat else print, 'CTIO_SPEC: WARNING: no flat-field correction!'
-
 i=0
 specsz = size(spec)
 nords = specsz[2]
