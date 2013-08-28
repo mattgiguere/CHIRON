@@ -138,6 +138,7 @@ if bobsct gt 2 then begin
 	chipst1.image_trim.botright[2]:$
 	chipst1.image_trim.botright[3]])*gbr]*sqrt(bobsct)
 	print, 'readnoise is: ', log[allbobs[0]].readnoise
+	stop
 
 	if keyword_set(postplot) then begin
 	   thick, 2
