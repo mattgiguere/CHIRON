@@ -98,18 +98,18 @@ if namps eq 2 then begin
 endif ;2 amps
       
 if namps eq 4 then begin
-if redpar.biasmode eq 0 then begin
-	;If the median bias frame option is set in ctio.par use this method:
-	rdspd = geom.readout_speed
-	if strt(sxpar(header, 'CCDSUM')) eq '3 1' then binsz = '31'
-	if strt(sxpar(header, 'CCDSUM')) eq '1 1' then binsz = '11'
-	if strt(sxpar(header, 'CCDSUM')) eq '4 4' then binsz = '44'
-	fname = redpar.rootdir+redpar.biasdir+redpar.date+'_bin'+binsz+'_'+strt(rdspd)+'_medbias.dat'
-	restore, fname
-	im = im - bobsmed
-	print, 'GETIMAGE: SUBTRACTED MEDIAN BIAS FRAME:'
-	print, fname
-endif
+	   if redpar.biasmode eq 0 then begin
+		   ;If the median bias frame option is set in ctio.par use this method:
+		   rdspd = geom.readout_speed
+		   if strt(sxpar(header, 'CCDSUM')) eq '3 1' then binsz = '31'
+		   if strt(sxpar(header, 'CCDSUM')) eq '1 1' then binsz = '11'
+		   if strt(sxpar(header, 'CCDSUM')) eq '4 4' then binsz = '44'
+		   fname = redpar.rootdir+redpar.biasdir+redpar.date+'_bin'+binsz+'_'+strt(rdspd)+'_medbias.dat'
+		   restore, fname
+		   im = im - bobsmed
+		   print, 'GETIMAGE: SUBTRACTED MEDIAN BIAS FRAME:'
+		   print, fname
+	   endif
 
        imupleft = im[geom.image_trim.upleft[0]:geom.image_trim.upleft[1],geom.image_trim.upleft[2]:geom.image_trim.upleft[3]]
        biasupleft = im[geom.bias_trim.upleft[0]:geom.bias_trim.upleft[1],geom.bias_trim.upleft[2]:geom.bias_trim.upleft[3]]
@@ -184,8 +184,7 @@ endif
   imupright=imupright*gainupright
   imbotleft=imbotleft*gainbotleft
   imbotright=imbotright*gainbotright
-
-print, file
+print, redpar.gains[*,mode]
 ;stop
   im=[[imbotleft, imbotright],[imupleft, imupright]]  ; join the four parts
 
