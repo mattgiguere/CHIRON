@@ -80,8 +80,8 @@ endrep until ( ((strmid(uniqprefs[ii],0,2) eq 'qa') or $
 print, 'pref is: ', pref
 ;stop, 'pref is: ', pref
 
-modearr = [ 'narrow', $
-'slicer', $
+modearr = [ 'slicer', $
+'narrow', $
 'slit', $
 'fiber']
 
