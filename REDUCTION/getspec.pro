@@ -111,6 +111,9 @@ ytarr = dblarr(imsz[1], orcsz[2])
 for onum=1,nord do begin				;loop thru orders
   ;extract counts/pixel
   if keyword_set(redpar) then begin
+  	;add variable order width:
+     if redpar.slcrxtrawid[0] gt 0 and onum gt redpar.slcrxtrawid[1] and redpar.mode eq 1 then $
+     	xwd = redpar.xwids[redpar.mode] + redpar.slcrxtrawid[0] else xwd = redpar.xwids[redpar.mode]
 	 getarc, im, orcend, onum, xwd, arc, pix, debug = redpar.debug, ybi, yti
 	 for i=0, imsz[1]-1 do maskim[i,ybi[i]:yti[i]] += (255d - 255d / nord * onum)
   endif else getarc, im, orcend, onum, xwd, arc, pix, ybi, yti
