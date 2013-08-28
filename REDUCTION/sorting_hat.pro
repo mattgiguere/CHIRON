@@ -6,10 +6,10 @@
 ;
 ; Modes for the sorting hat: 
 ; 	narrow: narrow slit (3x1) fast r/o (templates and I2 
-;				alpha Cen mode) R=120,000
-;	slicer: slicer (3x1) fast r/o R=90,000
-;	slit:  slit (3x1) fast r/o  R=90,000
-;	fiber: fiber (4x4) slow r/o R=28,000
+;				alpha Cen mode) R=137,000
+;	slicer: slicer (3x1) fast r/o R=80,000
+;	slit:  slit (3x1) fast r/o  R=96,000
+;	fiber: fiber (4x4) slow r/o R=27,000
 ;
 ; KEYWORDS:
 ;
@@ -381,7 +381,6 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
 				rdsk,hd,iodspec_path+pretag+run+obnm[x1[i]],2   
 				sz=size(sp)  &   ncol=sz[1]    &    nord=sz[2]
 				spec=fltarr(2,ncol,nord)
-;				restore, '~/Desktop/dubya'
             if ~keyword_set(thar_soln) then begin ; find closest ThAr
                       ut0 = ut[x1[i]]
                       timediff = abs(ut0 - wavut)
@@ -417,6 +416,16 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
 				endfor
 				hd = [hd, string('THARFNAM', format='(A-8)')+'= '+"'"+string(thidfile_name+"'", format='(A-'+strt(remlen)+')')]
 				hd = [hd,endhd]
+				
+				;now change the NAXIS and NAXISn values to reflect the reduced data:
+				specsz = size(spec)
+				fxaddpar, hd, 'NAXIS', specsz[0], 'Number of data axes'
+				fxaddpar, hd, 'NAXIS1', specsz[1], 'Axis 1 length: 0=wavelength, 1=spectrum'
+				fxaddpar, hd, 'NAXIS2', specsz[2], 'Axis 2 length: extracted pixels along each echelle order'
+				fxaddpar, hd, 'NAXIS3', specsz[3], 'Axis 3 length: number of echelle orders extracted'
+				fxaddpar, hd, 'RESOLUTN', thid.resol, 'Resolution determined from the ThAr.'
+				fxaddpar, hd, 'THIDNLIN', thid.nlin, 'Number of ThAr lines used for wav soln.'
+				
 				print, 'now writing: ', outfile, ' ', strt(i/(n_found - 1d)*1d2),'% complete.'
 				writefits,fits_path+outfile, spec,hd
 				
