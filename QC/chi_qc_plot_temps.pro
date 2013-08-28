@@ -76,7 +76,8 @@ if keyword_set(insttemp) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
-	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/'+date+'insttempday'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempdayeps/'+date+'insttempday'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempdaypng/'+date+'insttempday'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
 	   thick, 2
 	   ps_open, tpfn, /encaps, /color
@@ -107,7 +108,7 @@ if keyword_set(insttemp) then begin
 
 	if keyword_set(postplot) then begin
 	   ps_close
-	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfn+'.png'
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
 	endif
   endif;nxit>0
 
@@ -133,7 +134,8 @@ if keyword_set(insttemp) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
-	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/'+date+'insttempweek'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempweekeps/'+date+'insttempweek'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempweekpng/'+date+'insttempweek'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
 	   thick, 2
 	   ps_open, tpfn, /encaps, /color
@@ -163,7 +165,7 @@ if keyword_set(insttemp) then begin
 
 	if keyword_set(postplot) then begin
 	   ps_close
-	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfn+'.png'
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
 	endif
   endif;nxit7>0
 endif;KW(insttemp)
@@ -195,7 +197,8 @@ if keyword_set(dettemps) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
-	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/'+date+'dettempday'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempdayeps/'+date+'dettempday'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempdaypng/'+date+'dettempday'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
 	   thick, 2
 	   ps_open, tpfn, /encaps, /color
@@ -222,7 +225,7 @@ if keyword_set(dettemps) then begin
 	
 	if keyword_set(postplot) then begin
 	   ps_close
-	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfn+'.png'
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
 	endif
   endif;nxdt>0
 
@@ -248,7 +251,8 @@ if keyword_set(dettemps) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
-	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/'+date+'dettempweek'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempweekeps/'+date+'dettempweek'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempweekpng/'+date+'dettempweek'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
 	   thick, 2
 	   ps_open, tpfn, /encaps, /color
@@ -275,7 +279,7 @@ if keyword_set(dettemps) then begin
 	
 	if keyword_set(postplot) then begin
 	   ps_close
-	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfn+'.png'
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
 	endif
   endif;nxdt>0
 
@@ -306,7 +310,8 @@ if keyword_set(chipress) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
-	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/'+date+'chipressday'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressdayeps/'+date+'chipressday'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressdaypng/'+date+'chipressday'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
 	   thick, 2
 	   ps_open, tpfn, /encaps, /color
@@ -328,7 +333,7 @@ if keyword_set(chipress) then begin
 
 	if keyword_set(postplot) then begin
 	   ps_close
-	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfn+'.png'
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
 	endif
   endif;nxcp>0
   
@@ -352,7 +357,8 @@ if keyword_set(chipress) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
-	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/'+date+'chipressweek'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressweekeps/'+date+'chipressweek'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressweekpng/'+date+'chipressweek'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
 	   thick, 2
 	   ps_open, tpfn, /encaps, /color
@@ -374,7 +380,7 @@ if keyword_set(chipress) then begin
 
 	if keyword_set(postplot) then begin
 	   ps_close
-	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfn+'.png'
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
 	endif
   endif;nxcp7>0
 endif;KW(chipress)

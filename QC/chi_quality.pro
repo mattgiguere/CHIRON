@@ -2072,17 +2072,17 @@ if file_test(qdir+pdir+'/guider/'+year+'/'+date+'guiderRA.png') then begin
   printf, 2, '<img src="'+pdir+'/guider/'+year+'/'+date+'lagRA.png" width=80% />'
   printf, 2, '<img src="'+pdir+'/guider/'+year+'/'+date+'lagdec.png" width=80% />'
 endif
-if file_test(qdir+pdir+'/tps/'+year+'/'+date+'chipressday.png') then begin
-  printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'chipressday.png" width=80% />'
-  printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'dettempday.png" width=80% />'
-  printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'insttempday.png" width=80% />'
+if file_test(qdir+pdir+'/tps/'+year+'/chipressdaypng/'+date+'chipressday.png') then begin
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/chipressdaypng/'+date+'chipressday.png" width=80% />'
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/dettempdaypng/'+date+'dettempday.png" width=80% />'
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/insttempdaypng/'+date+'insttempday.png" width=80% />'
 endif
 printf, 2, '<br>'
 printf, 2, '<h3>Long-Term Plots </h3>'
-if file_test(qdir+pdir+'/tps/'+year+'/'+date+'chipressweek.png') then begin
-  printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'insttempweek.png" width=80% />'
-  printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'dettempweek.png" width=80% />'
-  printf, 2, '<img src="'+pdir+'/tps/'+year+'/'+date+'chipressweek.png" width=80% />'
+if file_test(qdir+pdir+'/tps/'+year+'/chipressweekpng/'+date+'chipressweek.png') then begin
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/insttempweekpng/'+date+'insttempweek.png" width=80% />'
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/dettempweekpng/'+date+'dettempweek.png" width=80% />'
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/chipressweekpng/'+date+'chipressweek.png" width=80% />'
 endif
 ;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620totlt.png" width=80% />'
 ;printf, 2, '<br>'
