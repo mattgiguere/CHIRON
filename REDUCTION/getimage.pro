@@ -106,6 +106,29 @@ if namps eq 4 then begin
 		   if strt(sxpar(header, 'CCDSUM')) eq '4 4' then binsz = '44'
 		   fname = redpar.rootdir+redpar.biasdir+redpar.date+'_bin'+binsz+'_'+strt(rdspd)+'_medbias.dat'
 		   restore, fname
+		   ;First subtract the median from the overscan region. This part floats around over the course of the night, 
+		   ;but the substructure doesn't change:
+		   ;1. subtract median value from upper left quadrant (both image and overscan region):
+		   im[geom.image_trim.upleft[0]:geom.image_trim.upleft[1], geom.image_trim.upleft[2]:geom.image_trim.upleft[3]] -= $
+			 median(im[geom.bias_trim.upleft[0]:geom.bias_trim.upleft[1], geom.bias_trim.upleft[2]:geom.bias_trim.upleft[3]])
+		   im[geom.bias_trim.upleft[0]:geom.bias_trim.upleft[1], geom.bias_trim.upleft[2]:geom.bias_trim.upleft[3]] -=
+			 median(im[geom.bias_trim.upleft[0]:geom.bias_trim.upleft[1], geom.bias_trim.upleft[2]:geom.bias_trim.upleft[3]])
+		   ;2. now do the same for the upper right quadrant:
+		   im[geom.image_trim.upright[0]:geom.image_trim.upright[1], geom.image_trim.upright[2]:geom.image_trim.upright[3]] -= $
+			 median(im[geom.bias_trim.upright[0]:geom.bias_trim.upright[1], geom.bias_trim.upright[2]:geom.bias_trim.upright[3]])
+		   im[geom.bias_trim.upright[0]:geom.bias_trim.upright[1], geom.bias_trim.upright[2]:geom.bias_trim.upright[3]] -=
+			 median(im[geom.bias_trim.upright[0]:geom.bias_trim.upright[1], geom.bias_trim.upright[2]:geom.bias_trim.upright[3]])
+		   ;3. and the bottom left quadrant:
+		   im[geom.image_trim.botleft[0]:geom.image_trim.botleft[1], geom.image_trim.botleft[2]:geom.image_trim.botleft[3]] -= $
+			 median(im[geom.bias_trim.botleft[0]:geom.bias_trim.botleft[1], geom.bias_trim.botleft[2]:geom.bias_trim.botleft[3]])
+		   im[geom.bias_trim.botleft[0]:geom.bias_trim.botleft[1], geom.bias_trim.botleft[2]:geom.bias_trim.botleft[3]] -=
+			 median(im[geom.bias_trim.botleft[0]:geom.bias_trim.botleft[1], geom.bias_trim.botleft[2]:geom.bias_trim.botleft[3]])
+		   ;4. now the bottom right:
+		   im[geom.image_trim.botright[0]:geom.image_trim.botright[1], geom.image_trim.botright[2]:geom.image_trim.botright[3]] -= $
+			 median(im[geom.bias_trim.botright[0]:geom.bias_trim.botright[1], geom.bias_trim.botright[2]:geom.bias_trim.botright[3]])
+		   im[geom.bias_trim.botright[0]:geom.bias_trim.botright[1], geom.bias_trim.botright[2]:geom.bias_trim.botright[3]] -=
+			 median(im[geom.bias_trim.botright[0]:geom.bias_trim.botright[1], geom.bias_trim.botright[2]:geom.bias_trim.botright[3]])
+		   ;now subtract the median bias frame:
 		   im = im - bobsmed
 		   print, 'GETIMAGE: SUBTRACTED MEDIAN BIAS FRAME:'
 		   print, fname
@@ -128,7 +151,7 @@ if namps eq 4 then begin
        gainbotright = geom.gain.botright
 
       ron2 = [variance(biasupleft), variance(biasupright), variance(biasbotleft), variance(biasbotright)] ; estimate of readout noise
-      redpar.ron = sqrt(mean(ron2))  ; redaout noise in ADU
+      redpar.ron = sqrt(mean(ron2))  ; readout noise in ADU
 
 if redpar.biasmode eq 1 then begin
 ; If the median overscan option is set in ctio.par, then subtract the bias using this method:
