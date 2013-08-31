@@ -36,24 +36,6 @@ postplot = postplot, $
 log, $
 dir = dir
 
-if keyword_set(help) then begin
-	print, '*************************************************'
-	print, '*************************************************'
-	print, '        HELP INFORMATION FOR chi_plot_counts'
-	print, 'KEYWORDS: '
-	print, ''
-	print, 'HELP: Use this keyword to print all available arguments'
-	print, ''
-	print, ''
-	print, ''
-	print, '*************************************************'
-	print, '                     EXAMPLE                     '
-	print, "IDL>"
-	print, 'IDL> '
-	print, '*************************************************'
-	stop
-endif
-
 loadct, 39, /silent
 usersymbol, 'circle', /fill, size_of_sym = 0.5
 
