@@ -40,6 +40,7 @@ skipplots=skipplots
 
 loadct, 39, /silent
 usersymbol, 'circle', /fill, size_of_sym = 0.5
+!p.multi=[0,1,1]
 
 ;restore CHIRON temperature and pressure structures:
 restore, '/home/matt/data/CHIRPS/tps/insttemp.sav'
@@ -162,6 +163,7 @@ endelse
 
 if ~keyword_set(skipplots) then begin
 ;CREATE THE DAILY AND WEEKLY ENVIRONMENTAL PLOTS:
+!p.multi=[0,1,1]
 chi_qc_plot_temps, $
 insttemp = insttemp, dettemps = dettemps, chipress = chipress, $
 date = date, dir = qdir, /postplot
@@ -170,6 +172,7 @@ chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin31, dir = qdir
 chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin31, dir = qdir
 chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin11, dir = qdir
 chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin11, dir = qdir
+!p.multi=[0,1,1]
 chi_plot_counts, log, postplot=~keyword_set(skipplots), dir = qdir
 chi_thar_log, log, postplot=~keyword_set(skipplots), dir = qdir
 chi_plot_thar, postplot=~keyword_set(skipplots), dir = qdir, date = date
@@ -432,6 +435,138 @@ printf, 2, strt(tihours)+'h '+strt(timins)+'m'
 printf, 2, '</td>'
 printf, 2, '</tr>'
 printf, 2, '</table>'
+printf, 2, '</br>'
+
+;************************************************************************
+;THID LINES AND RESOLUTION TABLE
+;************************************************************************
+printf, 2, 'Wavelength Calibration Info:'
+printf, 2, '<table border ="+1">'
+printf, 2, '<tr>'
+printf, 2, '<th align=center>'
+printf, 2, 'Decker'
+printf, 2, '</th>'
+printf, 2, '<th>'
+printf, 2, '# Lines'
+printf, 2, '</th>'
+printf, 2, '<th>'
+printf, 2, 'Resolution'
+printf, 2, '</th>'
+printf, 2, '</tr>'
+printf, 2, ''
+
+tfslicer = where(strt(strupcase(log.object)) eq 'THAR' and strt(log.decker) eq 'slicer' and strt(log.ccdsum) eq '3 1', tfscct)
+tfnarrow = where(strt(strupcase(log.object)) eq 'THAR' and strt(log.decker) eq 'narrow_slit' and strt(log.ccdsum) eq '3 1', tfnrct)
+tfslit = where(strt(strupcase(log.object)) eq 'THAR' and strt(log.decker) eq 'slit' and strt(log.ccdsum) eq '3 1', tfstct)
+tffiber = where(strt(strupcase(log.object)) eq 'THAR' and strt(log.decker) eq 'fiber' and strt(log.ccdsum) eq '4 4', tffbct)
+if file_test('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+strt(log[tfslicer[0]].seqnum)+'.fits') then begin
+;***SLICER MODE***
+printf, 2, '<tr>'
+printf, 2, '<td>'
+printf, 2, 'Slicer '
+printf, 2, '</td>'
+scnlinarr = dblarr(tfscct)
+scresarr = dblarr(tfscct)
+for i=0, tfscct-1 do begin
+	scnlinarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'THIDNLIN'))
+	print, fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'THIDNLIN')
+
+	scresarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'RESOLUTN'))
+endfor
+;NUMBER OF LINES
+if mean(scnlinarr) gt 1000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(scnlinarr), f='(F8.2)')
+printf, 2, '</td>'
+;RESOLUTION
+if mean(scresarr) gt 78000d and mean(scresarr) lt 81000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(scresarr), f='(F8.2)')
+printf, 2, '</td>'
+printf, 2, '</tr>'
+printf, 2, ''
+
+;***NARROW MODE***
+printf, 2, '<tr>'
+printf, 2, '<td>'
+printf, 2, 'Narrow '
+printf, 2, '</td>'
+nrnlinarr = dblarr(tfnrct)
+nrresarr = dblarr(tfnrct)
+for i=0, tfnrct-1 do begin
+	nrnlinarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits'), 'THIDNLIN'))
+
+	nrresarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits'), 'RESOLUTN'))
+endfor
+;NUMBER OF LINES
+if mean(nrnlinarr) gt 1000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(nrnlinarr), f='(F8.2)')
+printf, 2, '</td>'
+;RESOLUTION
+if mean(nrresarr) gt 135000d and mean(nrresarr) lt 141000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(nrresarr), f='(F10.2)')
+printf, 2, '</td>'
+printf, 2, '</tr>'
+printf, 2, ''
+
+;***SLIT MODE***
+printf, 2, '<tr>'
+printf, 2, '<td>'
+printf, 2, 'Slit '
+printf, 2, '</td>'
+stnlinarr = dblarr(tfstct)
+stresarr = dblarr(tfstct)
+for i=0, tfstct-1 do begin
+	stnlinarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits'), 'THIDNLIN'))
+
+
+	stresarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits'), 'RESOLUTN'))
+endfor
+;NUMBER OF LINES
+if mean(stnlinarr) gt 1000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(stnlinarr), f='(F8.2)')
+printf, 2, '</td>'
+;RESOLUTION
+if mean(stresarr) gt 95000d and mean(stresarr) lt 100000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(stresarr), f='(F8.2)')
+printf, 2, '</td>'
+printf, 2, '</tr>'
+printf, 2, ''
+
+;***FIBER MODE***
+printf, 2, '<tr>'
+printf, 2, '<td>'
+printf, 2, 'Fiber '
+printf, 2, '</td>'
+fbnlinarr = dblarr(tffbct)
+fbresarr = dblarr(tffbct)
+for i=0, tffbct-1 do begin
+	fbnlinarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits'), 'THIDNLIN'))
+
+	fbresarr[i] = double($
+	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits'), 'RESOLUTN'))
+endfor
+;NUMBER OF LINES
+if mean(fbnlinarr) gt 600d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(fbnlinarr), f='(F8.2)')
+printf, 2, '</td>'
+;RESOLUTION
+if mean(fbresarr) gt 26000d and mean(fbresarr) lt 30000d then printf, 2, greencol else printf, 2, redcol
+printf, 2, strt(mean(fbresarr), f='(F8.2)')
+printf, 2, '</td>'
+printf, 2, '</tr>'
+printf, 2, ''
+printf, 2, ''
+
+printf, 2, '</table>'
+printf, 2, '</br>'
+
+endif;reduced files exist
 
 ;************************************************************************
 ;BIAS TABLE
