@@ -92,10 +92,11 @@ if bobsct gt 2 then begin
 	hd = headfits(log[bobs[0]].filename)
 	chipst1 = chip_geometry(hd=hd)
 
-	if file_test('/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat') then begin
-		restore, '/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat'
-	endif else begin
+	;if file_test('/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat') then begin
+	;	restore, '/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat'
+	;endif else begin
 		redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/ctio.par')
+		redpar.date = date
 		print, '3x1 normal...'
 		chi_medianbias, redpar = redpar, log = log, /bin31, /normal, bobsmed = bobsmed31n
 		if keyword_set(bin31) and keyword_set(normal) then bobsmed = bobsmed31n
@@ -108,7 +109,7 @@ if bobsct gt 2 then begin
 		print, '1x1 fast...'
 		chi_medianbias, redpar = redpar, log = log, /bin11, /fast, bobsmed = bobsmed11f
 		if keyword_set(bin11) and keyword_set(fast) then bobsmed = bobsmed11f
-	endelse
+	;endelse
 	log[allbobs].medbias = $
 	[median(bobsmed[chipst1.image_trim.upleft]), $
 	median(bobsmed[chipst1.image_trim.upright]), $
@@ -138,7 +139,6 @@ if bobsct gt 2 then begin
 	chipst1.image_trim.botright[2]:$
 	chipst1.image_trim.botright[3]])*gbr]*sqrt(bobsct)
 	print, 'readnoise is: ', log[allbobs[0]].readnoise
-	stop
 
 	if keyword_set(postplot) then begin
 	   thick, 2
