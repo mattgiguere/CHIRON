@@ -16,6 +16,7 @@ function chip_geometry, fileName, hdr=hdr, redpar=redpar
 	; 20110330 - Modified to output the readout_speed to correct for
 	;		non-linearity ~MJG
 	; 20120218 - Added torrent
+	; 20130828 - added ccd_full ~MJG
 	;
 	
 	; If only a fileName was passed, open it and grab the header.
@@ -64,6 +65,7 @@ function chip_geometry, fileName, hdr=hdr, redpar=redpar
 		bias_full: {upleft: [0,0,0,0], upright: [0,0,0,0], botleft: [0,0,0,0], botright: [0,0,0,0]},		$
 		image_trim: {upleft: [0,0,0,0], upright: [0,0,0,0], botleft: [0,0,0,0], botright: [0,0,0,0]},	$
 		image_full: {upleft: [0,0,0,0], upright: [0,0,0,0], botleft: [0,0,0,0], botright: [0,0,0,0]},	$
+		ccd_full: {upleft: [0,0,0,0], upright: [0,0,0,0], botleft: [0,0,0,0], botright: [0,0,0,0]},	$
 		gain:	{upleft: 0.0, upright: 0.0, botleft: 0.0, botright: 0.0},					$
 		read_noise: {upleft: 0.0, upright: 0.0, botleft: 0.0, botright: 0.0}, 				$
 		bin: { row: 1,	col: 1 },								$
@@ -149,6 +151,7 @@ function chip_geometry, fileName, hdr=hdr, redpar=redpar
 		keys = { $
 			amplist: 'AMPLIST',		$
 			bias: 'BSEC',			$
+			ccd_full: 'SCSEC',      $
 			image_full: 'DSEC',		$
 			image_trim:	'TSEC',		$
 			gain: 'GAIN',			$
@@ -198,6 +201,14 @@ function chip_geometry, fileName, hdr=hdr, redpar=redpar
 	results.bias_trim.botright = biasTrim(results.bias_full.botright)
 	endif
 	
+	; full ccd area
+	if namps eq 4 then begin
+	results.ccd_full.upleft = long(strsplit(sxpar(hdr,keys.ccd_full+amps.upleft),'[],:',/EXTRACT)) -1.
+	results.ccd_full.upright = long(strsplit(sxpar(hdr,keys.ccd_full+amps.upright),'[],:',/EXTRACT)) -1.
+	results.ccd_full.botleft = long(strsplit(sxpar(hdr,keys.ccd_full+amps.botleft),'[],:',/EXTRACT)) -1.
+	results.ccd_full.botright = long(strsplit(sxpar(hdr,keys.ccd_full+amps.botright),'[],:',/EXTRACT)) -1.
+	endif
+
 	; full image area
 	results.image_full.upleft = long(strsplit(sxpar(hdr,keys.image_full+amps.upleft),'[],:',/EXTRACT)) -1.
 	results.image_full.upright = long(strsplit(sxpar(hdr,keys.image_full+amps.upright),'[],:',/EXTRACT)) -1.
