@@ -12,7 +12,7 @@ imdir:   'yymmdd/',            ; yymmdd/ image directory with raw night data (*)
 date:   'yymmdd',            ; yymmdd/ image directory with raw night data (*)
 seqnum:   'flat',            ; the image sequence number (*)
 versiond:   'date',            ; systime when this file was created (*)
-versionn:   '2.1',            ; version of the reduction code
+versionn:   '3.0',            ; version of the reduction code
 prefix_tag: 'a',               ; for output filenames 
 prefix:  'chiyymmdd.',         ; file prefix (*)
 flatdir:  'tous/mir7/flats/',            ; summed flat fields
@@ -52,7 +52,7 @@ slcrxtrawid: [2,26],  ;set the 0th element >0 to give an extra width to slicer o
 					 ;to the 1st slcrxtrawid[1] rows. This is a hack for lack of cross dispersion 
 dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels 
 binnings: ['3x1','3x1','3x1','4x4', '1x1'], ; binning in each mode, row x column
-debug: 1}                      ; 1 in debug mode, with plots and stops
+debug: 0}                      ; 1 in debug mode, with plots and stops
 
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES1
