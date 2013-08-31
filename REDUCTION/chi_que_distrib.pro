@@ -113,6 +113,15 @@ for ii=0, numiod-1 do begin
 	spawn, 'cp -vf /raw/mir7/'+date+'/'+prefix[0]+'.'+strt(obnm[iodnums[ii]])+'.fits '+caldir
     spawn, 'cp -vf /tous/mir7/fitspec/'+date+'/a'+prefix[0]+'.'+strt(obnm[iodnums[ii]])+'.fits '+caldir
 endfor
+
+print, '****************************************************'
+print, 'COPYING MASTER FLAT FILES...'
+print, '****************************************************'
+;now to copy the Calibration summed flat fields over to the same directory:
+spawn, 'cp -vf /tous/mir7/flats/chi'+date+'.fiberflat.fits '+caldir
+spawn, 'cp -vf /tous/mir7/flats/chi'+date+'.narrowflat.fits '+caldir
+spawn, 'cp -vf /tous/mir7/flats/chi'+date+'.slicerflat.fits '+caldir
+spawn, 'cp -vf /tous/mir7/flats/chi'+date+'.slitflat.fits '+caldir
 endif;KW:nocalib
 ;stop
 
