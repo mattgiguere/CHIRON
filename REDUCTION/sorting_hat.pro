@@ -270,61 +270,57 @@ ut = gettime(mdpt) ; floating-point hours, >24h in the morning
  if keyword_set(getthid) then begin
 		xsl=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx],n_modes)
 
-if n_modes gt 0 then begin
-		obnm1=obnm[xsl]  &   objnm1=objnm[xsl]  
+   if n_modes gt 0 then begin
+	   obnm1=obnm[xsl]  &   objnm1=objnm[xsl]  
+	   tharindx=where(objnm1 eq 'thar',num_thar)
+	   print, '******************************'
+	   print, 'THORIUM ARGON TO BE PROCESSED: '
+	   print, obnm1[tharindx]
+	   thar = obnm1[tharindx] ; string array
 
-		tharindx=where(objnm1 eq 'thar',num_thar)
-		print, '******************************'
-		print, 'THORIUM ARGON TO BE PROCESSED: '
-		print, obnm1[tharindx]
-                thar = obnm1[tharindx] ; string array
+	   if keyword_set(thar_soln) then thidfile =  thid_path2+thar_soln+'.thid' else begin 
+		  if strmid(run,0,2) eq 'qa' then begin 
+			 findthid, night, redpar, thidfile,run=run 
+		  endif else  findthid, night, redpar, thidfile
+		  if thidfile eq 'none' or thidfile eq '' then begin 
+			 print, 'No previous THID files found, returning. Type ".c"'
+			 stop
+		  endif 
+	   endelse ; thar_soln  
 
-           if keyword_set(thar_soln) then thidfile =  thid_path2+thar_soln+'.thid' else begin 
-    
-;             tharf=file_search(thid_path2+pretag+run+'*thid',count=tharcount) ; search this night
- ;            if tharcount gt 0 then thidfile = tharf[tharcount -1] else begin ; last found 
-;                 findthid, night, redpar, thidfile, run=run ; search back with run specified
-                 if strmid(run,0,2) eq 'qa' then begin 
-				  findthid, night, redpar, thidfile,run=run 
-                 endif else  findthid, night, redpar, thidfile
-                 if thidfile eq 'none' or thidfile eq '' then begin 
-                   print, 'No previous THID files found, returning. Type ".c"'
-                   stop
-                   endif 
- ;             endelse ; tharcount
-          endelse ; thar_soln  
+	   print, 'Initial THID file: '+thidfile
+	   restore, thidfile
+	   initwvc = thid.wvc 
 
-         print, 'Initial THID file: '+thidfile
-         restore, thidfile
-         initwvc = thid.wvc 
+	   print, 'Ready to go into AUTOTHID'   
+	   for i=0,num_thar-1 do begin 
+		  isfn = iodspec_path+pretag+run+thar[i]
+		  print, 'ThAr file to fit: ', isfn
+		  rdsk, t, isfn,1
+		  ;NEW, AUTOMATED WAY OF DOING THINGS:
+		  print, 'ThAr obs is: ', thar[i], ' ', strt((1d2*i)/(num_thar-1),f='(F8.2)'),'% complete.'
 
-         print, 'Ready to go into AUTOTHID'   
-         for i=0,num_thar-1 do begin 
-               isfn = iodspec_path+pretag+run+thar[i]
-               print, 'ThAr file to fit: ', isfn
-               rdsk, t, isfn,1
- ;NEW, AUTOMATED WAY OF DOING THINGS:
-               print, 'ThAr obs is: ', thar[i], ' ', strt((1d2*i)/(num_thar-1),f='(F8.2)'),'% complete.'
-               auto_thid, t, initwvc, 10., 10., .8, thid, awin=10, maxres=4, /orev, plot=redpar.debug
-;               thid, t, 64., 64.*[8797d,8898d], wvc, thid, init=initwvc, /orev 
-               ;stop, 'Filename to save is: ', thid_path2+pretag+run+thar[i]
-               fnm = thid_path2+pretag+run+thar[i]
-               fsuf = '.thid'
-               if file_test(fnm+fsuf) then spawn, $
-               'mv '+fnm+'.thid '+nextname(fnm,fsuf)
-               save, thid, file=fnm+fsuf
+		  auto_thid, t, initwvc, 6., 6., .8, thid, awin=10, maxres=4, /orev
+		  ;for non slicer modes:
+		  ;thid, t, 64., 64.*[8797d,8898d], wvc, thid, init=initwvc, /orev 
+		  ;for slicer mode:
+		  ;thid, t, 65., 65.*[8662.4d,8761.9d], wvc, thid, init=initwvc, /orev 
+		  fnm = thid_path2+pretag+run+thar[i]
+		  fsuf = '.thid'
+		  if file_test(fnm+fsuf) then spawn, $
+		  'mv '+fnm+'.thid '+nextname(fnm,fsuf)
+		  save, thid, file=fnm+fsuf
 
-               mkwave, w, thid.wvc
-               w = reverse(w,2) ; increase with increasing order numver
-               fnm = thid_path+'ctio_'+pretag+run+thar[i]
-               fsuf = '.dat'
-               if file_test(fnm+fsuf) then spawn, $
-               'mv '+fnm+'.dat '+nextname(fnm,fsuf)
-               save, w, file=fnm+fsuf
-         endfor
-         endif;n_modes > 0
+		  mkwave, w, thid.wvc
+		  w = reverse(w,2) ; increase with increasing order numver
+		  fnm = thid_path+'ctio_'+pretag+run+thar[i]
+		  fsuf = '.dat'
+		  if file_test(fnm+fsuf) then spawn, $
+		  'mv '+fnm+'.dat '+nextname(fnm,fsuf)
+		  save, w, file=fnm+fsuf
+	   endfor
+	endif;n_modes > 0
 endif ; getthid
-
 
 ;**************************************************************
 ;******* Write FITS files for reduced data ************
