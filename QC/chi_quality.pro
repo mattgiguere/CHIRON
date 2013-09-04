@@ -468,19 +468,20 @@ printf, 2, '</td>'
 scnlinarr = dblarr(tfscct)
 scresarr = dblarr(tfscct)
 for i=0, tfscct-1 do begin
-	scnlinarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'THIDNLIN'))
-	print, fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'THIDNLIN')
-
-	scresarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'RESOLUTN'))
+    if file_test('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits') then begin
+	   scnlinarr[i] = double($
+	   fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'THIDNLIN'))
+	   print, fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'THIDNLIN')
+	   scresarr[i] = double($
+	   fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslicer[i]].seqnum+'.fits'), 'RESOLUTN'))
+	endif;reduced file exists
 endfor
 ;NUMBER OF LINES
 if mean(scnlinarr) gt 1000d then printf, 2, greencol else printf, 2, redcol
 printf, 2, strt(mean(scnlinarr), f='(F8.2)')
 printf, 2, '</td>'
 ;RESOLUTION
-if mean(scresarr) gt 78000d and mean(scresarr) lt 81000d then printf, 2, greencol else printf, 2, redcol
+if mean(scresarr) gt 77000d and mean(scresarr) lt 81000d then printf, 2, greencol else printf, 2, redcol
 printf, 2, strt(mean(scresarr), f='(F8.2)')
 printf, 2, '</td>'
 printf, 2, '</tr>'
@@ -494,11 +495,12 @@ printf, 2, '</td>'
 nrnlinarr = dblarr(tfnrct)
 nrresarr = dblarr(tfnrct)
 for i=0, tfnrct-1 do begin
-	nrnlinarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits'), 'THIDNLIN'))
-
-	nrresarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits'), 'RESOLUTN'))
+	if file_test('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits') then begin
+	   nrnlinarr[i] = double($
+	   fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits'), 'THIDNLIN'))
+	   nrresarr[i] = double($
+	   fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfnarrow[i]].seqnum+'.fits'), 'RESOLUTN'))
+	endif;fitspec file exists
 endfor
 ;NUMBER OF LINES
 if mean(nrnlinarr) gt 1000d then printf, 2, greencol else printf, 2, redcol
@@ -519,19 +521,19 @@ printf, 2, '</td>'
 stnlinarr = dblarr(tfstct)
 stresarr = dblarr(tfstct)
 for i=0, tfstct-1 do begin
-	stnlinarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits'), 'THIDNLIN'))
-
-
-	stresarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits'), 'RESOLUTN'))
+	if file_test('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits') then begin
+	   stnlinarr[i] = double(fxpar(headfits('/tous/mir7/fitspec/'+$
+		   date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits'), 'THIDNLIN'))
+	   stresarr[i] = double(fxpar(headfits('/tous/mir7/fitspec/'+$
+		   date+'/achi'+date+'.'+log[tfslit[i]].seqnum+'.fits'), 'RESOLUTN'))
+	endif;fitspec file exists
 endfor
 ;NUMBER OF LINES
 if mean(stnlinarr) gt 1000d then printf, 2, greencol else printf, 2, redcol
 printf, 2, strt(mean(stnlinarr), f='(F8.2)')
 printf, 2, '</td>'
 ;RESOLUTION
-if mean(stresarr) gt 95000d and mean(stresarr) lt 100000d then printf, 2, greencol else printf, 2, redcol
+if mean(stresarr) gt 94000d and mean(stresarr) lt 100000d then printf, 2, greencol else printf, 2, redcol
 printf, 2, strt(mean(stresarr), f='(F8.2)')
 printf, 2, '</td>'
 printf, 2, '</tr>'
@@ -545,14 +547,15 @@ printf, 2, '</td>'
 fbnlinarr = dblarr(tffbct)
 fbresarr = dblarr(tffbct)
 for i=0, tffbct-1 do begin
-	fbnlinarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits'), 'THIDNLIN'))
-
-	fbresarr[i] = double($
-	fxpar(headfits('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits'), 'RESOLUTN'))
+	if file_test('/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits') then begin
+	fbnlinarr[i] = double(fxpar(headfits('/tous/mir7/fitspec/'+$
+		date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits'), 'THIDNLIN'))
+	fbresarr[i] = double(fxpar(headfits('/tous/mir7/fitspec/'+$
+		date+'/achi'+date+'.'+log[tffiber[i]].seqnum+'.fits'), 'RESOLUTN'))
+	endif;fitspec file exists
 endfor
 ;NUMBER OF LINES
-if mean(fbnlinarr) gt 600d then printf, 2, greencol else printf, 2, redcol
+if mean(fbnlinarr) gt 700d then printf, 2, greencol else printf, 2, redcol
 printf, 2, strt(mean(fbnlinarr), f='(F8.2)')
 printf, 2, '</td>'
 ;RESOLUTION
