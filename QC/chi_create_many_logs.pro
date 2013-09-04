@@ -30,6 +30,8 @@
 ;			only goes until 130715, then you'll need to add those dates to datearr. To
 ;			determine which dates to comment out, consult either the QC pages, or
 ;			chi_update_qc_index.
+;		REPIPE: Rerun the reduction pipeline for the dates of interest, but don't add
+;			anything new to the barycentric correction ASCII table (avoid duplicates).
 ;
 ;  OUTPUTS:
 ;
@@ -54,7 +56,8 @@ justtau = justtau, $
 justquality = justquality, $
 startdate = startdate, $
 enddate = enddate, $
-hdnum = hdnum
+hdnum = hdnum, $
+repipe = repipe
 
 datearr=[ $
 '120302', $ 
@@ -615,6 +618,7 @@ for i=0, n_elements(datearr)-1 do begin
 	if keyword_set(justtau) then chi_tauceti_log, log
     if keyword_set(hdnum) then chi_star_log, log, hdnum = hdnum
     if keyword_set(justquality) then chi_quality, date = datearr[i]
+    if keyword_set(repipe) then chi_reduce_all, date=datearr[i], /skipbary
 endfor
 
 
