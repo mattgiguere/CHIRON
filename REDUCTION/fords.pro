@@ -38,17 +38,18 @@ pro fords,im,swid,orc,ome,redpar, minreq=minreq
 ; 19-Feb-2012 MJG: Added section for fitting for peak coefficients when setting
 ;				up for the first time.
 
+loadct, 39, /silent
+!p.color = 0
+!p.background=255
 
-;debug = 0 ; verbose operation. Set to 2 to plot peaks in each swath
-debug = redpar.debug ; verbose operation. Set to 2 to plot peaks in each swath
+debug = redpar.debug ; verbose operation. See CTIO.PAR
 
 if n_params() lt 3 then begin
    print,'syntax: fords,im,swid,orc[,ome].'
    retall
 endif
 if n_elements(minreq) eq 0 then minreq = 0	;any number of orders will do
-;
-;ctio_trace=25
+
 print,'FORDS: Entering routine.'
 ;
 ;Define adjustable parameters. When choosing the degree of the polynomial
@@ -59,37 +60,35 @@ print,'FORDS: Entering routine.'
 ;  ACTUALLY DECREASE.
 print, 'REDPAR MODE IS: ', redpar.mode
 
-  if redpar.mode ge 0  then begin ; known mode
-     
-     xwid = redpar.xwids[redpar.mode]
-     poff = xwid/2 + 1  ; 1 pixel extra 
-     smbox = xwid/2
-     dpks = redpar.dpks[redpar.mode]
-  endif else begin
-    smbox = 9/redpar.binning[0]		;initial swath smoothing window size
-    poff = 9/redpar.binning[0]		;offset to edge of peak poly fit window
-    dpks = 0 
-  endelse
-  if debug ge 1 then print, 'FORDS: smoothing length, half-width, offset: ', smbox, poff, dpks
+if redpar.mode ge 0  then begin ; known mode
+   xwid = redpar.xwids[redpar.mode]
+   poff = xwid/2 + 1  ; 1 pixel extra 
+   smbox = xwid/2
+   dpks = redpar.dpks[redpar.mode]
+endif else begin
+   smbox = 9/redpar.binning[0]		;initial swath smoothing window size
+   poff = 9/redpar.binning[0]		;offset to edge of peak poly fit window
+   dpks = 0 
+endelse
+if debug ge 1 then print, 'FORDS: smoothing length, half-width, offset: ', smbox, poff, dpks
 
-  orcdeg = 4				;degree of poly for order location fits
-  mmfrac = 0.25				;maximum fraction missing peaks allowed
-  maxome = 2.				;max allowable mean pixel error in orcs
-  if debug ge 1 then print,'FORDS: Degree of polynomial fit to order locations = '+ strtrim(string(orcdeg),2)
+orcdeg = 4				;degree of poly for order location fits
+mmfrac = 0.25				;maximum fraction missing peaks allowed
+maxome = 2.				;max allowable mean pixel error in orcs
+if debug ge 1 then print,'FORDS: Degree of polynomial fit to order locations = '+ strtrim(string(orcdeg),2)
 
-;
 ;Define useful quantities.
-  sz = size(im)				;variable info block
-  ncol = sz(1)				;number of cols in image
-  nrow = sz(2)				;number of rows in image
-  soff = (swid - 1) / 2.0		;offset to edge of swath window
-  nswa = long(ncol/swid)		;# of full swaths in image
-  if debug ge 1 then begin 
-  print,'FORDS: Number of swaths = ' + strtrim(string(nswa),2)
-  print,'FORDS: Number of cols,rows = ' + $
-                   strtrim(string(ncol),2) + '  ' + strtrim(string(nrow),2)
-  endif;debug
-;
+sz = size(im)				;variable info block
+ncol = sz(1)				;number of cols in image
+nrow = sz(2)				;number of rows in image
+soff = (swid - 1) / 2.0		;offset to edge of swath window
+nswa = long(ncol/swid)		;# of full swaths in image
+if debug ge 1 then begin 
+   print,'FORDS: Number of swaths = ' + strtrim(string(nswa),2)
+   print,'FORDS: Number of cols,rows = ' + $
+					strtrim(string(ncol),2) + '  ' + strtrim(string(nrow),2)
+endif;debug
+
 ;Determine centers of swaths to mash. If swaths fit perfectly, then distribute
 ;  them uniformly. If extra columns remain, then add a full sized swath in 
 ;  center of image. Some central columns will be oversampled, but this is
@@ -112,74 +111,59 @@ print, 'REDPAR MODE IS: ', redpar.mode
 
 ;  fndpks,swa,pk					;get order peaks
 ; AT: replace findpks with pre-computed peaks and swath correlation
-   nord = redpar.nords ; total number of orders
-   iord = findgen(nord) ; order number 
-   if redpar.date lt 120502L then pkcoefs = redpar.pkcoefs1 else pkcoefs = redpar.pkcoefs
-   pk = poly(iord,pkcoefs)/redpar.binning[0] ; default peaks in binned pixels, central swath
-   pk += dpks ; peak shift
+nord = redpar.nords ; total number of orders
+iord = findgen(nord) ; order number 
+if redpar.date lt 120502L then pkcoefs = redpar.pkcoefs1 else pkcoefs = redpar.pkcoefs
+pk = poly(iord,pkcoefs)/redpar.binning[0] ; default peaks in binned pixels, central swath
+pk += dpks ; peak shift
 
-; find the global shift in cross-dispersion, no more than 1/2 order
-;  dpk = fix((pk[1] - pk[0])/2.)  
-;  sum = fltarr(2*dpk + 1)
-;  for i = -dpk,dpk do   sum[i+dpk] = total( (shift(swa,i))[pk])
-;  offset = (where(sum eq max(sum)))[0] - dpk
-;  print, 'Order spacing and  shift: ',dpk, offset
-;  pk += offset
-loadct, 39, /silent
-!p.color = 0
-!p.background=255
 dmode = strt(redpar.modes[redpar.mode])
 if debug ge 1 and debug le 2 then begin
-  fdir = redpar.plotsdir + 'fords/'
-  spawn, 'mkdir '+fdir
-  fdir = redpar.plotsdir + 'fords/' + redpar.date
-  spawn, 'mkdir '+fdir
-  ps_open, nextnameeps(fdir+'/'+dmode+'_centralswath'), /encaps, /color
+   fdir = redpar.plotsdir + 'fords/'
+   spawn, 'mkdir '+fdir
+   fdir = redpar.plotsdir + 'fords/' + redpar.date
+   spawn, 'mkdir '+fdir
+   ps_open, nextnameeps(fdir+'/'+dmode+'_centralswath'), /encaps, /color
 endif;debug plots
 
 if debug gt 0  then begin 
-  yy = [0,max(swa)]
-  plot, swa, /xsty, /ysty, $
-  xtitle='Cross Dispersion Direction', $
-  ytitle='Counts in Central Swath'
-  for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=2, color=80
-  for kk=0,nord-1 do oplot, pk[kk]*[1,1] + smbox, yy, li=2, color=50
-  for kk=0,nord-1 do oplot, pk[kk]*[1,1] - smbox, yy, li=2, color=250
-  if debug gt 2 then stop, 'FORDS DEBUG: FIRST SWATH plot. Press .C to continue'
+   yy = [0,max(swa)]
+   plot, swa, /xsty, /ysty, $
+   xtitle='Cross Dispersion Direction', $
+   ytitle='Counts in Central Swath'
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=2, color=80
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1] + smbox, yy, li=2, color=50
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1] - smbox, yy, li=2, color=250
+   if debug gt 2 then stop, 'FORDS DEBUG: FIRST SWATH plot. Press .C to continue'
 endif
 if redpar.debug ge 1 and redpar.debug le 2 then ps_close
-if debug gt 3 then begin
-;20120219 ~MJG
-;USE MPFIT_POLY AND THE CURSOR PROCEDURE TO FIND THE PEAKS
-;BY HAVING THE USER PROVIDE THE INITIAL GUESS TO PEAK
-;LOCATIONS
-PRINT, '***********************************************'
-PRINT, 'NOW IDENTIFYING ORDER LOCATIONS....'
-PRINT, 'CLICK IN THE CENTER OF EACH ORDER.'
-PRINT, "(Y VALUE DOESN'T MATTER)"
-PRINT, '***********************************************'
-  yy = [0,max(swa)]
-  plot, swa, /xsty, /ysty, $
-  xtitle='Cross Dispersion Direction', $
-  ytitle='Counts in Central Swath'
-  xeye = dblarr(n_elements(iord))
-  for eyeord = 0, n_elements(xeye)-1 do begin
-	cursor, xcur, ycur, /down
-	xeye[eyeord] = xcur
-	print, eyeord, xcur, ycur
-	oplot, [xcur,xcur], [ycur, ycur], ps=8, color=230
-  endfor
-;  stop
+IF debug gt 3 THEN BEGIN
+   ;20120219 ~MJG
+   ;USE MPFIT_POLY AND THE CURSOR PROCEDURE TO FIND THE PEAKS
+   ;BY HAVING THE USER PROVIDE THE INITIAL GUESS TO PEAK
+   ;LOCATIONS
+   PRINT, '***********************************************'
+   PRINT, 'NOW IDENTIFYING ORDER LOCATIONS....'
+   PRINT, 'CLICK IN THE CENTER OF EACH ORDER.'
+   PRINT, "(Y VALUE DOESN'T MATTER)"
+   PRINT, '***********************************************'
+   yy = [0,max(swa)]
+   plot, swa, /xsty, /ysty, $
+   xtitle='Cross Dispersion Direction', $
+   ytitle='Counts in Central Swath'
+   xeye = dblarr(n_elements(iord))
+   for eyeord = 0, n_elements(xeye)-1 do begin
+	  cursor, xcur, ycur, /down
+	  xeye[eyeord] = xcur
+	  print, eyeord, xcur, ycur
+	  oplot, [xcur,xcur], [ycur, ycur], ps=8, color=230
+   endfor
    loadct, 39, /silent
    res = mpfit_poly(iord, xeye, order=3, init=[38., 76., -0.04, -0.003, 0d], fixed=[0,0,0,0,1], yfit = yfit)
    plot, iord, xeye, ps=8
-;   stop
    oplot, iord, yfit, ps=8, color=230
-;  stop
-  ;redpar.pkcoefs[0] -= dpks 
-  pkcoefs = res[0:3] * redpar.binning[0]
+   pkcoefs = res[0:3] * redpar.binning[0]
    pk = poly(iord,pkcoefs)/redpar.binning[0] ; default peaks in binned pixels, central swath
-   ;pk += dpks ; peak shift
    plot, swa, /xsty, /ysty, $
    xtitle='Cross Dispersion Direction', $
    ytitle='Counts in Central Swath'
@@ -187,12 +171,11 @@ PRINT, '***********************************************'
    PRINT, '***********************************************'
    PRINT, 'IF IT LOOKS GOOD ENTER THESE FOR PKCOEFS IN YOUR .PAR FILE'
    PRINT, 'pkcoefs: [', strt(pkcoefs[0]), ',', $
-   							 strt(pkcoefs[1]), ',', $
-   							 strt(pkcoefs[2]), ',', $
-   							 strt(pkcoefs[3]), ']'
+						 strt(pkcoefs[1]), ',', $
+						 strt(pkcoefs[2]), ',', $
+						 strt(pkcoefs[3]), ']'
    PRINT, '***********************************************'
-;  stop
-endif
+ENDIF;DEBUG>3 => REDO ORDER LOCATIONS FROM SCRATCH
 
 ;  nord = n_elements(pk)				;number of orders
   if debug then print,'FORDS: Number of peaks found = ' + strtrim(string(nord),2)
@@ -211,12 +194,7 @@ endif
 ;  with poor peak determinations are left zero.
   if debug then print,'FORDS: Mapping entire image.  Be patient....'
   pk = long(pk+0.5)				;make sure pk is integral
-;Remove next if block, if no bug report by Dec-92.
-  if pk(0) eq pk(1) then begin			;fix strange new error
-    print,'The "strange new error" has occured - inform Jeff Valenti.'
-    pk=pk(1:nord-1)
-    nord=nord-1
-  endif
+
   pk0 = pk ; remember the peaks in the central swatn
 
 ;Find  peaks in each swath.
@@ -224,115 +202,111 @@ endif
   ix = findgen(2*poff+1)			;indicies for maxima fit below
 
 ; AT Oct 12 2011: start at center, move left and right
-for direction = -1, 1, 2 do begin
-  pk = pk0
-  imin = (direction + 1)/2 ; starting swath
-  FOR isw1=imin,nswa/2-1 do begin			;loop through swaths
-    isw = isw1*direction + nswa/2
-    swa = aswa(*,isw)				;recover swath
-;    if smbox gt 2 then swa = smooth(median(swa,smbox-1),smbox)	 ;smooth swath to reduce noise
-    if smbox gt 2 then swa = median(swa,smbox)	 ;smooth swath to reduce noise
+FOR direction = -1, 1, 2 DO BEGIN
+   pk = pk0
+   imin = (direction + 1)/2 ; starting swath
+   FOR isw1=imin,nswa/2-1 do begin			;loop through swaths
+	  isw = isw1*direction + nswa/2
+	  swa = aswa(*,isw)				;recover swath
+	  if smbox gt 2 then swa = median(swa,smbox)	 ;smooth swath to reduce noise
 
-    for ior = 0, nord-1 do begin ;loop through orders
-      opk = pk(ior)				;old peak location
-      if opk lt poff or opk gt nrow-poff-1 then begin
-	pk(ior) = 0				;flag peak off edge
-        goto,edge				;peak too near edge,next order
-      endif
-      z = swa(opk-poff:opk+poff)		;region where peak is expected
-      dummy = max(z,mx)				;get location of maximum
-      mx = opk - poff + mx(0)			;local max pixel OR edge
-      if mx lt poff or mx gt nrow-poff-1 then begin
-	pk(ior) = 0				;flag peak off edge
-	goto,edge 				;max too near edge,next order
-      endif
-      z = swa(mx-poff:mx+poff)			;region around max pixel
-      cf = poly_fit(ix,z,2)			;coeff of quadratic fit
+	  FOR ior = 0, nord-1 DO BEGIN ;loop through orders
+		 opk = pk(ior)				;old peak location
+		 if opk lt poff or opk gt nrow-poff-1 then begin
+			pk(ior) = 0				;flag peak off edge
+			stop
+			goto,edge				;peak too near edge,next order
+		 endif
+		 z = swa[opk-poff:opk+poff]		;region where peak is expected
+		 dummy = max(z,mx)				;get location of maximum
+		 mx = opk - poff + mx(0)			;local max pixel OR edge
+		 if mx lt poff or mx gt nrow-poff-1 then begin
+			pk(ior) = 0				;flag peak off edge
+			stop
+			goto,edge 				;max too near edge,next order
+		 endif
+		 z = swa(mx-poff:mx+poff)			;region around max pixel
+		 cf = poly_fit(ix,z,2)			;coeff of quadratic fit
 
-; debugging:
-;      plot,  z,  /ysty
-;      oplot, cf[0] + ix*cf[1] + ix^2*cf[2], li=2
-;      stop
-;      junk = get_kbrd(1)
-; end debugging
+		 peak = -cf(1) / (2*cf(2)) + mx - poff	;extremum of polynomial
+		 if peak lt poff or peak gt nrow-poff-1 then begin
+			pk(ior) = 0
+			stop
+			goto,edge
+		 endif
 
-      peak = -cf(1) / (2*cf(2)) + mx - poff	;extremum of polynomial
-      if peak lt poff or peak gt nrow-poff-1 then begin
-	pk(ior) = 0
-	goto,edge
-      endif
-
-;Resampling code: We-ve just fit a polynomial to the peak pixel and "poff"
-;  pixels on either side. When the true peak is near the edge of a pixel, we
-;  are oversampling one side of the peak (by nearly a pixel). As the true peak
-;  passes into the next row-s pixel (due to the curvature of the orders), the
-;  extra pixel being oversampled jumps to the *other* side. If the order
-;  shapes were really parabolas, this would have no effect, but they-re not.
-;  The peaks of the parabolic fits jump, when the true peak crosses a pixel
-;  boundary. We correct for this below by splining the pixels around the peak
-;  onto a much finer scale and then fitting another parabola to the splined
-;  points within a well-defined window.
-      locut = (long(peak - poff)) > 0		;low index of region to cut
-      hicut = (long(peak + poff + 0.999)) < (nrow-1)  ;high index of cut region
-      zcut = swa(locut:hicut)			;cut region to finely sample
-      xcut = findgen(hicut - locut + 1) $	;indicies for cut region
-	+ (locut - peak)			;  (0 is at true peak)
- ;     zfine = fspline(xcut,zcut,xfine)		;finely sample peak region
-  zfine = spl_interp(xcut,zcut,spl_init(xcut,zcut),xfine,/double) ;IDL internal
-      cf = poly_fit(xfine,zfine,2)		;fit poly to fine sampling
-      peak = -cf(1) / (2*cf(2)) + peak		;peak at extremum of parabola
-;End Resampling code.
-; debugging:
-;      plot,  zfine,  /ysty
-;      oplot, cf[0] + xfine*cf[1] + xfine^2*cf[2], li=2
-;      stop
-; end debugging
+		 ;Resampling code: We-ve just fit a polynomial to the peak pixel and "poff"
+		 ;  pixels on either side. When the true peak is near the edge of a pixel, we
+		 ;  are oversampling one side of the peak (by nearly a pixel). As the true peak
+		 ;  passes into the next row-s pixel (due to the curvature of the orders), the
+		 ;  extra pixel being oversampled jumps to the *other* side. If the order
+		 ;  shapes were really parabolas, this would have no effect, but they-re not.
+		 ;  The peaks of the parabolic fits jump, when the true peak crosses a pixel
+		 ;  boundary. We correct for this below by splining the pixels around the peak
+		 ;  onto a much finer scale and then fitting another parabola to the splined
+		 ;  points within a well-defined window.
+		 locut = (long(peak - poff)) > 0		;low index of region to cut
+		 hicut = (long(peak + poff + 0.999)) < (nrow-1)  ;high index of cut region
+		 zcut = swa(locut:hicut)			;cut region to finely sample
+		 xcut = findgen(hicut - locut + 1) $	;indicies for cut region
+		 + (locut - peak)			;  (0 is at true peak)
+		 ;     zfine = fspline(xcut,zcut,xfine)		;finely sample peak region
+		 zfine = spl_interp(xcut,zcut,spl_init(xcut,zcut),xfine,/double) ;IDL internal
+		 cf = poly_fit(xfine,zfine,2)		;fit poly to fine sampling
+		 peak = -cf(1) / (2*cf(2)) + peak		;peak at extremum of parabola
+		 ;End Resampling code.
+		 ; debugging:
+		 ;      plot,  zfine,  /ysty
+		 ;      oplot, cf[0] + xfine*cf[1] + xfine^2*cf[2], li=2
+		 ;      stop
+		 ; end debugging
 
 
-      if peak ge opk-poff and $
-	 peak le opk+poff then begin 		;only keep peaks near pixel max
-	ords(isw,ior) = peak			;valid peak, save in array
-	pk(ior) = long(peak+0.5)		;search near peak in next swath
-      endif else begin				;else: maybe last peak off
-	if isw ge 3 then begin			;true: can do median
-	  mdpk = median(ords(isw-3:isw-1,ior))	;median of last three peaks
-	  if peak ge mdpk-poff and $
-	     peak le mdpk+poff then begin 	;only keep peaks near pixel max
-	    ords(isw,ior) = peak		;valid peak, save in array
-	    pk(ior) = long(peak+0.5)		;search near peak in next swath
-          endif
-	endif
-      endelse
- 
-     edge:                     ;jump here to skip a swath
-  endfor		;end order loop
+		 if peak ge opk-poff and $
+		 peak le opk+poff then begin 		;only keep peaks near pixel max
+			ords(isw,ior) = peak			;valid peak, save in array
+			pk(ior) = long(peak+0.5)		;search near peak in next swath
+		 endif else begin				;else: maybe last peak off
+			if isw ge 3 then begin			;true: can do median
+			   mdpk = median(ords(isw-3:isw-1,ior))	;median of last three peaks
+			   if peak ge mdpk-poff and $
+				  peak le mdpk+poff then begin 	;only keep peaks near pixel max
+				  ords(isw,ior) = peak		;valid peak, save in array
+				  pk(ior) = long(peak+0.5)		;search near peak in next swath
+			   endif
+			endif
+		 endelse
 
- ; AT Oct 7 2011: diagnostic of swath peaks
-if debug gt 1 then begin 
-  yy = [0,max(swa)]
-  plot, swa
-  for kk=0,nord-1 do oplot, ords[isw,kk]*[1,1], yy, li=1 
-;  stop, 'FORDS DEBUG: SWATH plot in swath '+string(isw)
-endif
+		 edge:                     ;jump here to skip a swath
+		 if debug ge 3 then stop
+	  endfor		;end order loop
 
-if (isw1 eq 0) then pk0 = pk ; remember peaks in the central swath 
+	  ; AT Oct 7 2011: diagnostic of swath peaks
+	  if debug gt 1 then begin 
+		 yy = [0,max(swa)]
+		 plot, swa
+		 for kk=0,nord-1 do oplot, ords[isw,kk]*[1,1], yy, li=1 
+		 ;  stop, 'FORDS DEBUG: SWATH plot in swath '+string(isw)
+	  endif
 
-; More debugging
-; if (isw1 eq 0) and (debug gt 0) then begin
-; plot zero order
-;  yy = [0,max(swa)]
-;  plot, swa
-;  for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=1 
-;  ixx = findgen(nord)
-;  y = redpar.binning[0]*reform(ords(nswa/2,*), nord)
-;  sel = where(y gt 0)
-;  res = poly_fit(ixx[sel], y[sel],3)
-;  print, 'Central swath polynomial: ',res
-;   pk1 = poly(ixx,res) 
-;    stop, 'FORDS DEBUG: FIRST SWATH plot with new peaks Press .C to continue'
-; endif
+	  if (isw1 eq 0) then pk0 = pk ; remember peaks in the central swath 
 
- ENDFOR		;end half- swath loop
+	  ; More debugging
+	  ; if (isw1 eq 0) and (debug gt 0) then begin
+	  ; plot zero order
+	  ;  yy = [0,max(swa)]
+	  ;  plot, swa
+	  ;  for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=1 
+	  ;  ixx = findgen(nord)
+	  ;  y = redpar.binning[0]*reform(ords(nswa/2,*), nord)
+	  ;  sel = where(y gt 0)
+	  ;  res = poly_fit(ixx[sel], y[sel],3)
+	  ;  print, 'Central swath polynomial: ',res
+	  ;   pk1 = poly(ixx,res) 
+	  ;    stop, 'FORDS DEBUG: FIRST SWATH plot with new peaks Press .C to continue'
+	  ; endif
+
+   ENDFOR		;end half- swath loop
 ENDFOR          ; end direction loop
 
 ; AT Oct 4 2011: find and print quadratic approximation for central swath
@@ -345,7 +319,6 @@ if debug gt 0 then begin
   sel = where(y gt 0)
   res = poly_fit(ix[sel], y[sel],3)
   print, 'Central swath polynomial: ',res
-;  stop
 endif
 
 ;Loop through orders, fitting polynomials to order locations determined above.
@@ -354,15 +327,11 @@ endif
 ;  Also compute the mean error in the polynomial fit. If this is too large,
 ;  then return with orc set to scalar zero, flagging error condition.
   if debug gt 0  then print,'FORDS: Fitting polynomials to order peaks.'
-  orc = fltarr(orcdeg+1,nord)			;init order coefficient array
-  ome = orc(0,*)				;init order mean error
+  orc = dblarr(orcdeg+1,nord)			;init order coefficient array
+  ome = orc[0,*]				;init order mean error
   tomiss = 0					;init total missing peak count
 
-; !!!! Discard first order "by hand", always, to make all modes coincide
-;   ords = ords[*,1:nord-1] & nord = nord-1
-
 ; loop over all orders
-
   FOR ior = 0,nord-1 do begin
 
     iwhr = where(ords[*,ior] gt 0,nwhr)		;find valid peaks
@@ -374,6 +343,7 @@ endif
 		orc = 0					;scalar zero flags error
 		fstr = strtrim(string(form='(f10.1)',(100.0*nmiss)/nswa),2)
 		print,'FORDS: ' + fstr + '% of peaks in order missing. Returning without ORCs'
+		stop
 		return
 	endif
     x = scen[iwhr]				;get swath centers with peaks
