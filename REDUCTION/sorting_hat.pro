@@ -105,11 +105,7 @@ if ~file_test(fits_path) then spawn, 'mkdir '+fits_path
 thid_path = redpar.rootdir+redpar.thiddir
 thid_path2 = redpar.rootdir+redpar.thidfiledir
 pretag = redpar.prefix_tag
-;qbcvelfile = rootdir+'bary/qbcvel.ascii'
-;xwids =   redpar.xwids                        ; extraction width  
 
-
-; >>
 readcol,logsheet, skip=9, obnm, objnm, i2, mdpt, exptm, bin, slit, f='(a5, a13, a4, a14, a8, a3, a6)'
 
 ;now to expand the quartz items in the logsheet:
@@ -162,31 +158,6 @@ ut = gettime(mdpt) ; floating-point hours, >24h in the morning
 ;stop
 
 ;**************************************************************
-; ******* END-CHECK *********************
-;THE END CHECK TO MAKE SURE EVERYTHING HAS BEEN PROCESSED:
-;**************************************************************
- if keyword_set(end_check) then  begin
-	x1=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx] and objnm ne 'quartz',n_check)
-        if x1[0] lt 0 then begin
-          print, 'Sorting_hat: no files found! returning'
-          return
-        endif
-
-        	for k=0,n_check-1 do begin
-			if objnm[x1[k]] eq 'thar' then begin
-				fthar=file_search(thid_path+'*'+obnm[x1[k]]+'*',count=thar_count)
-				if thar_count eq 0 then print, objnm[x1[k]]+' '+obnm[x1[k]]+' has no ThAr soln '
-			endif else begin
-				fiod=file_search(iodspec_path+'*'+obnm[x1[k]]+'*',count=iod_count)
-				if iod_count eq 0 then print, objnm[x1[k]]+' '+obnm[x1[k]]+'  has no iodspec'
-				
-				ffits=file_search(fits_path+'*'+obnm[x1[k]]+'*',count=fits_count)
-				if fits_count eq 0 then print, objnm[x1[k]]+' '+obnm[x1[k]]+'  has no fitspec'
-			endelse 
-		endfor       
-      endif ; end_check
-
-;**************************************************************
 ; ******* REDUCE *******************
 ;REDUCING THE DATA:	
 ;**************************************************************
@@ -207,16 +178,18 @@ ut = gettime(mdpt) ; floating-point hours, >24h in the morning
 			 fname = redpar.rootdir+redpar.biasdir+$
 			  redpar.date+'_bin31_normal_medbias.dat'
 			  print, 'Now testing median bias frame filename: ', fname 
-			 if ~file_test(fname) then begin
+			 ;if ~file_test(fname) then begin
 			    print, '3x1 normal...'
 				chi_medianbias, redpar = redpar, log = log, /bin31, /normal
+			    print, '4x4 normal...'
+				chi_medianbias, redpar = redpar, log = log, /bin44, /normal
 			    print, '1x1 normal...'
 				chi_medianbias, redpar = redpar, log = log, /bin11, /normal
 			    print, '3x1 fast...'
 				chi_medianbias, redpar = redpar, log = log, /bin31, /fast
 			    print, '1x1 fast...'
 				chi_medianbias, redpar = redpar, log = log, /bin11, /fast
-			 endif
+			 ;endif
 		  endif;nonfiber median bias frame check/make
 		  fnamef = redpar.rootdir+redpar.biasdir+$
 		  redpar.date+'_bin44_normal_medbias.dat'
@@ -293,31 +266,51 @@ ut = gettime(mdpt) ; floating-point hours, >24h in the morning
 	   initwvc = thid.wvc 
 
 	   print, 'Ready to go into AUTOTHID'   
+	   !p.multi=[0,1,1]
 	   for i=0,num_thar-1 do begin 
 		  isfn = iodspec_path+pretag+run+thar[i]
 		  print, 'ThAr file to fit: ', isfn
 		  rdsk, t, isfn,1
 		  ;NEW, AUTOMATED WAY OF DOING THINGS:
 		  print, 'ThAr obs is: ', thar[i], ' ', strt((1d2*i)/(num_thar-1),f='(F8.2)'),'% complete.'
+		  ;stop
 
-		  auto_thid, t, initwvc, 6., 6., .8, thid, awin=10, maxres=4, /orev
-		  ;for non slicer modes:
-		  ;thid, t, 64., 64.*[8797d,8898d], wvc, thid, init=initwvc, /orev 
-		  ;for slicer mode:
-		  ;thid, t, 65., 65.*[8662.4d,8761.9d], wvc, thid, init=initwvc, /orev 
-		  fnm = thid_path2+pretag+run+thar[i]
-		  fsuf = '.thid'
-		  if file_test(fnm+fsuf) then spawn, $
-		  'mv '+fnm+'.thid '+nextname(fnm,fsuf)
-		  save, thid, file=fnm+fsuf
+		  rawfn = redpar.rootdir+redpar.rawdir+redpar.imdir+'/'+run+thar[i]+'.fits'
+		  header = headfits(rawfn)
+		  if strt(fxpar(header, 'COMPLAMP')) ne 'TH-AR' then begin
+			 print, 'WARNING! NO TH-AR LAMP IN FOR: '
+			 print, rawfn
+			 print, 'TYPE THE IDL COMMAND: '
+			 print, "chi_junk, date='"+redpar.date+"', seqnum='"+thar[i]+"', reason = 'No ThAr Lamp.', /chi_q, /log"
+			 print, 'TO GET RID OF IT.'
+			 stop
+		  endif else begin
+			 auto_thid, t, initwvc, 6., 6., .8, thid, awin=10, maxres=4, /orev
+			 ;for fiber, narrow and regular slit modes:
+			 ;thid, t, 64., 64.*[8797d,8898d], wvc, thid, init=initwvc, /orev 
+			 ;for slicer mode:
+			 ;thid, t, 65., 65.*[8662.4d,8761.9d], wvc, thid, init=initwvc, /orev 
+			 
+			 if thid.nlin lt 700d then begin
+			   print, 'CRAPPY FIT TO THE THAR! INTERVENTION NEEDED!'
+			   print, 'ONLY '+strt(thid.nlin)+' GOOD LINES FOUND!'
+			   stop
+			 endif
+			 
+			 fnm = thid_path2+pretag+run+thar[i]
+			 fsuf = '.thid'
+			 if file_test(fnm+fsuf) then spawn, $
+			 'mv '+fnm+'.thid '+nextname(fnm,fsuf)
+			 save, thid, file=fnm+fsuf
 
-		  mkwave, w, thid.wvc
-		  w = reverse(w,2) ; increase with increasing order numver
-		  fnm = thid_path+'ctio_'+pretag+run+thar[i]
-		  fsuf = '.dat'
-		  if file_test(fnm+fsuf) then spawn, $
-		  'mv '+fnm+'.dat '+nextname(fnm,fsuf)
-		  save, w, file=fnm+fsuf
+			 mkwave, w, thid.wvc
+			 w = reverse(w,2) ; increase with increasing order numver
+			 fnm = thid_path+'ctio_'+pretag+run+thar[i]
+			 fsuf = '.dat'
+			 if file_test(fnm+fsuf) then spawn, $
+			 'mv '+fnm+'.dat '+nextname(fnm,fsuf)
+			 save, w, file=fnm+fsuf
+		  endelse
 	   endfor
 	endif;n_modes > 0
 endif ; getthid
@@ -465,6 +458,31 @@ if keyword_set(doppler) then begin
                 return
 	endif ; doppler
 	
+;**************************************************************
+; ******* END-CHECK *********************
+;THE END CHECK TO MAKE SURE EVERYTHING HAS BEEN PROCESSED:
+;**************************************************************
+ if keyword_set(end_check) then  begin
+	x1=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx] and objnm ne 'quartz',n_check)
+        if x1[0] lt 0 then begin
+          print, 'Sorting_hat: no files found! returning'
+          return
+        endif
+
+        	for k=0,n_check-1 do begin
+			if objnm[x1[k]] eq 'thar' then begin
+				fthar=file_search(thid_path+'*'+obnm[x1[k]]+'*',count=thar_count)
+				if thar_count eq 0 then print, objnm[x1[k]]+' '+obnm[x1[k]]+' has no ThAr soln '
+			endif else begin
+				fiod=file_search(iodspec_path+'*'+obnm[x1[k]]+'*',count=iod_count)
+				if iod_count eq 0 then print, objnm[x1[k]]+' '+obnm[x1[k]]+'  has no iodspec'
+				
+				ffits=file_search(fits_path+'*'+obnm[x1[k]]+'*',count=fits_count)
+				if fits_count eq 0 then print, objnm[x1[k]]+' '+obnm[x1[k]]+'  has no fitspec'
+			endelse 
+		endfor       
+      endif ; end_check
+
 
 
 end ;sorting_hat.pro
