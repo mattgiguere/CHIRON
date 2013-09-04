@@ -201,14 +201,12 @@ print, 'the prefix after is: ', prefix
     foc = 0
     i=0L
     while ~foc do begin
-    im = mrdfits(allfitsfiles[i], 0, hd, /silent)
-    deck = strt(sxpar(hd, 'DECKER'))
-    objnm = strt(sxpar(hd, 'OBJECT'))
-    print, allfitsfiles[i], '   ', deck, '   ',objnm
- ;   stop
-    if (deck EQ 'narrow_slit') and (strlowcase(objnm) EQ 'thar') then foc = 1 else i++
+	   im = mrdfits(allfitsfiles[i], 0, hd, /silent)
+	   deck = strt(sxpar(hd, 'DECKER'))
+	   objnm = strt(sxpar(hd, 'OBJECT'))
+	   print, allfitsfiles[i], '   ', deck, '   ',objnm
+	   if (deck EQ 'narrow_slit') and (strlowcase(objnm) EQ 'thar') then foc = 1 else i++
     endwhile
-    ;stop
     foc, inpfile=allfitsfiles[i], slicevals=slicevals;, /plt, /mark
     focpos = strt(sxpar(hd, 'FOCUS'), f='(F10.4)')
     focfwhm = strt(slicevals.avgfwhm, f='(F7.3)')
@@ -310,10 +308,10 @@ print, 'the prefix after is: ', prefix
 		objName = strcompress(object,/remove_all)
 		if ( stregex(objName,'^(qtz|quartz|flat|normalslit|normal slit|wideflats|wideflat|quartz\/calibra)$',/BOOLEAN,/FOLD_CASE) ) then begin
 			objName = _QUARTZ
-			if strcompress(sxpar(hd,'COMPLAMP'),/rem) eq 'TH-AR' then objName = _THAR
+			;if strcompress(sxpar(hd,'COMPLAMP'),/rem) eq 'TH-AR' then objName = _THAR
 		endif else if ( stregex(objName,'^(th|thar|thar\/calibra)$',/BOOLEAN,/FOLD_CASE) ) then begin
 			objName = _THAR
-			if strcompress(sxpar(hd,'COMPLAMP'),/rem) eq 'QUARTZ' then objName = _QUARTZ
+			;if strcompress(sxpar(hd,'COMPLAMP'),/rem) eq 'QUARTZ' then objName = _QUARTZ
 		endif else if ( stregex(objName,'^(i2|iodine|qtziodine|quartz\/iodine)$',/BOOLEAN,/FOLD_CASE) ) then begin
 			objName = _IODINE
 		endif
