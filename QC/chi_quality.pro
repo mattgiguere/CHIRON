@@ -162,31 +162,31 @@ chi_create_tp_log, date=date
 endelse
 
 if ~keyword_set(skipplots) then begin
-;CREATE THE DAILY AND WEEKLY ENVIRONMENTAL PLOTS:
-!p.multi=[0,1,1]
-chi_qc_plot_temps, $
-insttemp = insttemp, dettemps = dettemps, chipress = chipress, $
-date = date, dir = qdir, /postplot
+   ;CREATE THE DAILY AND WEEKLY ENVIRONMENTAL PLOTS:
+   !p.multi=[0,1,1]
+   chi_qc_plot_temps, $
+   insttemp = insttemp, dettemps = dettemps, chipress = chipress, $
+   date = date, dir = qdir, /postplot
 
-chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin31, dir = qdir
-chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin31, dir = qdir
-chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin11, dir = qdir
-chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin11, dir = qdir
-!p.multi=[0,1,1]
-chi_plot_counts, log, postplot=~keyword_set(skipplots), dir = qdir
-chi_thar_log, log, postplot=~keyword_set(skipplots), dir = qdir
-chi_plot_thar, postplot=~keyword_set(skipplots), dir = qdir, date = date
-if file_test('/tous/mir7/logs/guider/guider'+date+'.log') then begin
-guidrms = chi_guider_plot(log, postplot=~keyword_set(skipplots), dir = qdir)
-endif
-dum = where(strt(log.object) eq '128620', acenact)
-if acenact then chi_acen_eff, log, postplot=~keyword_set(skipplots), objname='128620', dir = qdir
-dum = where(strt(log.object) eq '128621', acenbct)
-if acenbct then chi_acen_eff, log, postplot=~keyword_set(skipplots), objname='128621', dir = qdir
-chi_acena_log, log, postplot=~keyword_set(skipplots), dir = qdir
-chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
-chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
-endif
+   chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin31, dir = qdir
+   chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin31, dir = qdir
+   chi_med_bias, log, postplot=~keyword_set(skipplots), /normal, /bin11, dir = qdir
+   chi_med_bias, log, postplot=~keyword_set(skipplots), /fast, /bin11, dir = qdir
+   !p.multi=[0,1,1]
+   chi_plot_counts, log, postplot=~keyword_set(skipplots), dir = qdir
+   chi_thar_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   chi_plot_thar, postplot=~keyword_set(skipplots), dir = qdir, date = date
+   if file_test('/tous/mir7/logs/guider/guider'+date+'.log') then begin
+   guidrms = chi_guider_plot(log, postplot=~keyword_set(skipplots), dir = qdir)
+   endif
+   dum = where(strt(log.object) eq '128620', acenact)
+   if acenact then chi_acen_eff, log, postplot=~keyword_set(skipplots), objname='128620', dir = qdir
+   dum = where(strt(log.object) eq '128621', acenbct)
+   if acenbct then chi_acen_eff, log, postplot=~keyword_set(skipplots), objname='128621', dir = qdir
+   chi_acena_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
+endif;skipplots
 chi_check_reduction, log=log, $
   /iodspec, iodres = iodres, $
   /fitspec, fitsres=fitsres, $
