@@ -55,14 +55,10 @@ orig = 1286L
 ;final is the name of the last file of the night after
 ;incrementing all the names:
 final = 1289L
-dashfile = 1141L
+dashfile = 1140L
 nfiles = dashfile - orig + 1
 
 prefix = 'chi'+date+'.'
-;prefix = 'chi130118.'
-;prefix = 'chi120514.'
-;prefix = 'chi120607.'
-;prefix = 'chi120302.'
 suffix = '.fits'
 
 ;First shift the observation numbers of all files up by final-orig:
@@ -71,9 +67,7 @@ nospawn = 1
 if keyword_set(executespawn) then nospawn = 0
 print, 'nospawn is: ', nospawn
 stop
-;Then shift all -0 files:
 for i=0LL, nfiles, -1 do begin
-  ;command = 'mv -iv '+dir+prefix+strt(orig+i)+'-0'+suffix+' '+dir+prefix+strt(final+i, f='(I04)')+suffix
   command = 'mv -iv '+dir+prefix+strt(orig+i)+suffix+' '+dir+prefix+strt(final+i, f='(I04)')+suffix
   if nospawn then  print, command
   if ~nospawn then  spawn, command
