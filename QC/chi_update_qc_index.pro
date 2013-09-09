@@ -187,7 +187,10 @@ nodata = [$
 '130719', $
 '130721', $
 '130822', $
-'130823' $
+'130823', $
+;'130904', $;The night is good, but seqnums were initially out of order due to operator
+;'130905', $;The night is good, but seqnums strange and Calib1 problem due to repair
+'130906' $;bad weather
 ]
 
 checked = [$
