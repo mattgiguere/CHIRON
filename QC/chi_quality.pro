@@ -1640,9 +1640,14 @@ tnr3b = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) lt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
 			   strt(log.decker) eq 'narrow_slit', ntnr3b)
-if ntnr3b ge ntharbon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tnr3bl = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) lt 1090L and $
+			   strt(log.ccdsum) eq '3 1' and $
+			   strt(log.decker) eq 'narrow_slit' and $
+			   strt(log.complamp) eq 'TH-AR', ntnr3bl)
+if ntnr3b ge ntharbon and ntnr3b eq ntnr3bl then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntnr3b)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1652,9 +1657,14 @@ tnr3a = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) gt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
 			   strt(log.decker) eq 'narrow_slit', ntnr3a)
-if ntnr3a ge nthareon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tnr3al = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) gt 1090L and $
+			   strt(log.ccdsum) eq '3 1' and $
+			   strt(log.decker) eq 'narrow_slit' $ 
+			   strt(log.complamp) eq 'TH-AR', ntnr3al)
+if ntnr3a ge nthareon and ntnr3a eq ntnr3al then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntnr3a)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1669,9 +1679,14 @@ tst3b = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) lt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
 			   strt(log.decker) eq 'slit', ntst3b)
-if ntst3b ge ntharbon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tst3bl = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) lt 1090L and $
+			   strt(log.ccdsum) eq '3 1' and $
+			   strt(log.decker) eq 'slit' and $
+			   strt(log.complamp) eq 'TH-AR', ntst3bl)
+if ntst3b ge ntharbon and ntst3b eq ntst3bl then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntst3b)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1681,9 +1696,14 @@ tst3a = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) gt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
 			   strt(log.decker) eq 'slit', ntst3a)
-if ntst3a ge nthareon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tst3al = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) gt 1090L and $
+			   strt(log.ccdsum) eq '3 1' and $
+			   strt(log.decker) eq 'slit' and $
+			   strt(log.complamp) eq 'TH-AR', ntst3al)
+if ntst3a ge nthareon and ntst3a eq ntst3al then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntst3a)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1698,9 +1718,14 @@ tsc3b = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) lt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
 			   strt(log.decker) eq 'slicer', ntsc3b)
-if ntsc3b ge ntharbon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tsc3bl = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) lt 1090L and $
+			   strt(log.ccdsum) eq '3 1' and $
+			   strt(log.decker) eq 'slicer' and $
+			   strt(log.complamp) eq 'TH-AR', ntsc3bl)
+if ntsc3b ge ntharbon and ntsc3b eq ntsc3bl then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntsc3b)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1710,9 +1735,14 @@ tsc3a = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) gt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
 			   strt(log.decker) eq 'slicer', ntsc3a)
-if ntsc3a ge nthareon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tsc3al = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) gt 1090L and $
+			   strt(log.ccdsum) eq '3 1' and $
+			   strt(log.decker) eq 'slicer' and $ 
+			   strt(log.complamp) eq 'TH-AR', ntsc3al)
+if ntsc3a ge nthareon and ntsc3a eq ntsc3al then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntsc3a)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1727,9 +1757,14 @@ tfb3b = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) lt 1090L and $
 			   strt(log.ccdsum) eq '4 4' and $
 			   strt(log.decker) eq 'fiber', ntfb3b)
-if ntfb3b ge ntharbon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tfb3bl = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) lt 1090L and $
+			   strt(log.ccdsum) eq '4 4' and $
+			   strt(log.decker) eq 'fiber' and $
+			   strt(log.complamp) eq 'TH-AR', ntfb3bl)
+if ntfb3b ge ntharbon and ntfb3b eq ntfb3bl then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntfb3b)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -1739,9 +1774,14 @@ tfb3a = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) gt 1090L and $
 			   strt(log.ccdsum) eq '4 4' and $
 			   strt(log.decker) eq 'fiber', ntfb3a)
-if ntfb3a ge nthareon then begin			   
-printf, 2, '<td bgcolor =#5CEC21 align=center>'
-endif else printf, 2, '<td bgcolor =#EC020B align=center>'
+tfb3al = where(strt(log.object) eq 'ThAr' and $
+			   double(strmid(log.seqnum,0,4)) gt 1090L and $
+			   strt(log.ccdsum) eq '4 4' and $
+			   strt(log.decker) eq 'fiber' and $
+			   strt(log.complamp) eq 'TH-AR', ntfb3al)
+if ntfb3a ge nthareon and ntfb3a eq ntfb3al then begin			   
+printf, 2, greencol
+endif else printf, 2, redcol
 printf, 2, strt(ntfb3a)
 printf, 2, '</td>'
 printf, 2, '<td>'
@@ -2045,7 +2085,7 @@ for i=0, nscs-1 do begin
 	printf,2, '</td>'
 	maxcts = log[scs[i]].maxcts
 	if (((maxcts lt 5.5d4) and (maxcts gt 1049d)) $
-	 or (strt(log[scs[i]].object) eq 'ThAr') $
+	 or ((strt(log[scs[i]].object) eq 'ThAr') and (strt(log[scs[i]].complamp) eq 'TH-AR') $
 	 or (strt(log[scs[i]].object) eq 'bias') $
 	 or (strt(log[scs[i]].object) eq 'dark') $
 	 or (strt(log[scs[i]].object) eq 'junk')) then begin
