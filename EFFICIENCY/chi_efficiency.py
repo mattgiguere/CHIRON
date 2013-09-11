@@ -199,7 +199,10 @@ def createPlots():
 	pylab.clf()
 	pylab.xlabel('Wavelength [$\AA$]')
 	pylab.ylabel('Efficiency (%)')
-	pylab.plot(peakwav, medeff*100.,color='k', linewidth=2.0)
+	for i in range(62):
+		print i,medeff[i]*100.
+	#pylab.plot(peakwav, medeff*100.,color='k', linewidth=2.0)
+	pylab.plot(peakwav, medeff*100.,'bo')
 	pylab.savefig('fig_medeff.eps')
 	iodrange = ((peakwav > 5000.) & (peakwav < 6000.))
 	print "=== FOR THE MEDIAN ARR==="
@@ -210,3 +213,40 @@ def createPlots():
 	for i in range(9):
 		iodrange = ((peakwav > 5000.) & (peakwav < 6000.))
 		print "median efficiency "+str(i)+": "+str(np.median(effarr[i,iodrange]))
+	return peakwav, medeff
+
+def medEff():
+	"""PURPOSE: To calculate the median efficiency of CHIRON"""
+
+def cleanDotPlotMedEff():
+	"""PURPOSE: To plot the median CHIRON efficiency
+	as dots, and remove the "kinks" """
+	peakwav, medeff = createPlots()
+	pylab.clf()
+	pylab.xlabel('Wavelength [$\AA$]')
+	pylab.ylabel('Efficiency (%)')
+	pylab.plot(peakwav, medeff*100.,'ko')
+	return peakwav, medeff
+
+def plotDataShort():
+	""" PURPOSE: Read in the text file with the removed "kinks"
+	and replot """
+	medefffn="/Users/matt/projects/CHIRON/EFFICIENCY/data_short.txt"
+	#medeff = asciitable.read(medefffn,delimiter=" ", data_start=2)
+	medeff = asciitable.read(medefffn, data_start=0, delimiter="\s")
+	pylab.clf()
+	pylab.xlabel('Wavelength [$\AA$]')
+	pylab.ylabel('Efficiency (%)')
+	pylab.plot(medeff.wav, medeff.eff*100.,'ko')
+	#pylab.savefig('fig_medeff_nokinks.eps')
+	
+def plotData():
+	""" PURPOSE: Read in the text file and plot the median efficiency """
+	medefffn="/Users/matt/projects/CHIRON/EFFICIENCY/data.txt"
+	medeff = asciitable.read(medefffn, data_start=0, delimiter=" ")
+	pylab.clf()
+	pylab.xlabel('Wavelength [$\AA$]')
+	pylab.ylabel('Efficiency (%)')
+	pylab.plot(medeff.wav, medeff.eff*100.,'ko')
+	pylab.savefig('fig_medeff.eps')
+	
