@@ -57,7 +57,7 @@ thar_soln=thar_soln, getthid=getthid, mode = mode, obsnm=obsnm, $
 
 
 angstrom = '!6!sA!r!u!9 %!6!n'
-redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/ctio.par')
+redpar = readpar('/tous/CHIRON/REDUCTION/ctio.par')
 redpar.imdir = night+'/'  ; pass night into redpar
 redpar.date = night
 redpar.versiond=systime()
@@ -285,7 +285,6 @@ ut = gettime(mdpt) ; floating-point hours, >24h in the morning
 			 print, 'TO GET RID OF IT.'
 			 stop
 		  endif else begin
-		  	stop
 			 auto_thid, t, initwvc, 6., 6., .8, thid, awin=10, maxres=4, /orev
 			 ;for fiber, narrow and regular slit modes:
 			 ;thid, t, 64., 64.*[8797d,8898d], wvc, thid, init=initwvc, /orev 

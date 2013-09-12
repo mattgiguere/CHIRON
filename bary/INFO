@@ -1,0 +1,90 @@
+CMC Apr. 18 2005.  Replaced the existing bcvel.ascii with one
+which incorporates these improvements:
+
+f01.logsheet had only partially been run for its BC's.
+Ran the whole thing an inserted the missing portoin into
+bcvel.ascii.  Note that several Ty stars are observed on
+this run but non of the stars, can be found in the tycho
+catalog!
+
+Fixed some name changes that had not been made in the original
+name change over:  GL414A to 97101,   219B to 4614.  These
+stars were not change because they had some quirks, such
+as not being SIMBAD listable plus having been dropped, etc.
+Checked for other stars in this catagory and didn't find any.
+
+__________________________
+
+This is the ALL IDL version of the new barycode for LICK.
+TO install this I
+
+1.) Generated bcvel.ascii with new name convention, including (after
+a correction) "HR" designations for all B stars
+
+2.) Started with the Keck bary software
+
+3.) modified all lick dependancies.
+
+New bary improvements:
+
+--All IDL (no Fortran) reading of ephemeris programs
+  (including package programs fxb* and my replacement
+    programs j*.pro, ie jnutation.pro)
+--Removal of secular acceleration.
+
+Here's a summary of the Keck Changes.
+
+> Hi Paul,
+>
+> OK.  Chris McCarthy has assembled the new barycentric
+> package for the Keck project.  We spent today
+> testing it in many ways.  We looked in detail at the
+> changes to the barycentric velocities that emerge
+> from the new code compared to the old code.
+>
+> There were many improvements that Chris instituted.
+> Among them are:
+>
+> 1)   The code now draws its coordinates from the Keck data
+>      structure (most coordinates coming from Hipparcos).
+>      All coordinates have equinox 2000 and have epoch 2000.
+>      If we observe a new star that is not in the structure,
+>      the code will revert to drawing coordinates from
+>      the Hipparcos Catalog.  In all cases, the code advances the
+>      coordinates (due to proper motion) to the date of observation.
+>
+> 2)   The code correctly treats secular acceleration now, which will
+>      be removed from our final velocities.
+>      We tested high proper motion stars, such as
+>      gl699, hd134439 and others and saw that the
+>      apparent velocity trend will be removed by the
+>      new treatment of sec. accel..
+>
+> 3)   Improved treatment of the "advancement" of coordinates
+>      caused by proper motion
+>
+> 4)   Coordinates of odd stars added later can be installed, as before,
+>      into the file, "kother.ascii".
+>
+> 5)  The code no longer uses FORTRAN to compute the
+>      Solar System ephemeris from JPL.  An IDL code from
+>      Craig Marquardt replaces it.  Of course, the Solar System
+>      ephemeris from JPL is still a crucial database.
+>
+> 6)   The keck bary code still resides, as always, in /mir3/bary ,
+>      and is run by typing, "kbarylog".  All functionality
+>      is transparently the same.
+>
+> 7)   The official keck structure resides, as always, in
+>      /further/paul/idle/kdop/kvel/keck_st.dat .
+>      It was modified today.  Chris will alert Paul
+>      to copy it to DTM (a few additions will be made soon).
+>      The new keck structure will contain all of the metal-rich
+>      stars, but with severe restriction on observing cadence,
+>      to be discussed by us later.
+>
+> Onward,
+> Geoff
+>
+
+
