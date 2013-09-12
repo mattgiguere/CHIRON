@@ -1660,7 +1660,7 @@ tnr3a = where(strt(log.object) eq 'ThAr' and $
 tnr3al = where(strt(log.object) eq 'ThAr' and $
 			   double(strmid(log.seqnum,0,4)) gt 1090L and $
 			   strt(log.ccdsum) eq '3 1' and $
-			   strt(log.decker) eq 'narrow_slit' $ 
+			   strt(log.decker) eq 'narrow_slit' and $ 
 			   strt(log.complamp) eq 'TH-AR', ntnr3al)
 if ntnr3a ge nthareon and ntnr3a eq ntnr3al then begin			   
 printf, 2, greencol
@@ -2085,7 +2085,7 @@ for i=0, nscs-1 do begin
 	printf,2, '</td>'
 	maxcts = log[scs[i]].maxcts
 	if (((maxcts lt 5.5d4) and (maxcts gt 1049d)) $
-	 or ((strt(log[scs[i]].object) eq 'ThAr') and (strt(log[scs[i]].complamp) eq 'TH-AR') $
+	 or ((strt(log[scs[i]].object) eq 'ThAr') and (strt(log[scs[i]].complamp) eq 'TH-AR')) $
 	 or (strt(log[scs[i]].object) eq 'bias') $
 	 or (strt(log[scs[i]].object) eq 'dark') $
 	 or (strt(log[scs[i]].object) eq 'junk')) then begin
