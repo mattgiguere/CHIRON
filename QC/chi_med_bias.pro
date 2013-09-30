@@ -95,7 +95,7 @@ if bobsct gt 2 then begin
 	;if file_test('/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat') then begin
 	;	restore, '/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat'
 	;endif else begin
-		redpar = readpar('/tous/CHIRON/REDUCTION/ctio.par')
+		redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/ctio.par')
 		redpar.date = date
 		print, '3x1 normal...'
 		chi_medianbias, redpar = redpar, log = log, /bin31, /normal, bobsmed = bobsmed31n

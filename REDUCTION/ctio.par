@@ -19,7 +19,7 @@ flatdir:  'tous/mir7/flats/',            ; summed flat fields
 biasdir:  'tous/mir7/medbias/',            ; median bias frames
 biasmode: 0,            ; 0: use median bias frame, 1: use median overscan row
 orderdir: 'tous/mir7/orders/',           ; order locations
-barydir:  'tous/CHIRON/bary/',             ; code for barycentric correction? 
+barydir:  'tous/mir7/bary/',             ; code for barycentric correction? 
 xtrim: [0,3150],             ; trim along line (cross-dispersion direction), UNBINNED pixels
 ytrim: [601,3800],             ; vertical trim (along disp.), UNBINNED pixels yt=2
 readmodes:  ['fast','normal'], ; readout modes
