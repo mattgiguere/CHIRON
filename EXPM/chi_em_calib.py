@@ -2,25 +2,57 @@ from scipy.io.idl import readsav
 import pylab as pl
 import numpy as np
 
-def em_calib(star):
-	mdir = '/home/matt/'
+def em_calib(star, mdir):
 	slogfn = mdir+'data/CHIRPS/starlogs/'+star+'log.dat'
 	sl = readsav(slogfn)
 	#to print the contents of the "OBJECT" tag:
 	#sl.starlog.object
-	snr = sl.starlog.snrbp5500
+	snrall = sl.starlog.snrbp5500
 	emavgstr = sl.starlog.emavg
 	emnumsmpstr = sl.starlog.emnumsmp
-	emavg = np.zeros(len(emavgstr))
-	emnumsmp = np.zeros(len(emavgstr))
-	for i in range(len(emavgstr)):
-		emavg[i] = float(emavgstr[i])
-		emnumsmp[i] = float(emnumsmpstr[i])
+	#now use only the good ones, the values with velocities:
+	gd = np.where(sl.starlog.cmnvel != 0)[0]
+	#print gd
+	snr = np.zeros(len(gd))
+	emavg = np.zeros(len(gd))
+	emnumsmp = np.zeros(len(gd))
+	#print len(gd)
+	for i in range(len(gd)):
+		#print i
+		snr[i] = float(snrall[gd[i]])
+		emavg[i] = float(emavgstr[gd[i]])
+		emnumsmp[i] = float(emnumsmpstr[gd[i]])
 	emcts = emavg * emnumsmp
-	pl.xlabel('EM Counts')
+	return emcts, snr
+	
+def plot_em(emcts, snr, order, mdir, star):
+	simsize = 3
+	#clear the window
+	pl.clf()
+	#set the x-axis
+	pl.xlabel('EM Counts / 10^6')
 	pl.ylabel('SNR')
-	pl.plot(emcts, snr, 'bo')
-	pl.show()
+	pl.plot(emcts/1e6, snr, 'bo', markersize=simsize)
+	print "max snr: "+str(max(snr))
+	model = model_em(emcts, snr, order)
+	pl.plot(emcts/1e6, model, 'ro', markersize=simsize)
 	
-star = '20794'
-	
+	stddev = np.std(snr - model)
+	print "Standard Deviation: "+str(stddev)
+	pl.text(5, 150, 'Polynomial Order: '+str(order))
+	pl.text(5, 130, 'Standard Deviation: {:.3}'.format(stddev))
+	#pl.show()
+	pl.savefig(mdir+'projects/OTHER/NOTES/EXPM/'+star+'_emcts_snr_ord'+str(order)+'.eps')
+
+def model_em(emcts, snr, ord):
+	z = np.polyfit(emcts, snr, ord)
+	print z
+	mod = np.zeros(len(emcts))
+	for i in range(ord+1):
+		mod = mod + z[ord - i] * emcts**i
+	return mod
+
+star = '10700'
+mdir = '/home/matt/'
+emcts, snr = em_calib(star, mdir, star)
+plot_em(emcts, snr, 3, mdir)
