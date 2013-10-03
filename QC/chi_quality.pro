@@ -183,9 +183,9 @@ if ~keyword_set(skipplots) then begin
    if acenact then chi_acen_eff, log, postplot=~keyword_set(skipplots), objname='128620', dir = qdir
    dum = where(strt(log.object) eq '128621', acenbct)
    if acenbct then chi_acen_eff, log, postplot=~keyword_set(skipplots), objname='128621', dir = qdir
-   chi_acena_log, log, postplot=~keyword_set(skipplots), dir = qdir
-   chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
-   chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   ;chi_acena_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   ;chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   ;chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
 endif;skipplots
 chi_check_reduction, log=log, $
   /iodspec, iodres = iodres, $
