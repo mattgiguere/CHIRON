@@ -261,7 +261,8 @@ log_init = create_struct($
 'XWIDS   ', '', $
 'DPKS    ', '', $
 'BINNINGS', '', $
-'DEBUG   ', '') 
+'DEBUG   ', '', $
+'THIDNLIN', 0L) 
 
 
 rdir = '/mir7/raw/'+date
@@ -484,6 +485,23 @@ log[i].WNDDIR   = sxpar(hd, 'WNDDIR  ')
 log[i].SEETIME  = sxpar(hd, 'SEETIME ')
 log[i].SEEING   = sxpar(hd, 'SEEING  ')
 log[i].SAIRMASS = sxpar(hd, 'SAIRMASS')
+
+;do these if the files have been reduced:
+rfn = '/tous/mir7/fitspec/'+date+'/achi'+date+'.'+log[i].seqnum+'.fits'
+if file_test(rfn) then begin
+   ;restore the header and image from the reduced file:
+   rim = readfits(rfn, rhd, /silent)
+   log[i].THIDNLIN = sxpar(hd, 'THIDNLIN')
+   ;the signal to noise ratio at blaze peak around 5500 Å.
+   ;5500Å is nearest to blaze peak in order 22 for CHIRON:
+   ord = 22
+   ;get the continuum of the top 5% of points using a 5th order polynomial fit:
+   contf, rim[1,*,ord], c, frac=0.05, nord=5
+   log[i].SNRBP5500 = sqrt(max(c))
+   log[i].RESOLUTION = sxpar(hd, 'RESOLUTN')
+   log[i].THARFNAME = sxpar(hd, 'THARFNAM')
+endif;reduced info
+
 print, strt(log[i].seqnum), ' ',log[i].object, strt(double(log[i].exptime), f='(F14.2)'),' ', log[i].ccdsum, log[i].decker
 endfor
 
