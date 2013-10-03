@@ -32,6 +32,11 @@
 ;			chi_update_qc_index.
 ;		REPIPE: Rerun the reduction pipeline for the dates of interest, but don't add
 ;			anything new to the barycentric correction ASCII table (avoid duplicates).
+;		JUSTLOG: Don't create the QC, just the log and count check
+;		JUSTTHARS: Create the ThAr log
+;		JUSTACENA: Just the Alpha Cen A Log
+;		JUSTACENB: Just the Alpha Cen B Log
+;		JUSTQUALITY: Regenerate the quality control pages
 ;
 ;  OUTPUTS:
 ;
@@ -49,6 +54,7 @@
 pro chi_create_many_logs, $
 help = help, $
 postplot = postplot, $
+justlog = justlog, $
 justthars = justthars, $
 justacena = justacena, $
 justacenb = justacenb, $
@@ -591,7 +597,43 @@ datearr=[ $
 '130820', $
 '130821', $
 '130824', $
-'130825' $
+'130825', $
+'130826', $
+'130827', $
+'130828', $
+'130829', $
+'130830', $
+'130831', $
+'130901', $
+'130902', $
+'130903', $
+'130904', $
+'130905', $
+'130906', $
+'130907', $
+'130908', $
+'130909', $
+'130910', $
+'130911', $
+'130912', $
+'130913', $
+'130914', $
+'130915', $
+'130916', $
+'130917', $
+'130918', $
+'130919', $
+'130920', $
+'130921', $
+'130922', $
+'130923', $
+'130924', $
+'130925', $
+'130926', $
+'130927', $
+'130928', $
+'130929', $
+'130930' $
 ]
 
 if ~keyword_set(startdate) then startdate = datearr[0]
@@ -603,7 +645,7 @@ datearr = datearr[didx]
 for i=0, n_elements(datearr)-1 do begin
     ldir='/tous/mir7/logstructs/20'+strmid(datearr[i], 0, 2)+'/'
     lfn = ldir+datearr[i]+'log.dat'
-    if ~file_test(lfn) then begin
+    if ~file_test(lfn) or keyword_set(justlog) then begin
       ;f != exist
 	  print, 'Now running chi_log on date ',datearr[i],' ', systime()
 	  log = chi_log(date=datearr[i])
