@@ -1,6 +1,17 @@
 from scipy.io.idl import readsav
 import pylab as pl
 import numpy as np
+import os
+
+def mattdir():
+	if os.path.exists('/Users/mattgiguere/'):
+		mdir = '/Users/mattgiguere/'
+	elif os.path.exists('/Users/matt/'):
+		mdir = '/Users/matt/'
+	elif os.path.exists('/home/matt/'):
+		mdir = '/home/matt/'
+	else:
+		mdir = ''
 
 def em_calib(star, mdir):
 	slogfn = mdir+'data/CHIRPS/starlogs/'+star+'log.dat'
@@ -53,6 +64,6 @@ def model_em(emcts, snr, ord):
 	return mod
 
 star = '10700'
-mdir = '/home/matt/'
+mdir = mattdir()
 emcts, snr = em_calib(star, mdir, star)
 plot_em(emcts, snr, 3, mdir)
