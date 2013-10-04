@@ -54,6 +54,7 @@ def plot_em(emcts, snr, order, mdir, star):
 	pl.text(5, 130, 'Standard Deviation: {:.3}'.format(stddev))
 	#pl.show()
 	pl.savefig(mdir+'projects/OTHER/NOTES/EXPM/'+star+'_emcts_snr_ord'+str(order)+'.eps')
+	
 
 def model_em(emcts, snr, ord):
 	z = np.polyfit(emcts, snr, ord)
