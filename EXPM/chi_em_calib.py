@@ -27,8 +27,8 @@ def plot_em(emcts, snr, order, mdir, star, model):
 	pl.plot(emcts/1e6, model, 'ro', markersize=simsize)
 	stddev = np.std(snr - model)
 	print "Standard Deviation: "+str(stddev)
-	pl.text(5, 150, 'Polynomial Order: '+str(order))
-	pl.text(5, 130, 'Standard Deviation: {:.3}'.format(stddev))
+	pl.text(.55*max(emcts)/1e6, 0.375*max(snr), 'Polynomial Order: '+str(order))
+	pl.text(.55*max(emcts)/1e6, 0.325*max(snr), 'Standard Deviation: {:.3}'.format(stddev))
 	#pl.show()
 	pl.savefig(mdir+'projects/OTHER/NOTES/EXPM/em_cts_snr/'+star+'_emcts_snr_ord'+str(order)+'.eps')
 	
@@ -72,7 +72,7 @@ def em_calib(star, mdir):
 	airmass = np.zeros(len(gd))
 	#print len(gd)
 	for i in range(len(gd)):
-		print i, airmassall[gd[i]]
+		#print i, airmassall[gd[i]]
 		snr[i] = float(snrall[gd[i]])
 		emavg[i] = float(emavgstr[gd[i]])
 		emnumsmp[i] = float(emnumsmpstr[gd[i]])
@@ -92,10 +92,10 @@ mdir = mattdir()
 order = 3
 
 #The star you want to plot:
-star = '22049'
+star = '128620'
 
-emcts, snr, airmass = em_calib(star, mdir)
-model = model_em(emcts, snr, order)
+#emcts, snr, airmass = em_calib(star, mdir)
 
-plot_em(emcts, snr, order, mdir, star, model)
-plot_airmass(snr, model, airmass, order, star)
+#model = model_em(emcts, snr, order)
+#plot_em(emcts, snr, order, mdir, star, model)
+#plot_airmass(snr, model, airmass, order, star)
