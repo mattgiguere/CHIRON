@@ -18,50 +18,46 @@ if n_params() ne 4 then begin			;Error check
   stop
 endif  
 
-  ht = -1                                        ;flag: no observatory yet
-  obslc = strlowcase(obs)                        ;force lowercase
-  if obslc eq 'lick' or obslc eq 'l3' then begin ;Lick 3-m
-    lat = 0.651734547d0                          ; +37 20 29.9
-    lon = -2.123019229d0                          ; 121 38 24.15 W
-    ht = 1283.d0
-  endif
-  if obslc eq 'cfht' then begin                   ;CFHT
-    lat = 0.346030917d0                           ; +19 49 34
-    lon = -2.713492477d0                          ; 155 28 18 W
-    ht = 4198.
-  endif
-  if obslc eq 'ctio' then begin                   ; CTIO 1.5-m
-; from JTW (DF Aug 3, 2012)
-    lon = -1.2348025d0
-    lat = -0.52648343d0
-
-; old values 
-;    lat = -0.52654979d0                           ; -30.16908 S deg
-;    lon = -1.2348026d0                             ;  70.80627 W deg
-    ht = 2216                                     ; alt in meters
-  endif
-  if obslc eq 'kp' then begin                     ;Kitt Peak
-    lat = 0.557865407d0                           ; +31 57.8 (1991 Almanac)
-    lon = -1.947787445d0                          ; 111 36.0 W
-    ht = 2120.
-  endif
-  if obslc eq 'kitt' then begin                   ;Kitt Peak
-    lat = 0.557865407d0                           ; +31 57.8 (1991 Almanac)
-    lon = -1.947787445d0                          ; 111 36.0 W
-    ht = 2120.
-  endif
-  if obslc eq 'green' then begin	  	  ; Green Bank
-    lat = ten([38,26,45.48d0])*!dtor
-    lon = -ten([79,50,54.53d0])*!dtor
-    ht = 798.5
-  endif
+ht = -1                                        ;flag: no observatory yet
+obslc = strlowcase(obs)                        ;force lowercase
+if obslc eq 'lick' or obslc eq 'l3' then begin ;Lick 3-m
+   lat = 0.651734547d0                          ; +37 20 29.9
+   lon = -2.123019229d0                          ; 121 38 24.15 W
+   ht = 1283.d0
+endif
+if obslc eq 'cfht' then begin                   ;CFHT
+   lat = 0.346030917d0                           ; +19 49 34
+   lon = -2.713492477d0                          ; 155 28 18 W
+   ht = 4198.
+endif
+if obslc eq 'ctio' then begin                   ; CTIO 1.5-m
+   ; Mamajek Geodetic Coordinates
+   lon = ten(-70, 48, 24.44d)/360.*2*!dpi        ;geodetic SMARTS 1.5 
+   lat = ten(-30, 10, 9.42d)/360.*2*!dpi         ;geodetic SMARTS 1.5 
+   ht = 2241.9d                                   ; alt in meters
+endif
+if obslc eq 'kp' then begin                     ;Kitt Peak
+  lat = 0.557865407d0                           ; +31 57.8 (1991 Almanac)
+  lon = -1.947787445d0                          ; 111 36.0 W
+  ht = 2120.
+endif
+if obslc eq 'kitt' then begin                   ;Kitt Peak
+  lat = 0.557865407d0                           ; +31 57.8 (1991 Almanac)
+  lon = -1.947787445d0                          ; 111 36.0 W
+  ht = 2120.
+endif
+if obslc eq 'green' then begin	  	  ; Green Bank
+  lat = ten([38,26,45.48d0])*!dtor
+  lon = -ten([79,50,54.53d0])*!dtor
+  ht = 798.5
+endif
 ; Anglo-Australian Telescope
 ;http://www.aao.gov.au/local/www/cgt/obsguide/node5.html#SECTION00230000000000000000
-  if strlowcase(obslc) eq 'aao' or strlowcase(obslc) eq 'aat' then begin
-    lat = -ten([31,16,37.34d0])*!dtor 
-    lon = ten([149,03,57.91d0])*!dtor
-    ht = 1164.d0 
-  endif
+if strlowcase(obslc) eq 'aao' or strlowcase(obslc) eq 'aat' then begin
+  lat = -ten([31,16,37.34d0])*!dtor 
+  lon = ten([149,03,57.91d0])*!dtor
+  ht = 1164.d0 
+endif
 
 ;  ADD YOUR OWN OBSERVATORY HERE:
 ;  if obslc eq 'My obs' then begin		
