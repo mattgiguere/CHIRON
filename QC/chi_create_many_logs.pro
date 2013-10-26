@@ -16,6 +16,8 @@
 ;  INPUTS:
 ;
 ;  OPTIONAL INPUTS:
+;		BARY: Runs the barycentric correction, adding the given range of dates
+;			to qbcvel.ascii and qbcvel.dat
 ;		HDNUM: Set this to the HD (Henry Draper Catalog) number of the CHIRPS
 ;			target you'd like to create a star log for. If not set, no log
 ;			will be created for that star.
@@ -52,7 +54,7 @@
 ;
 ;-
 pro chi_create_many_logs, $
-help = help, $
+bary = bary, $
 postplot = postplot, $
 justlog = justlog, $
 justthars = justthars, $
@@ -633,7 +635,31 @@ datearr=[ $
 '130927', $
 '130928', $
 '130929', $
-'130930' $
+'130930', $
+'131001', $
+'131002', $
+'131003', $
+'131004', $
+'131005', $
+'131006', $
+'131007', $
+'131008', $
+'131009', $
+'131010', $
+'131011', $
+'131012', $
+'131013', $
+'131014', $
+'131015', $
+'131016', $
+'131017', $
+'131018', $
+'131019', $
+'131020', $
+'131021', $
+'131022', $
+'131023', $
+'131024' $
 ]
 
 if ~keyword_set(startdate) then startdate = datearr[0]
@@ -661,8 +687,14 @@ for i=0, n_elements(datearr)-1 do begin
     if keyword_set(hdnum) then chi_star_log, log, hdnum = hdnum
     if keyword_set(justquality) then chi_quality, date = datearr[i]
     if keyword_set(repipe) then chi_reduce_all, date=datearr[i], /skipbary
+    if keyword_set(bary) then begin
+	   lfn = '/tous/mir7/logsheets/20'+strmid(datearr[i], 0, 2)+$
+		  '/'+strt(datearr[i])+'.log'
+	   qbarylog, lfn, prefix='chi'+datearr[i]
+    endif;kw(bary)
 endfor
 
+if keyword_set(bary) then barystruct_dbl, observatory='ctio'
 
 stop
 end;chi_create_many_logs.pro
