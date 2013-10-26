@@ -40,23 +40,6 @@ bcat=replicate(bcat,count-1l)
 ;stop
 openr,1,asciifile
 readf,1,line  		  ; throw away the first line
-for i=0,count-2 do begin  ;because first line dropped
-	readf,1,line
-	bcat(i).obsnm=getwrd(line,0)
-	bcat(i).objnm=getwrd(line,1)
-	bcat(i).bc=float(getwrd(line,2))
-        if bcat[i].objnm eq '10700' and bcat[i].jd gt 16100. then begin
-stop
-           restore,'/tous/mir7/iodspec/midpoints_tauceti.dat'
-           xx=where(bcat[i].obsnm eq mdpts.obsnm and mdpts.em_midtime ne '00:00:00',nxx)
-print,xx
-           if nxx gt 0 then bcat[i].bc = bcat[i].bc + mdpts[xx].diff_from_geom
-print,mdpts[xx].diff_from_geom
-        endif 
-	bcat(i).jd=float(getwrd(line,3))
-	bcat(i).ha=float(getwrd(line,4))
-	bcat(i).obtype=getwrd(line,5)
-end
 
 ; old days - loops could not be larger than 32768
 ;if fix(nobs) gt 30000 then begin
