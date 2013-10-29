@@ -268,7 +268,7 @@ mgsidfn = '/tous/mir7/queueobs/mysqlscripts/'+date+'_GetScriptID.txt'
 openw, 2, mgsidfn
 printf, 2, "SELECT  scripts.script_id  FROM scripts WHERE scripts.script_date_start = '"+mysqldate+"';"
 close, 2
-spawn, 'sshexoa mysql -u automark -paut0marker chiron < '+mgsidfn, scriptidarr
+spawn, 'sshexo mysql -u automark -paut0marker chiron < '+mgsidfn, scriptidarr
 scriptid = scriptidarr[1]
 calball = '/'+date+'/'+date+'_cals.tgz'
 for pa=0, n_elements(proparr)-1 do begin
