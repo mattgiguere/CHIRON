@@ -2286,6 +2286,7 @@ printf, 2, '<br>'
 printf, 2, '</body>'
 printf, 2, '</html>'
 close, 2
+spawn, 'chmod -R 777 '+qfile
 
 
 chi_update_qc_index, rootdir=qdir
