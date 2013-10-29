@@ -278,7 +278,7 @@ for pa=0, n_elements(proparr)-1 do begin
   openw, 2, mgplanfn
   printf, 2, "SELECT nos_objects.object_id FROM nos_objects LEFT JOIN nos_results ON nos_objects.script_id = nos_results.script_id AND nos_objects.object_id = nos_results.object_id LEFT JOIN object_tarfiles ON nos_objects.object_id = object_tarfiles.object_id AND object_tarfiles.script_id = IFNULL(nos_objects.script_id,0) LEFT JOIN objects on nos_objects.object_id = objects.object_id WHERE nos_objects.script_id = "+scriptid+" AND nos_results.nosresults_status = 'Observed' AND object_tarfiles.object_id IS NULL AND objects.plan_id = "+strt(long(proparr[pa]))
   close, 2
-  spawn, 'sshexoa mysql -u automark -paut0marker chiron < '+mgplanfn, objects
+  spawn, 'sshexo mysql -u automark -paut0marker chiron < '+mgplanfn, objects
   if strt(objects[0]) ne '' then begin
 	objectarr = objects[1:*]
 	planball = '/'+date+'/'+date+'_planid_'+planid+'.tgz'
@@ -288,7 +288,7 @@ for pa=0, n_elements(proparr)-1 do begin
 	  openw, 2, mgobjfn
 	  printf, 2, "INSERT IGNORE INTO object_tarfiles (object_id, script_id, otarfile_tarfile, otarfile_calibrations ) VALUES( "+objectid+", "+scriptid+", '"+planball+"', '"+calball+"')"
 	  close, 2
-	  spawn, 'sshexoa mysql -u automark -paut0marker chiron < '+mgobjfn
+	  spawn, 'sshexo mysql -u automark -paut0marker chiron < '+mgobjfn
 	endfor;mysql object loop
   endif;objects ne ''
 endfor;mysql plan loop
