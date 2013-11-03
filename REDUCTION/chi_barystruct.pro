@@ -8,16 +8,13 @@
 ;  CATEGORY:
 ;      CHIRON
 ;
-;  CALLING SEQUENCE:
-;
-;      chi_barystruct
-;
 ;  INPUTS:
 ;		ASCIIFN: The filename of the ascii file.
 ;		STRUCTFN: The filename of the idl data structure
 ;
 ;  EXAMPLE:
-;      chi_barystruct
+;      chi_barystruct, asciifn='/tous/mir7/bary/qbcvel.ascii', $
+;		structfn='/tous/mir7/bary/qbcvel.dat'
 ;
 ;  MODIFICATION HISTORY:
 ;        c. Matt Giguere 2013.11.13 14:36:53
@@ -36,6 +33,7 @@ bcat_i = create_struct('obsnm', '', 'objnm', '', $
 bcat = replicate(bcat_i, nobs)
 
 openr, flun, asciifn, /get_lun
+line=''
 for i=0L, nobs-1 do begin
   readf, flun, line
   vars = strsplit(line, ' ', /extract)
@@ -48,5 +46,5 @@ for i=0L, nobs-1 do begin
   bcat[i].obtype = vars[5]
 endfor;loop through lines
 free_lun, flun
-stop
+save, bcat, filename=structfn
 end;chi_barystruct.pro
