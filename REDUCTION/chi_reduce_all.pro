@@ -101,7 +101,8 @@ if ~keyword_set(skipbary) then begin
   ;No Dot Prefix (ndpref) - The prefix without the dot (e.g. 'chi120402')
   ndpref = strmid(pref, 0, strlen(pref)-1)
   qbarylog, lfn, prefix=ndpref
-  barystruct_dbl, observatory='ctio'
+  chi_barystruct, asciifn='/tous/mir7/bary/qbcvel.ascii', $
+  				structfn='/tous/mir7/bary/qbcvel.dat'
 endif ;~KW(skipbary)
 
 
