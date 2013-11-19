@@ -512,9 +512,9 @@ if ~file_test(lsdatedir, /directory) then spawn, 'mkdir '+lsdatedir
 
 
 lognm = '/mir7/logstructs/20'+strmid(date,0,2)+'/'+date+'log'
-if file_test(lognm+'.dat') then begin
-spawn, 'mv '+lognm+'.dat'+' '+nextname(lognm+'_old', '.dat')
-endif
+;if file_test(lognm+'.dat') then begin
+;spawn, 'mv '+lognm+'.dat'+' '+nextname(lognm+'_old', '.dat')
+;endif
 spawn, 'hostname', host
 if strmid(host, 13,14, /reverse) eq 'astro.yale.edu' then lognm = '/tous'+lognm
 save, log, filename=lognm+'.dat'
