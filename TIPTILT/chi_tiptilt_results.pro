@@ -47,6 +47,13 @@ snr = dblarr(7)
 tiptilt = intarr(7)
 exptime = dblarr(7)
 airmass = dblarr(7)
+
+tiptilt = [0,1,0,1,0,1,0]
+on = where(tiptilt eq 1)
+off = where(tiptilt eq 0)
+seqnums = lindgen(7) + 1127L
+
+print, 'SEQ #  ,  EXPTIME  ,  EMCTRT  ,  EM CTS  ,  SNR  ,  AIRMASS  ,  TT ON'
 for i=127, 133 do begin
    j = i-127
    emcts[j] = double(log[i].emavg)*double(log[i].emnumsmp)
@@ -54,12 +61,18 @@ for i=127, 133 do begin
    snr[j] = double(log[i].snrbp5500)
    exptime[j] = double(log[i].exptime)
    airmass[j] = double(log[i].airmass)
+   print, strt(j+1127), '  ,  ', $
+   	strt(exptime[j],f='(F8.1)'), '  ,  ', $
+   	strt(emctrt[j], f='(F10.2)'), '  ,  ', $
+   	strt(emcts[j], f='(E12.4)'), '  ,  ', $
+   	strt(snr[j], f='(F12.1)'), '  ,  ', $
+   	strt(airmass[j], f='(F6.2)'), '  ,  ', $
+   	strt(tiptilt[j])
 endfor;loop through tip tilt observations
 
-tiptilt = [0,1,0,1,0,1,0]
-on = where(tiptilt eq 1)
-off = where(tiptilt eq 0)
-seqnums = lindgen(7) + 1127L
+
+
+
 
 if keyword_set(postplot) then begin
    fn = nextnameeps('131003_EM_CTS')
@@ -159,6 +172,9 @@ al_legend, ['TT ON', 'TT OFF'], col=[70, 250], psym=[8,8], /right
 if keyword_set(postplot) then begin
    ps_close
 endif
+
+
+
 
 stop
 
