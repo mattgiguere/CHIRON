@@ -92,10 +92,27 @@ if bobsct gt 2 then begin
 	hd = headfits(log[bobs[0]].filename)
 	chipst1 = chip_geometry(hd=hd)
 
-	;if file_test('/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat') then begin
-	;	restore, '/tous/mir7/medbias/'+date+'_bin'+binsz+'_'+rdspd+'_medbias.dat'
-	;endif else begin
-		redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/ctio.par')
+		ctparfn = -1
+		spawn, 'pwd', pwddir
+		case pwddir of
+		   '/home/matt/projects/CHIRON/QC': ctparfn = '/home/matt/projects/CHIRON/REDUCTION/ctio.par'
+		   '/home/matt/projects/CHIRON/REDUCTION': ctparfn = '/home/matt/projects/CHIRON/REDUCTION/ctio.par'
+		   '/tous/CHIRON/REDUCTION': ctparfn = '/tous/CHIRON/REDUCTION/ctio.par'
+		   '/tous/CHIRON/QC': ctparfn = '/tous/CHIRON/REDUCTION/ctio.par'
+		endcase
+		if ctparfn eq -1 then begin
+		  print, '******************************************************'
+		  print, 'You must be running things from a different directory.'
+		  print, 'Your current working directory is: '
+		  print, pwddir
+		  print, 'ctparfn has not set. '
+		  print, 'Either changed your working directory, or modify the case'
+		  print, 'statement above this line.'
+		  print, '******************************************************'
+		  stop
+		endif
+	
+		redpar = readpar(ctparfn)
 		redpar.date = date
 		print, '3x1 normal...'
 		chi_medianbias, redpar = redpar, log = log, /bin31, /normal, bobsmed = bobsmed31n
