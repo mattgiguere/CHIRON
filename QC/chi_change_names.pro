@@ -47,15 +47,15 @@ logmaker = logmaker, $
 chi_quality = chi_quality, $
 nodashmove = nodashmove
 
-date = '130904'
+date = '131213'
 dir = '/raw/mir7/'+date+'/'
 
 ;orig is the original last observation from the night:
-orig = 1286L
+orig = 1275
 ;final is the name of the last file of the night after
 ;incrementing all the names:
-final = 1289L
-dashfile = 1140L
+final = 1276
+dashfile = 1135
 nfiles = dashfile - orig + 1
 
 prefix = 'chi'+date+'.'
@@ -66,11 +66,14 @@ suffix = '.fits'
 nospawn = 1
 if keyword_set(executespawn) then nospawn = 0
 print, 'nospawn is: ', nospawn
-stop
+;stop
 for i=0LL, nfiles, -1 do begin
   command = 'mv -iv '+dir+prefix+strt(orig+i)+suffix+' '+dir+prefix+strt(final+i, f='(I04)')+suffix
+  spawn, 'date "+%Y%m%d%H%M"', newdate
   if nospawn then  print, command
+  if nospawn then print, 'touch -mt ' +newdate+ ' '+ dir+prefix+strt(final+i, f='(I04)')+suffix
   if ~nospawn then  spawn, command
+  if ~nospawn then spawn, 'touch -mt ' +newdate+ ' '+ dir+prefix+strt(final+i, f='(I04)')+suffix
 endfor
 ;now get rid of the dash file:
 if ~keyword_set(nodashmove) then begin
