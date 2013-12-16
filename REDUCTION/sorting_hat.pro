@@ -13,9 +13,6 @@
 ;
 ; KEYWORDS:
 ;
-;	RUN: The current run number (e.g. 'rqa33') used to find possible 
-;		  thar solutions 
-;
 ;	OPTIONAL KEYWORDS: 
 ;  
 ;	REDUCE: runs reduce_ctio (reduce and get thar soln before running iod2fits)
@@ -45,8 +42,8 @@
 ;	20110331 - Now uses quartz for order finding if neither alpha cen nor a bstar
 ;					are present. ~MJG 
 ;  20110414 - Fixed a bug when processing files at the start of a new run ~MJG
-;  20110808 - structured  (AT). Remaining hard-coded things are  marked with >>
-;  20120419 - Added 1x1 binning as an option. ~MJG
+;  20110808 - structured  (AT)
+;  20120419 - Modified to work with Torrent 4 amp readout. Added 1x1 binning as an option. ~MJG
 ;  20121023 - Added the ThAr filename to redpar to be written to the FITS header ~MJG
 ;-
 ;
@@ -57,7 +54,27 @@ thar_soln=thar_soln, getthid=getthid, mode = mode, obsnm=obsnm, $
 
 
 angstrom = '!6!sA!r!u!9 %!6!n'
-redpar = readpar('/home/matt/projects/CHIRON/REDUCTION/ctio.par')
+ctparfn = -1
+spawn, 'pwd', pwddir
+case pwddir of
+   '/home/matt/projects/CHIRON/QC': ctparfn = '/home/matt/projects/CHIRON/REDUCTION/ctio.par'
+   '/home/matt/projects/CHIRON/REDUCTION': ctparfn = '/home/matt/projects/CHIRON/REDUCTION/ctio.par'
+   '/tous/CHIRON/REDUCTION': ctparfn = '/tous/CHIRON/REDUCTION/ctio.par'
+   '/tous/CHIRON/QC': ctparfn = '/tous/CHIRON/REDUCTION/ctio.par'
+endcase
+if ctparfn eq -1 then begin
+  print, '******************************************************'
+  print, 'You must be running things from a different directory.'
+  print, 'Your current working directory is: '
+  print, pwddir
+  print, 'ctparfn has not set. '
+  print, 'Either changed your working directory, or modify the case'
+  print, 'statement above this line.'
+  print, '******************************************************'
+  stop
+endif
+
+redpar = readpar(ctparfn)
 redpar.imdir = night+'/'  ; pass night into redpar
 redpar.date = night
 redpar.versiond=systime()
