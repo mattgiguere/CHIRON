@@ -105,7 +105,7 @@ if date gt 130301 then begin
   barpressmin = 770d
   barpressmax = 790d
   echelleenclmin = 0.1d
-  echelleenclmax = 6d
+  echelleenclmax = 10d
 endif;date=after Andrei turned up the temp.
 
 if date lt 130301 then begin
