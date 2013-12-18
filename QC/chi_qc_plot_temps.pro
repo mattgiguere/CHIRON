@@ -109,6 +109,8 @@ if keyword_set(insttemp) then begin
 	if keyword_set(postplot) then begin
 	   ps_close
 	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxit>0
 
@@ -166,6 +168,8 @@ if keyword_set(insttemp) then begin
 	if keyword_set(postplot) then begin
 	   ps_close
 	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxit7>0
 endif;KW(insttemp)
@@ -226,6 +230,8 @@ if keyword_set(dettemps) then begin
 	if keyword_set(postplot) then begin
 	   ps_close
 	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxdt>0
 
@@ -280,6 +286,8 @@ if keyword_set(dettemps) then begin
 	if keyword_set(postplot) then begin
 	   ps_close
 	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxdt>0
 
@@ -334,6 +342,8 @@ if keyword_set(chipress) then begin
 	if keyword_set(postplot) then begin
 	   ps_close
 	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxcp>0
   
@@ -381,6 +391,8 @@ if keyword_set(chipress) then begin
 	if keyword_set(postplot) then begin
 	   ps_close
 	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxcp7>0
 endif;KW(chipress)
