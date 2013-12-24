@@ -20,7 +20,9 @@
 ;			to qbcvel.ascii and qbcvel.dat
 ;		HDNUM: Set this to the HD (Henry Draper Catalog) number of the CHIRPS
 ;			target you'd like to create a star log for. If not set, no log
-;			will be created for that star.
+;			will be created for that star. Note: If you're running this for a
+;			b star (HR) do NOT include the space. Example:
+;			IDL>chi_create_many_logs, hdnum='HR472'
 ;		STARTDATE: The start date, in the format of yymmdd, of when you want to start
 ;			creating logs for. If this is not set, it was start checking on the first 
 ;			date in the date array below (currently set to 120302)

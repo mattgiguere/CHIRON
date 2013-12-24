@@ -15,6 +15,8 @@
 ;
 ;  INPUTS:
 ;		HDNUM: The Henry Draper Catalog (HD) number of the star of interest.
+;		   note: if it's a b star (HR #) do NOT include the space. 
+;			example: IDL>chi_star_log, log, hdnum='HR472'
 ;
 ;  OPTIONAL INPUTS:
 ;
@@ -46,6 +48,8 @@ if file_test(mdir+'data/CHIRPS/rvs/vst'+objname+'.dat') then begin
 	cf3xst = 1
 endif else cf3xst=0
 lfn = ldir+objname+'log.dat'
+;put a space in it if it's an HR star:
+if strmid(objname, 0, 2) eq 'HR' then objname = 'HR '+strmid(objname, 2, strlen(objname))
 newstarob = where(strt(log.object) eq objname, newstarct)
 if file_test(lfn) then begin
   restore, lfn
