@@ -190,7 +190,11 @@ nodata = [$
 '130823', $
 ;'130904', $;The night is good, but seqnums were initially out of order due to operator
 ;'130905', $;The night is good, but seqnums strange and Calib1 problem due to repair
-'130906' $;bad weather
+'130906', $;bad weather
+'131023', $;bad weather
+'131224', $;closed for Holiday
+'131225', $;closed for Holiday
+'131231' $;closed for Holiday
 ]
 
 checked = [$
@@ -201,7 +205,7 @@ checked = [$
 ;restore the bary log:
 restore, '/tous/mir7/bary/qbcvel.dat'
 
-for m=0, nmonths-1 do begin
+for m=nmonths-1, 0, -1 do begin
 ;stop
 ;printed month:
 pmonthn = (m + bmonth - 1) mod 12
