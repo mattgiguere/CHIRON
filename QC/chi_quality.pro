@@ -884,7 +884,9 @@ double(log.maxcts21) le '0d' or $
 double(log.maxcts22) gt '5d4' or $
 double(log.maxcts22) le '0d' and $
 strt(log.object) ne 'junk', ntor_q)
-;stop
+print, 'Exposures with missing quadrants:'
+for i=0, ntor_q-1 do print, log[tor_q[i]].seqnum
+if ntor_q gt 0 then stop
 printf, 2, '<tr>'
 printf, 2, '<td>'
 printf, 2, 'Missing Qs: '
@@ -892,7 +894,7 @@ printf, 2, '</td>'
 if ntor_q eq 0 then begin			   
 printf, 2, '<td bgcolor =#5CEC21 align=center>'
 endif else printf, 2, '<td bgcolor =#EC020B align=center>'
-printf, 2, strt(ntor_q)
+printf, 2, strt(log[tor_q].seqnum)
 printf, 2, '</td>'
 printf, 2, '</tr>'
 printf, 2, ''
