@@ -886,7 +886,7 @@ double(log.maxcts22) le '0d' and $
 strt(log.object) ne 'junk', ntor_q)
 print, 'Exposures with missing quadrants:'
 for i=0, ntor_q-1 do print, log[tor_q[i]].seqnum
-if ntor_q gt 0 then stop
+;if ntor_q gt 0 then stop
 printf, 2, '<tr>'
 printf, 2, '<td>'
 printf, 2, 'Missing Qs: '
