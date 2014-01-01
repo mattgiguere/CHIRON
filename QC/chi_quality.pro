@@ -159,6 +159,7 @@ endif else begin
 log = chi_log(date=date)
 chi_count_check, log
 chi_create_tp_log, date=date
+chi_make_starlogs, log
 endelse
 
 if ~keyword_set(skipplots) then begin
@@ -186,6 +187,7 @@ if ~keyword_set(skipplots) then begin
    ;chi_acena_log, log, postplot=~keyword_set(skipplots), dir = qdir
    ;chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
    ;chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
+   chi_plot_emavg, date=date
 endif;skipplots
 chi_check_reduction, log=log, $
   /iodspec, iodres = iodres, $
