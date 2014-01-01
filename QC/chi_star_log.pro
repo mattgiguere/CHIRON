@@ -50,7 +50,10 @@ endif else cf3xst=0
 lfn = ldir+objname+'log.dat'
 ;put a space in it if it's an HR star:
 if strmid(objname, 0, 2) eq 'HR' then objname = 'HR '+strmid(objname, 2, strlen(objname))
+
+;find the indeces for observations in the nightly logstructure that are of the objects of interest:
 newstarob = where(strt(log.object) eq objname, newstarct)
+
 if file_test(lfn) then begin
   restore, lfn
   for i=0, newstarct-1 do begin
@@ -69,7 +72,12 @@ if file_test(lfn) then begin
 		  endif;xct>0
 		endif;cf3xst
 		starlog = [starlog, log[newstarob[i]]]
-	endif;already=0
+	endif else begin;already=0
+	  ;check and make sure it has the SNR, etc. If not, and it now exists b/c the reduction
+	  ;code has since been run, replace it:
+	  if starlog[already].snrbp5500 eq 0 and log[newstarob[i]].snrbp5500 ne 0 then starlog[already]=log[newstarob[i]]
+	endelse
+
   endfor;newstarct loop
 endif else starlog = log[newstarob]
 
