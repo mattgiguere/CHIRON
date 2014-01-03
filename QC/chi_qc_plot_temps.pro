@@ -76,6 +76,8 @@ if keyword_set(insttemp) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/insttempdayeps/', /directory) then spawn, 'mkdir '+tpdatedir+'/insttempdayeps/'
+	  if ~file_test(tpdatedir+'/insttempdaypng/', /directory) then spawn, 'mkdir '+tpdatedir+'/insttempdaypng/'
 	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempdayeps/'+date+'insttempday'
 	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempdaypng/'+date+'insttempday'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
@@ -136,6 +138,8 @@ if keyword_set(insttemp) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/insttempweekeps/', /directory) then spawn, 'mkdir '+tpdatedir+'/insttempweekeps/'
+	  if ~file_test(tpdatedir+'/insttempweekpng/', /directory) then spawn, 'mkdir '+tpdatedir+'/insttempweekpng/'
 	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempweekeps/'+date+'insttempweek'
 	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempweekpng/'+date+'insttempweek'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
@@ -201,6 +205,8 @@ if keyword_set(dettemps) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/dettempdayeps/', /directory) then spawn, 'mkdir '+tpdatedir+'/dettempdayeps/'
+	  if ~file_test(tpdatedir+'/dettempdaypng/', /directory) then spawn, 'mkdir '+tpdatedir+'/dettempdaypng/'
 	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempdayeps/'+date+'dettempday'
 	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempdaypng/'+date+'dettempday'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
@@ -257,6 +263,8 @@ if keyword_set(dettemps) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/dettempweekeps/', /directory) then spawn, 'mkdir '+tpdatedir+'/dettempweekeps/'
+	  if ~file_test(tpdatedir+'/dettempweekpng/', /directory) then spawn, 'mkdir '+tpdatedir+'/dettempweekpng/'
 	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempweekeps/'+date+'dettempweek'
 	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempweekpng/'+date+'dettempweek'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
@@ -318,6 +326,8 @@ if keyword_set(chipress) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/chipressdayeps/', /directory) then spawn, 'mkdir '+tpdatedir+'/chipressdayeps/'
+	  if ~file_test(tpdatedir+'/chipressdaypng/', /directory) then spawn, 'mkdir '+tpdatedir+'/chipressdaypng/'
 	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressdayeps/'+date+'chipressday'
 	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressdaypng/'+date+'chipressday'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
@@ -367,6 +377,8 @@ if keyword_set(chipress) then begin
 	  ;first test the temps date directory, and make it for the new year if need be:
 	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
 	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/chipressweekeps/', /directory) then spawn, 'mkdir '+tpdatedir+'/chipressweekeps/'
+	  if ~file_test(tpdatedir+'/chipressweekpng/', /directory) then spawn, 'mkdir '+tpdatedir+'/chipressweekpng/'
 	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressweekeps/'+date+'chipressweek'
 	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressweekpng/'+date+'chipressweek'
 	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')

@@ -187,7 +187,7 @@ if ~keyword_set(skipplots) then begin
    ;chi_acena_log, log, postplot=~keyword_set(skipplots), dir = qdir
    ;chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
    ;chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
-   chi_plot_emavg, date=date
+   ;chi_plot_emavg, date=date
 endif;skipplots
 chi_check_reduction, log=log, $
   /iodspec, iodres = iodres, $
