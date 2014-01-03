@@ -30,8 +30,7 @@
 ;        c. Matt Giguere 2014.01.14 19:29:01
 ;
 ;-
-pro chi_make_starlogs, 
-log
+pro chi_make_starlogs, log
 
 spawn, 'echo $home', mdir
 
