@@ -89,7 +89,7 @@ def em_calib(star, mdir):
 mdir = mattdir()
 
 #The polynomial fit for the SNR(emcts):
-order = 3
+order = 2
 
 #The star you want to plot:
 star = '128620'

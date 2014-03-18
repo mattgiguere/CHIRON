@@ -97,6 +97,7 @@ orcend(*,nord+1) = orchi
 if redpar.debug ge 2 then print,'GETSPEC: Extracting spectrum.'
 
 
+stop
 if n_elements(sky) eq 0 then sky=im*0.
 if keyword_set(cosmics) then remove_cosmics, im, orc, xwd, sky, spec = optspec, cosmics = replace, mask = mask, fwhm = seeing, gain=gain, ron=ron
 
