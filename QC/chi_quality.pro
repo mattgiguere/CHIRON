@@ -30,7 +30,7 @@
 ;
 ;  MODIFICATION HISTORY:
 ;        c. Matt Giguere 2012.03.10 09:56:25 AM
-;
+;        Imran Hasan line 189,190,191 to make ThAr plots
 ;-
 pro chi_quality, $
 date = date, $
@@ -188,6 +188,9 @@ if ~keyword_set(skipplots) then begin
    ;chi_acenb_log, log, postplot=~keyword_set(skipplots), dir = qdir
    ;chi_tauceti_log, log, postplot=~keyword_set(skipplots), dir = qdir
    ;chi_plot_emavg, date=date
+   if FILE_Test('/tous/mir7/fitspec/'+date) then begin 
+   resolutionall, date
+   endif
 endif;skipplots
 chi_check_reduction, log=log, $
   /iodspec, iodres = iodres, $
@@ -2278,6 +2281,9 @@ endif
 ;printf, 2, '<br>'
 ;printf, 2, '<img src="'+pdir+'/thar/'+year+'/'+date+'ThArtpslt.png" width=80% />'
 printf, 2, '<br>'
+printf, 2, '<img src="'+pdir+'/thar/'+date+'tharlines.png" />'
+printf, 2, '<br>'
+printf, 2, '<img src="'+pdir+'/thar/'+date+'tharresolution.png" />'
 printf, 2, '<br>'
 printf, 2, '<a href="http://exoplanets.astro.yale.edu/~jspronck/chiron/CHIRTEMP.html" target="new">'
 printf, 2, '<h3>'

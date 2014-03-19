@@ -28,7 +28,7 @@
 ;
 ;  MODIFICATION HISTORY:
 ;        c. Matt Giguere 2012.03.12 03:58:21 PM
-;
+;        lines 182,183,184 commented out, ihasan, 2014.02.12
 ;-
 pro chi_med_bias, $
 help = help, $
@@ -179,9 +179,9 @@ if bobsct gt 2 then begin
 
 
 	lognm = '/mir7/logstructs/20'+strmid(date,0,2)+'/'+date+'log'
-	if file_test(lognm+'.dat') then begin
-	  spawn, 'mv '+lognm+'.dat'+' '+nextname(lognm+'_old', '.dat')
-	endif;FT(log)
+	;if file_test(lognm+'.dat') then begin
+	 ;spawn, 'mv '+lognm+'.dat'+' '+nextname(lognm+'_old', '.dat')
+	;endif;FT(log)
 	spawn, 'hostname', host
 	if strmid(host, 13,14, /reverse) eq 'astro.yale.edu' then lognm = '/tous'+lognm
 	save, log, filename=lognm+'.dat'

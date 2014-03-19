@@ -299,7 +299,7 @@ utst            = sxpar(hd, 'UTSHUT  ')
 log[i].UTSHUT = utst
 if strt(utst) eq '' then begin
    print, 'WARNING! UTSHUT was blank!'
-   stop
+;   stop
 endif else begin
    log[i].UTSHUTJD = julday(strmid(utst, 5,2), $ ;month
 							strmid(utst, 8,2), $ ;day

@@ -1,0 +1,3 @@
+cd /tous/mir7/fitspec
+ls -dr 1* | sed -e '0,0 d; 90 q'  > /tous/CHIRON/QC/datedirs
+cd /tous/CHIRON/QC
