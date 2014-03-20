@@ -41,6 +41,8 @@
 ;		JUSTACENA: Just the Alpha Cen A Log
 ;		JUSTACENB: Just the Alpha Cen B Log
 ;		JUSTQUALITY: Regenerate the quality control pages
+;		JUSTTEST: Set this keyword to just test qbary and NOT write to qbcvel.ascii. Warning
+;			this ONLY works with QBARY and none of the other things.
 ;
 ;  OUTPUTS:
 ;
@@ -63,6 +65,7 @@ justthars = justthars, $
 justacena = justacena, $
 justacenb = justacenb, $
 justtau = justtau, $
+justtest = justtest, $
 justquality = justquality, $
 startdate = startdate, $
 enddate = enddate, $
@@ -743,9 +746,85 @@ datearr=[ $
 '131227', $
 '131228', $
 '131229', $
-'131230' $
+'131230', $
 ;'131231', $ Holiday
-;'140101', $
+'140101', $
+'140102', $
+'140103', $
+'140104', $
+'140105', $
+'140106', $
+'140107', $
+'140108', $
+'140109', $
+'140110', $
+'140111', $
+'140112', $
+'140113', $
+'140114', $
+'140115', $
+'140116', $
+'140117', $
+'140118', $
+'140119', $
+'140120', $
+'140121', $
+'140122', $
+'140123', $
+'140124', $
+'140125', $
+'140126', $
+'140127', $
+'140128', $
+'140129', $
+'140130', $
+'140131', $
+'140201', $
+'140202', $
+'140203', $
+'140204', $
+'140205', $
+'140206', $
+'140207', $
+'140208', $
+'140209', $
+'140210', $
+'140211', $
+'140212', $
+'140213', $
+'140214', $
+'140215', $
+'140216', $
+'140217', $
+'140218', $
+'140219', $
+'140220', $
+'140221', $
+'140222', $
+'140223', $
+'140224', $
+'140225', $
+'140226', $
+'140227', $
+'140228', $
+'140301', $
+'140302', $
+'140303', $
+'140304', $
+'140305', $
+'140306', $
+'140307', $
+'140308', $
+'140309', $
+'140310', $
+'140311', $
+'140312', $
+'140313', $
+'140314', $
+'140315', $
+'140316', $
+'140317', $
+'140318'$
 ]
 
 if ~keyword_set(startdate) then startdate = datearr[0]
@@ -776,7 +855,7 @@ for i=0, n_elements(datearr)-1 do begin
     if keyword_set(bary) then begin
 	   lfn = '/tous/mir7/logsheets/20'+strmid(datearr[i], 0, 2)+$
 		  '/'+strt(datearr[i])+'.log'
-	   qbarylog, lfn, prefix='chi'+datearr[i]
+	   qbarylog, lfn, prefix='chi'+datearr[i], justtest=justtest
     endif;kw(bary)
 endfor
 

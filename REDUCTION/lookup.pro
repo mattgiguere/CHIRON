@@ -152,6 +152,10 @@ endif
 ; CHECK TO SEE IF IT'S IN HIPPARCOS
 ;
 if not found then begin
+
+;
+if strmid(name, 0,2) eq 'HD' then name = strt(strmid(name, 2, strlen(name)-2))
+
 ;    if not silent then print,'Star not found in lick_st.dat: ',name
     if n_elements(hip) eq 0 then begin
         print,'Restoring Hipparcos Catalog...'

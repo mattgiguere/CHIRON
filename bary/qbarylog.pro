@@ -1,8 +1,11 @@
-pro qbarylog,logfile, test=test, baryDir=baryDir, prefix=prefix 
+pro qbarylog,logfile, test=test, baryDir=baryDir, prefix=prefix , justtest=justtest
 
 ; FUNCTION: Calculate Barycentric Correction for
 ; 	    Stellar spectra.
-
+; OPTIONAL KEYWORDS:
+;		JUSTTEST: Set this keyword if you want to just check to make sure
+;		things are working, but NOT print to qbcvel.ascii
+;
 ;  METHOD: 1.) Obtain Object Name, FLUX-WIEGHTED mean epoch, etc. from
 ;              online logsheets.
 ;          2.) Star  positions are stored in: /mir7/bary/ctio_st.dat,  hip.dat,
@@ -55,29 +58,19 @@ pro qbarylog,logfile, test=test, baryDir=baryDir, prefix=prefix
 ;
 if ( n_elements(logfile) eq 0 ) then begin
 	print, "qBaryLog:  No logfiles found to process.  Returning"
-	return
+	stop
 endif
 
 ; HANDLE PARAMETER DEFAULTS & FILE PATHS
-;
 if ( ~ keyword_set(baryDir) ) then baryDir = '/tous/mir7/bary/'  ; DF revision Mar2012
 if ( keyword_set(test) ) then baryFile = 'qbcvel.test.ascii' else baryFile = 'qbcvel.ascii'
 
 bcFile = baryDir + baryFile
 structFile = 'ctio_st.dat'
 
-;
 ; Verify that the neccessary files exist
-;
 if (n_elements(file_search(structFile)) eq 0) then message,structFile+ ' is missing.'
 if (n_elements(file_search(bcFile)) eq 0) then message,bcFile+ ' is missing.'
-
-;
-; Legacy
-;
-;defaultLogDir = '/mir7/logsheets/'
-defaultLogDir = '/tous/mir7/logsheets/2012/'   ; DF revision Mar2012
-if ( strpos(logFile,'/') eq -1 ) then logFile = defaultLogDir + logFile
 
 ;VARIABLE DECLARATIONS:
 noerror=1	& chk=''		& du=''		& dum=''	& dummy=''	&  req=''  
@@ -179,15 +172,17 @@ if ( strmid(logfile,0,1) eq '1' ) then begin ; DF revision Mar2012
    flip = 1  ; add a day to get correct UT
    year = '20'+strmid(logfile,0,2)
    m = strmid(logfile,2,2) 
+   month = m
    day = strmid(logfile,4,2) 
 endif
 
+ans='y'
 ;Save Backup copy of bcvel.ascii
 if ( ~ keyword_set(test) ) then begin
     strdate =strtrim(strcompress(day),2)+'_'+strtrim(strcompress(month),2)+$
       '_'+strtrim(strcompress(year),2)
     command = 'cp "'+bcFile+'" "'+barydir+'bcvel_backup/'+baryFile+'_'+strdate+'"'
-    spawn,command
+;    spawn,command
 endif  else print,'NOT Backing up!  Since this version of bary is in test mode!'
 
 ; Open the log file and get the prefix from the header area,
@@ -377,7 +372,9 @@ if strupcase(ans) eq 'Y' then begin
         mjd = temp[j].mjd
         ha = temp[j].ha
         type = temp[j].type
-        printf,une,format=form,fn,ob,cz,mjd,ha,type
+        if ~keyword_set(justtest) then begin
+		  printf,une,format=form,fn,ob,cz,mjd,ha,type
+        endif
         print,format=form,fn,ob,cz,mjd,ha,type
         ;stop
         
@@ -396,7 +393,9 @@ endif else begin
     print,'Make necessary changes (to logsheet?) and start again.'
     print,'The file ',bcfile,' was not affected. Exiting ...'
 endelse
-free_lun,logune 
+close,/all
+free_lun,une 
+
 end
 
 

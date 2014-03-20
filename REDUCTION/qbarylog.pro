@@ -1,8 +1,11 @@
-pro qbarylog,logfile, test=test, baryDir=baryDir, prefix=prefix 
+pro qbarylog,logfile, test=test, baryDir=baryDir, prefix=prefix , justtest=justtest
 
 ; FUNCTION: Calculate Barycentric Correction for
 ; 	    Stellar spectra.
-
+; OPTIONAL KEYWORDS:
+;		JUSTTEST: Set this keyword if you want to just check to make sure
+;		things are working, but NOT print to qbcvel.ascii
+;
 ;  METHOD: 1.) Obtain Object Name, FLUX-WIEGHTED mean epoch, etc. from
 ;              online logsheets.
 ;          2.) Star  positions are stored in: /mir7/bary/ctio_st.dat,  hip.dat,
@@ -313,7 +316,6 @@ WHILE eof(logune) eq 0 do begin ;check for end of file (eof = 1)
                     pm     = [0.d0,0.d0]                ;dummy proper motion
                     epoch = 2000.d0                     ;dummy epoch
                  endif else begin 
-
                     qbary,jdUTC,coords,epoch,czi,obs='ctio',pm = pm,$
                           barydir=barydir, ha=ha
                     cz = rm_secacc(czi,pm,parlax,mjd)
@@ -370,7 +372,9 @@ if strupcase(ans) eq 'Y' then begin
         mjd = temp[j].mjd
         ha = temp[j].ha
         type = temp[j].type
-        printf,une,format=form,fn,ob,cz,mjd,ha,type
+        if ~keyword_set(justtest) then begin
+		  printf,une,format=form,fn,ob,cz,mjd,ha,type
+        endif
         print,format=form,fn,ob,cz,mjd,ha,type
         ;stop
         
@@ -390,7 +394,7 @@ endif else begin
     print,'The file ',bcfile,' was not affected. Exiting ...'
 endelse
 close,/all
-;free_lun,logune 
+free_lun,une 
 
 end
 

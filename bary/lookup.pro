@@ -46,23 +46,23 @@ spt = ''
 ; DEFINE DIRECTORIES, etc.
 transfile = barydir+'ktranslation.dat'
 otherfile = barydir+'qother.ascii'
-hipfile = barydir+'hip.dat' 
+hipfile = barydir+'hip2.dat' 
 tycfile = '/mir3/bary/tycho.dat'
-catfile = barydir+'ctio_st.dat'
+;catfile = barydir+'ctio_st.dat'
 digits = strtrim(sindgen(10),2) ; 0,1,...
 
 
 altcat  = 'hj_st.dat'           ; Put alternate catalogs in the bary directory
 altcatvar = 'HJ'                ; this is the *variable name* for each alternate catalog
 
-if (findfile(catfile))(0) eq '' then  catfile = $ ; change this eventually
-  barydir+'ctio_st.dat'
+;if (findfile(catfile))(0) eq '' then  catfile = $ ; change this eventually
+;  barydir+'ctio_st.dat'
 
 lastchar=' ' & found = 0 
 radvel = 0 & absmag= -99        ; These could be improved
 bv = 0
 ;if n_elements(cat) eq 0 then begin
-    restore,catfile
+;    restore,catfile
 ;    cat = ctio
 ;end
 ;stop
@@ -71,33 +71,33 @@ comm = 'no comment.'
 
 ; First CHECK TO SEE IF IT IS IN OUR STANDARD CATALOG (CAT=DUM)
 
-ind = where(strupcase(cat.name) eq name,cnt)
-if cnt gt 1 then begin
-    message,'********WARNING',/info
-    print,'There  were ',cnt,' entries for ',name
-    print,'using the last one for now.  This should be looked into!'
-    print,'********WARNING'
-    ind = ind(cnt-1)
-endif
+;ind = where(strupcase(cat.name) eq name,cnt)
+;if cnt gt 1 then begin
+;    message,'********WARNING',/info
+;    print,'There  were ',cnt,' entries for ',name
+;    print,'using the last one for now.  This should be looked into!'
+;    print,'********WARNING'
+;    ind = ind(cnt-1)
+;endif
 
-if  ind(0) ne -1 then begin     ;its in our cat
-    coords = [cat(ind).ra,cat(ind).dec ] 
-    epoch = cat(ind).epoch
-    spt = cat(ind).sptype+cat(ind).spclass
-    pm = [cat(ind).pmr,cat(ind).pmd]
+;if  ind(0) ne -1 then begin     ;its in our cat
+;    coords = [cat(ind).ra,cat(ind).dec ] 
+;    epoch = cat(ind).epoch
+;    spt = cat(ind).sptype+cat(ind).spclass
+;    pm = [cat(ind).pmr,cat(ind).pmd]
 ;    prlax = cat(ind).plx
-    prlax = cat(ind).par
-    vmag = cat(ind).V
-    bv = cat(ind).bv
-    radvel = cat(ind).radvel
-    absmag = vmag-(5.*alog10(1./prlax) - 5.)
+;    prlax = cat(ind).par
+;    vmag = cat(ind).V
+;    bv = cat(ind).bv
+;    radvel = cat(ind).radvel
+;    absmag = vmag-(5.*alog10(1./prlax) - 5.)
 
-    decarr = sixty(coords(1))   ; these are not really used
-    rag = sixty(coords(0))
-    raarr = [fix(rag(0:1)),rag(2)]
-    comm = cat(ind).comments
-    found = 1
-endif 
+;    decarr = sixty(coords(1))   ; these are not really used
+;    rag = sixty(coords(0))
+;    raarr = [fix(rag(0:1)),rag(2)]
+;    comm = cat(ind).comments
+;    found = 1
+;endif 
 
 
 ; NEXT CHECK TO SEE IF IT IS IN  THE alternate catalog
@@ -152,10 +152,14 @@ endif
 ; CHECK TO SEE IF IT'S IN HIPPARCOS
 ;
 if not found then begin
+
+;
+if strmid(name, 0,2) eq 'HD' then name = strt(strmid(name, 2, strlen(name)-2))
+
 ;    if not silent then print,'Star not found in lick_st.dat: ',name
     if n_elements(hip) eq 0 then begin
         print,'Restoring Hipparcos Catalog...'
-        restore,hipfile
+        restore,hipfile  & hip=hip2
     end
     len = strlen(name)         
     lastchar = strmid(name,len-1,1) ;strip off A or B: Use Hipparcos 
@@ -187,15 +191,15 @@ if not found then begin
             j = where(hip.hipno eq hipno, hip_found) ;HIP struct. index, j
             print,name,'  Found in HIPPARCOS via ',transfile
         end
-    endif else if not silent then print,'|  Note: resorted  to HIPPARCOS for coordinates. '
+    endif ;else if not silent then print,'|  Note: resorted  to HIPPARCOS-2 for coordinates. '
 
 ;If Hipparcos # found, get the info.
     if hip_found gt 0 then begin
         j = j(0)                ;should check for multiple HD stars
         coords = [hip(j).ra,hip(j).dec]
         equinox = 2000.d0
-        pm = [hip(j).ra_motion, hip(j).dec_motion]
-        prlax = hip(j).prlax
+        pm = [hip(j).ra_motion, hip(j).dec_motion]/1000.  ;DF aug3,2012: hip2.dat
+        prlax = hip(j).prlax/1000.                        ;DF aug3,2012: hip2.dat
         radvel = 0.d0
         vmag = hip(j).vmag
         absmag = vmag-(5.*alog10(1./prlax) - 5.)
