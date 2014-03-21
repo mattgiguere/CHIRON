@@ -147,7 +147,7 @@ if date lt 130301 then begin
 endif;date=before Andrei turned up the temp.
 
 qdir = '/home/matt/Sites/chi/'
-stardir = '/home/matt/projects/CHIRPS/stars.txt'
+starfn = '/home/matt/projects/CHIRPS/stars.txt'
 year = '20'+strmid(date,0,2)
 greencol = '<td bgcolor =#5CEC21 align=center>'
 redcol = '<td bgcolor =#EC020B align=center>'
