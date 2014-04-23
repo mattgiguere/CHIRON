@@ -211,6 +211,8 @@ spawn, 'hostname', host
 openw, 2, qfile
 printf, 2, '<html>'
 printf, 2, '<head>'
+printf, 2, '	<link rel="icon" href="favicon.ico" type="image/x-icon"/>'
+printf, 2, '	<link rel="shortcut icon" href="http://exoplanets.astro.yale.edu/~matt/chi/favicon.ico" type="image/x-icon"/>'
 printf, 2, '<title>Logsheet for '+date+'</title>'
 printf, 2, '</head>'
 printf, 2, '<body>'
