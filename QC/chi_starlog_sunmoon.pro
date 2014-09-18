@@ -100,7 +100,6 @@ print, 'altsun: ', altsun
 ;stop
 endfor;i->nlog
 
-
 ;If the HD number was initially set, save to starlog,
 ;otherwise save the logstructure.
 if keyword_set(hd) then begin
