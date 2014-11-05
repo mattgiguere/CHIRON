@@ -2272,6 +2272,13 @@ if file_test(qdir+pdir+'/tps/'+year+'/chipressweekpng/'+date+'chipressweek.png')
   printf, 2, '<img src="'+pdir+'/tps/'+year+'/dettempweekpng/'+date+'dettempweek.png" width=80% />'
   printf, 2, '<img src="'+pdir+'/tps/'+year+'/chipressweekpng/'+date+'chipressweek.png" width=80% />'
 endif
+printf, 2, '<br>'
+printf, 2, '<h3>Longer-Term Plots </h3>'
+if file_test(qdir+pdir+'/tps/'+year+'/chipressmonthpng/'+date+'chipressmonth.png') then begin
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/insttempmonthpng/'+date+'insttempmonth.png" width=80% />'
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/dettempmonthpng/'+date+'dettempmonth.png" width=80% />'
+  printf, 2, '<img src="'+pdir+'/tps/'+year+'/chipressmonthpng/'+date+'chipressmonth.png" width=80% />'
+endif
 ;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620totlt.png" width=80% />'
 ;printf, 2, '<br>'
 ;printf, 2, '<img src="'+pdir+'/acen_eff/'+year+'/'+date+'128620tpslt.png" width=80% />'
@@ -2284,10 +2291,15 @@ endif
 ;printf, 2, '<br>'
 ;printf, 2, '<img src="'+pdir+'/thar/'+year+'/'+date+'ThArtpslt.png" width=80% />'
 printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/thar/'+date+'tharlines.png" />'
-printf, 2, '<br>'
-printf, 2, '<img src="'+pdir+'/thar/'+date+'tharresolution.png" />'
-printf, 2, '<br>'
+if file_test(qdir+pdir+'/thar/'+date+'tharlines.png') then begin
+   printf, 2, '<h3>Monthly ThAr Lines & Resolution</h3>'
+   printf, 2, '<img src="'+pdir+'/thar/'+date+'tharlines.png" />'
+   printf, 2, '<br>'
+endif
+if file_test(qdir+pdir+'/thar/'+date+'tharresolution.png') then begin
+   printf, 2, '<img src="'+pdir+'/thar/'+date+'tharresolution.png" />'
+   printf, 2, '<br>'
+endif
 printf, 2, '<a href="http://exoplanets.astro.yale.edu/~jspronck/chiron/CHIRTEMP.html" target="new">'
 printf, 2, '<h3>'
 printf, 2, "CHIRON Environment Pages </a>"
