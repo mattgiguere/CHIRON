@@ -465,7 +465,8 @@ log[i].AZIMUTH      = azimuth
 hastr           = sxpar(hd, 'HA      ')
 log[i].HA       = hastr
 if strt(hastr) ne '' and strt(hastr) ne '0' and $
-	strt(hastr) ne 'ha' and strt(hastr) ne 'hour_angle' then begin
+	strt(hastr) ne 'ha' and strt(hastr) ne 'hour_angle' $
+	and strt(hastr) ne '2000.0' then begin
 	
 	hastrarr = strsplit(hastr, ':', /extract)
 	if strmid(hastr,0,1) eq '-' then pmsgn = -1d else pmsgn = 1d
