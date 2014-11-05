@@ -28,7 +28,8 @@
 ;
 ;  MODIFICATION HISTORY:
 ;        c. Matt Giguere 2013.03.13 13:58:20
-;
+;        e. Imran Hasan 2014.06.14 added codeblocks following
+;           code as example to make monthly plots
 ;-
 pro chi_qc_plot_temps, $
 date = date, $
@@ -176,6 +177,69 @@ if keyword_set(insttemp) then begin
 	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxit7>0
+
+  ;monthly inst addition
+  ;now the insttemp monthly plotting:
+  xit = where(insttemp.insttempjd ge (datejd - 30) and $
+	  insttemp.insttempjd lt datejd+1, nxit31)
+
+  if nxit31 gt 0 then begin
+	it1 = insttemp[xit]
+	minjd = min(it1.insttempjd)
+	xarr = it1.insttempjd - minjd
+	
+	;set the plot y-range:
+	miny = 0.99* (min(it1.grating) < min(it1.tabcen) < min(it1.encltemp) < $
+		min(it1.enclsetp) < min(it1.encl2) < min(it1.tablow) < $
+		min(it1.struct) < min(it1.instsetp) < min(it1.insttemp))
+
+	maxy = 1.01* (max(it1.grating) > max(it1.tabcen) > max(it1.encltemp) > $
+		max(it1.enclsetp) > max(it1.encl2) > max(it1.tablow) > $
+		max(it1.struct) > max(it1.instsetp) > max(it1.insttemp))
+
+	if keyword_set(postplot) then begin
+	  ;first test the temps date directory, and make it for the new year if need be:
+	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
+	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/insttempmontheps/', /directory) then spawn, 'mkdir '+tpdatedir+'/insttempmontheps/'
+	  if ~file_test(tpdatedir+'/insttempmonthpng/', /directory) then spawn, 'mkdir '+tpdatedir+'/insttempmonthpng/'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempmontheps/'+date+'insttempmonth'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/insttempmonthpng/'+date+'insttempmonth'
+	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
+	   thick, 2
+	   ps_open, tpfn, /encaps, /color
+	endif
+
+	plot, xarr, it1.grating, ps=-8, $
+	xtitle='JD - '+jul2cal(minjd), /ysty, yran=[miny-.75, maxy+1.25], $
+	ytitle = 'Temp [K]', /xsty
+	
+	oplot, xarr, it1.tablow, ps=-8, col=208
+	oplot, xarr, it1.tabcen, ps=-8, col=40
+	oplot, xarr, it1.struct, ps=-8, col=250
+	oplot, xarr, it1.instsetp, ps=-8, col=90
+	oplot, xarr, it1.insttemp, ps=-8, col=30
+	
+	items = ['tablow', 'tabcen','struct', 'grating', 'instsetp', 'insttemp']
+	colors = [208,40,250,0,90,30]
+	al_legend, items, color=colors, psym=[-8, -8, -8, -8, -8, -8], /right
+
+	oplot, xarr, it1.encltemp, ps=-8, col=75
+	oplot, xarr, it1.enclsetp, ps=-8, col=120
+	oplot, xarr, it1.encl2, ps=-8, col=90
+
+	items = ['encltemp', 'enclsetp', 'encl2']
+	colors = [75,120,90]
+	al_legend, items, color=colors, psym=[-8, -8, -8], /right, /bottom
+
+	if keyword_set(postplot) then begin
+	   ps_close
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
+	endif
+  endif;nxit7>0
+;end monthly inst
 endif;KW(insttemp)
 
 ;*************************************************
@@ -299,6 +363,68 @@ if keyword_set(dettemps) then begin
 	endif
   endif;nxdt>0
 
+  ;monthly plotting addition
+  ;now the monthly plotting:
+  xdt30 = where(dettemps.dettempjd ge datejd -30 and $
+	  dettemps.dettempjd lt datejd+1, nxdt31)
+
+  if nxdt31 gt 1 then begin
+     print, 'nxdt31 if statement'
+	dt31 = dettemps[xdt30]
+	minjd = min(dt31.dettempjd)
+	xarr = dt31.dettempjd - minjd
+	
+	;set the plot y-range:
+	miny = min(dt31.ccdtemp) < min(dt31.ccdsetp)
+	miny = miny - 0.0004*abs(miny)
+	maxy = min(dt31.ccdtemp) >max(dt31.ccdsetp)
+	maxy = maxy + 0.0004*abs(maxy)
+
+	miny2 = min(dt31.necktemp) - 0.01*abs(min(dt31.necktemp))
+	maxy2 = max(dt31.necktemp) + 0.01*abs(max(dt31.necktemp))
+
+	if keyword_set(postplot) then begin
+	  ;first test the temps date directory, and make it for the new year if need be:
+	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
+	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/dettempmontheps/', /directory) then spawn, 'mkdir '+tpdatedir+'/dettempmontheps/'
+	  if ~file_test(tpdatedir+'/dettempmonthpng/', /directory) then spawn, 'mkdir '+tpdatedir+'/dettempmonthpng/'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempmontheps/'+date+'dettempmonth'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/dettempmonthpng/'+date+'dettempmonth'
+	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
+	   thick, 2
+	   ps_open, tpfn, /encaps, /color
+	endif;postplot
+
+	!x.margin=[12,10]
+	plot, xarr, dt31.ccdtemp, $
+	xtitle='JD - '+jul2cal(minjd), /xsty, $
+	ytitle='CCD Temp [K]', ysty=8, yrange=[miny, maxy], $
+	ps=-8, /nodata
+
+	oplot, xarr, dt31.ccdsetp, ps=-8, col=208
+	oplot, xarr, dt31.ccdtemp, ps=-8, col=70
+	
+	plot, xarr, dt31.necktemp, ps=-8, $
+	ysty=4, /noerase, $
+	/xsty, xrange=!x.crange, yrange=[miny2,maxy2]
+	
+	axis, yaxis=1, ytitle = 'Neck Temp [K]', yrange=!y.crange
+
+	items = ['CCDTEMP', 'CCDSETP', 'NECKTEMP']
+	colors = [70,208,0]
+	al_legend, items, color=colors, psym=[-8,-8,-8], /right
+	
+	if keyword_set(postplot) then begin
+	   ps_close
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
+	endif
+  endif;nxdt>0
+
+  ;end monthly plotting addition
+
 endif;KW(dettemp)
 
 ;*************************************************
@@ -407,6 +533,61 @@ if keyword_set(chipress) then begin
 	   spawn, 'chmod 777 '+tpfnp+'*'
 	endif
   endif;nxcp7>0
+
+  ;montly plotting
+  ;now the monthly plotting:
+  xcp = where(chipress.chipressjd ge datejd-30 and $
+	  chipress.chipressjd lt datejd+1, nxcp31)
+
+  if nxcp31 gt 1 then begin
+	cp31 = chipress[xcp]
+	minjd = min(cp31.chipressjd)
+	xarr = cp31.chipressjd - minjd
+	
+	;set the plot y-range:
+	miny = min(cp31.barometer) - 0.002*abs(min(cp31.barometer))
+	maxy = max(cp31.barometer) + 0.002*abs(max(cp31.barometer))
+
+	miny2 = min(cp31.echpress) - 0.01*abs(min(cp31.echpress))
+	maxy2 = max(cp31.echpress) + 0.01*abs(max(cp31.echpress))
+
+	if keyword_set(postplot) then begin
+	  ;first test the temps date directory, and make it for the new year if need be:
+	  tpdatedir = pdir+'tps/20'+strmid(date,0,2)
+	  if ~file_test(tpdatedir, /directory) then spawn, 'mkdir '+tpdatedir
+	  if ~file_test(tpdatedir+'/chipressmontheps/', /directory) then spawn, 'mkdir '+tpdatedir+'/chipressmontheps/'
+	  if ~file_test(tpdatedir+'/chipressmonthpng/', /directory) then spawn, 'mkdir '+tpdatedir+'/chipressmonthpng/'
+	  tpfn = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressmontheps/'+date+'chipressmonth'
+	  tpfnp = pdir+'tps/20'+strmid(date, 0, 2)+'/chipressmonthpng/'+date+'chipressmonth'
+	  if file_test(tpfn) then spawn, 'mv '+tpfn+' '+nextnameeps(tpfn+'_old')
+	   thick, 2
+	   ps_open, tpfn, /encaps, /color
+	endif;postplot
+
+	!x.margin=[12,10]
+	plot, xarr, cp31.barometer, $
+	xtitle='JD - '+jul2cal(minjd), $
+	ytitle='CHIRON Pressure [mbar]', ysty=8, yrange=[miny, maxy], $
+	ps=-8, /nodata, /xsty
+
+	oplot, xarr, cp31.barometer, ps=-8, col=208
+	
+	plot, xarr, cp31.echpress, ps=-8, $
+	ysty=4, /noerase, $
+	/xsty, xrange=!x.crange, yrange=[miny2,maxy2]
+	
+	axis, yaxis=1, ytitle = 'Grating Pressure [mbar]', yrange=!y.crange
+
+	if keyword_set(postplot) then begin
+	   ps_close
+	   spawn, 'convert -density 100 '+tpfn+'.eps '+tpfnp+'.png'
+	   spawn, 'chmod 777 '+tpfn+'*'
+	   spawn, 'chmod 777 '+tpfnp+'*'
+	endif
+  endif;nxcp7>0
+
+;end monthly plotting
+
 endif;KW(chipress)
 
 end;chi_qc_plot_temps.pro
