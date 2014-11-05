@@ -47,15 +47,15 @@ logmaker = logmaker, $
 chi_quality = chi_quality, $
 nodashmove = nodashmove
 
-date = '131226'
+date = '141008'
 dir = '/raw/mir7/'+date+'/'
 
 ;orig is the original last observation from the night:
-orig = 1267
+orig = 1314
 ;final is the name of the last file of the night after
 ;incrementing all the names:
-final = 1268
-dashfile = 1128
+final = 1315
+dashfile = 1144
 nfiles = dashfile - orig + 1
 
 prefix = 'chi'+date+'.'
