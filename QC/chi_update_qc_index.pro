@@ -194,12 +194,54 @@ nodata = [$
 '131023', $;bad weather
 '131224', $;closed for Holiday
 '131225', $;closed for Holiday
-'131231' $;closed for Holiday
-]
+'131231', $;closed for Holiday
+'140103', $;closed for Holiday
+'140127', $;Calibration Errors
+'140128', $;Calibration Errors
+'140205', $;SIMON only
+'140324', $;Reduction Errors
+'140410', $;No Observer
+'140411', $;No Observer
+'140413', $;No Observer
+'140414', $;No Observer
+'140415', $;No Observer
+'140416', $;No Observer
+'140420', $;Reduction Errors
+'140424', $;No Observer
+'140425', $;No Observer
+'140428', $;No Observer
+'140502', $;Overcast
+'140603', $;Bad Weather
+'140604', $;Bad Weather
+'140606', $;Bad Weather
+'140619', $;Observer Absense
+'140704', $;Overcast
+'140710', $;Observer Medical Leave
+'140714', $;Observer Medical Leave
+'140715', $;Overcast
+'140721', $;Overcast
+'140722', $;Overcast
+'140723', $;Overcast
+'140729', $;Effectively Overcast (Few Spectra underexposed from BON)
+'140805', $;Overcast
+'140819', $;Observer Vacation
+'140820', $;Observer Vacation
+'140823', $;Overcast, Snow, High Humidity
+'140831', $;Overcast, No Science
+'140901', $;Overcast
+'140904', $;Overcast
+'140912', $;Overcast
+'140913', $;Overcast
+'140926', $;Observer Illness, Bad BON Quartz
+'']
 
 checked = [$
 '120607',$
 '120810', $
+'140611', $;Calibs Only
+'140612', $;Calibs Only
+'140726', $;Few Spectra not reduced
+'140827', $;Few Spectra - cloudy - not reduced
 '']
 
 ;restore the bary log:
