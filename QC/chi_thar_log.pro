@@ -157,7 +157,7 @@ endif
 
 ;lfn = ldir+'/tharlog.dat'
 save, tharlog, filename=lfn
-;save, tharlog, filename=arxdir+mdir+'tharlog'+date+'.dat'
+save, tharlog, filename=arxdir+mdir+'tharlog'+date+'.dat'
 spawn, 'chmod 777 '+lfn
 ;spawn, 'chmod 777 '+arxdir+mdir+'tharlog'+date+'.dat'
 ;stop
