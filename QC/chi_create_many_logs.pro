@@ -24,7 +24,7 @@
 ;			b star (HR) do NOT include the space. Example:
 ;			IDL>chi_create_many_logs, hdnum='HR472'
 ;		STARTDATE: The start date, in the format of yymmdd, of when you want to start
-;			creating logs for. If this is not set, it was start checking on the first 
+;			creating logs for. If this is not set, it will start checking on the first 
 ;			date in the date array below (currently set to 120302)
 ;		ENDDATE: The end date, in the format of yymmdd, of when you want to end
 ;			creating logs for. If not set, it will create logs until the end date of
@@ -1020,7 +1020,50 @@ datearr=[ $
 '140927', $
 '140928', $
 '140929', $
-'140930' $
+'140930', $
+'141001', $
+'141002', $
+'141003', $
+'141004', $
+'141005', $
+'141006', $
+'141007', $
+'141008', $
+'141009', $
+'141010', $
+'141011', $
+'141012', $
+'141013', $
+'141014', $
+'141015', $
+'141016', $
+'141017', $
+'141018', $
+'141019', $
+'141020', $
+'141021', $
+'141022', $
+'141023', $
+'141024', $
+'141025', $
+'141026', $
+'141027', $
+'141028', $
+'141029', $
+'141030', $
+'141031', $
+'141101', $
+'141102', $
+'141103', $
+'141104', $
+'141105', $
+'141106', $
+'141107', $
+'141108', $
+'141109', $
+'141110', $
+'141111', $
+'141112' $
 ]
 
 
