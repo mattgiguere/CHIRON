@@ -52,7 +52,7 @@ if yalehost() then mdir='/home/matt/' else mdir='/Users/matt/'
 
 if keyword_set(hd) then begin
    hd = strt(hd)
-   starlogdir = mdir+'data/CHIRPS/starlogs/'
+   starlogdir = mdir+'AeroFS/data/CHIRPS/starlogs/'
    restore, starlogdir+hd+'log.dat'
    log = starlog
 endif;kw(hd)
