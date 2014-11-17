@@ -52,7 +52,8 @@ pro chi_create_tp_log, $
 help = help, $
 postplot = postplot, $
 date = date, $
-reset = reset
+reset = reset, $
+verbose = verbose
 
 !p.color=0
 !p.background=255
@@ -65,7 +66,7 @@ print, 'Now working on date: ', date, ' ', systime()
 
 logdir = '/home/matt/data/CHIRPS/tps/'
 arxivlogdir = '/home/matt/data_archive/CHIRPS/logstructs/tplogs/'
-print, 'Initializing structures...', systime()
+if keyword_set(verbose) then print, 'Initializing structures...', systime()
 ;first tag is the timestamp, second tag is the corresponding JD, 3rd tag is the value:
 ;<-- START OF LOG 1
 insttemps_i = create_struct($
@@ -101,7 +102,7 @@ chipress_i = create_struct($
 ;if the keyword "reset" is set, then it will create a new log from scratch, 
 ;otherwise it will restore the old log structure and append information to
 ;that. 
-print, 'Restoring logs...', systime()
+if keyword_set(verbose) then print, 'Restoring logs...', systime()
 if ~keyword_set(reset) then begin
   restore, logdir+'insttemp.sav'
   restore, logdir+'chipress.sav'
@@ -111,7 +112,7 @@ endif
 ;********************************************************************
 ;        NOW OPENING THE INSTTEMP LOG
 ;********************************************************************
-print, 'Updating insttemp...', systime()
+if keyword_set(verbose) then print, 'Updating insttemp...', systime()
 ;EXAMPLE LINE FROM AN INSTTEMP LOG FILE:
 ;2012-12-11T08:29:58 GRATING= 21.0720 TABCEN= 21.2340 ENCLTEMP= 19.0000 IODCTEMP= 40.1000 ENCLSETP= 20.0000 IODCSETP= 40.0000 ENCL2= 18.8840 TABLOW= 21.2020 STRUCT= 21.0590 INSTSETP= 21.0000 INSTTEMP= 21.0090
 filename = '/tous/mir7/logs/temps/insttemp/insttemp'+date+'.log'
@@ -158,7 +159,7 @@ if ndays gt 0 then begin
   
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
-	print, 'Checking insttemp for duplicates...', systime()
+	if keyword_set(verbose) then print, 'Checking insttemp for duplicates...', systime()
 	uniques = lonarr(ndays) + 1L
 	for i=0L, ndays-1 do begin
 	  dup = where(insttemp.insttempjd eq insttemp_new[i].insttempjd, ndups)
@@ -166,9 +167,9 @@ if ndays gt 0 then begin
 	endfor
 	insttemp = [insttemp, insttemp_new[where(uniques gt 0)]]
   endif else insttemp = insttemp_new
-  print, 'Saving main insttemp structure...', systime()
+  if keyword_set(verbose) then print, 'Saving main insttemp structure...', systime()
   save, insttemp, filename=logdir+'insttemp.sav'
-  print, 'Saving archive insttemp structure...', systime()
+  if keyword_set(verbose) then print, 'Saving archive insttemp structure...', systime()
   save, insttemp, filename = arxivlogdir+'insttemp/'+date+'insttemp.sav'
 endif;ndays > 0
 endif;filetest(filename)
@@ -176,7 +177,7 @@ endif;filetest(filename)
 ;********************************************************************
 ;        NOW OPENING THE DETTEMP LOG
 ;********************************************************************
-print, 'Updating dettemp...', systime()
+if keyword_set(verbose) then print, 'Updating dettemp...', systime()
 dettfn = '/tous/mir7/logs/temps/dettemp/dettemp'+date+'.log'
 if file_test(dettfn) then begin
 readcol, dettfn, dtdates, bla1, ccdtemps, bla2, necktemps, bla3, ccdsetp, $
@@ -202,7 +203,7 @@ if ndays gt 0 then begin
   
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
-	print, 'Checking for dettemp duplicates...', systime()
+	if keyword_set(verbose) then print, 'Checking for dettemp duplicates...', systime()
 	uniques = lonarr(ndays) + 1L
 	for i=0, ndays-1 do begin
 	  dup = where(dettemps.dettempjd eq dettemps_new[i].dettempjd, ndups)
@@ -210,9 +211,9 @@ if ndays gt 0 then begin
 	endfor
 	dettemps = [dettemps, dettemps_new[where(uniques gt 0)]]
   endif else dettemps = dettemps_new
-  print, 'Saving main dettemp structure...', systime()
+  if keyword_set(verbose) then print, 'Saving main dettemp structure...', systime()
   save, dettemps, filename=logdir+'dettemps.sav'
-  print, 'Saving archive dettemp structure...', systime()
+  if keyword_set(verbose) then print, 'Saving archive dettemp structure...', systime()
   save, dettemps, filename = arxivlogdir+'dettemp/'+date+'dettemps.sav'
 endif
 endif;filetest(dettfn)
@@ -220,7 +221,7 @@ endif;filetest(dettfn)
 ;********************************************************************
 ;        NOW OPENING THE INSTPRESS LOG
 ;********************************************************************
-print, 'Updating chipress...', systime()
+if keyword_set(verbose) then print, 'Updating chipress...', systime()
 chipfn = '/tous/mir7/logs/pressures/chipress/chipress'+date+'.log'
 if file_test(chipfn) then begin
 readcol, chipfn, cpdates, bla1, cpbar, bla2, cpech, $
@@ -243,7 +244,7 @@ if cpndays gt 0 then begin
   chipress_new.barometer = cpbar[x3]
   chipress_new.echpress = cpech[x3]
   
-  print, 'Checking and saving chipress...', systime()
+  if keyword_set(verbose) then print, 'Checking and saving chipress...', systime()
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
 	uniques = lonarr(cpndays) + 1L
