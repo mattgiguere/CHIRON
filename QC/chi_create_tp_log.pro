@@ -62,7 +62,7 @@ usersymbol, 'circle', /fill, size_of_sym = 0.5
 
 ;make sure the date was entered as a string with no spaces:
 date = strt(date)
-print, 'Now working on date: ', date, ' ', systime()
+if keyword_set(verbose) then print, 'Now working on date: ', date, ' ', systime()
 
 logdir = '/home/matt/data/CHIRPS/tps/'
 arxivlogdir = '/home/matt/data_archive/CHIRPS/logstructs/tplogs/'
