@@ -38,7 +38,7 @@
 ;        SUBROUTINES
 ;********************************************************************
 function chi_returnjds, dates
-  jds = dblarr(n_elements(dtdates))
+  jds = dblarr(n_elements(dates))
   jds = julday(strmid(dates, 5, 2), strmid(dates, 8, 2), $
   strmid(dates, 0, 4), strmid(dates, 11, 2), $
   strmid(dates, 14, 2), strmid(dates, 17, 2) )
@@ -61,10 +61,10 @@ usersymbol, 'circle', /fill, size_of_sym = 0.5
 
 ;make sure the date was entered as a string with no spaces:
 date = strt(date)
-print, 'Now working on date: ', date
+print, 'Now working on date: ', date, systime()
 
 logdir = '/home/matt/data/CHIRPS/tps/'
-arxivlogdir = '/home/matt/data_archive/CHIRPS/logstructs/'
+arxivlogdir = '/home/matt/data_archive/CHIRPS/logstructs/tplogs/'
 print, 'Initializing structures...', systime()
 ;first tag is the timestamp, second tag is the corresponding JD, 3rd tag is the value:
 ;<-- START OF LOG 1
@@ -156,15 +156,17 @@ if ndays gt 0 then begin
   insttemp_new.instsetp = instsetp[x]
   insttemp_new.insttemp = insttempv[x]
   
-  print, 'Checking and saving insttemp...', systime()
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
+	print, 'Checking insttemp for duplicates...', systime()
 	for i=0, ndays-1 do begin
 	  dup = where(strt(insttemp.insttempts) eq strt(insttemp_new[i].insttempts), ndups)
 	  if ndups lt 1 then insttemp = [insttemp, insttemp_new[i]]
 	endfor
   endif else insttemp = insttemp_new
+  print, 'Saving main insttemp structure...', systime()
   save, insttemp, filename=logdir+'insttemp.sav'
+  print, 'Saving archive insttemp structure...', systime()
   save, insttemp, filename = arxivlogdir+'insttemp/'+date+'insttemp.sav'
 endif;ndays > 0
 endif;filetest(filename)
@@ -196,16 +198,18 @@ if ndays gt 0 then begin
   dettemps_new.necktemp = necktemps[x2]
   dettemps_new.ccdsetp = ccdsetp[x2]
   
-  print, 'Checking and saving dettemps...', systime()
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
+	print, 'Checking for dettemp duplicates...', systime()
 	for i=0, ndays-1 do begin
 	  dup = where(strt(dettemps.dettempts) eq strt(dettemps_new[i].dettempts), ndups)
 	  if ndups lt 1 then dettemps = [dettemps, dettemps_new[i]]
 	endfor
   endif else dettemps = dettemps_new
+  print, 'Saving main dettemp structure...', systime()
   save, dettemps, filename=logdir+'dettemps.sav'
-  save, dettemps, filename = arxivlogdir+'dettemps/'+date+'dettemps.sav'
+  print, 'Saving archive dettemp structure...', systime()
+  save, dettemps, filename = arxivlogdir+'dettemp/'+date+'dettemps.sav'
 endif
 endif;filetest(dettfn)
 
