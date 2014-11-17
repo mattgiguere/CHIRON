@@ -36,6 +36,7 @@
 ;			chi_update_qc_index.
 ;		REPIPE: Rerun the reduction pipeline for the dates of interest, but don't add
 ;			anything new to the barycentric correction ASCII table (avoid duplicates).
+;		JUSTENV: Create just the environment (temperature and pressure) logs.
 ;		JUSTLOG: Don't create the QC, just the log and count check
 ;		JUSTTHARS: Create the ThAr log
 ;		JUSTACENA: Just the Alpha Cen A Log
@@ -60,6 +61,7 @@
 pro chi_create_many_logs, $
 bary = bary, $
 postplot = postplot, $
+justenv = justenv, $
 justlog = justlog, $
 justthars = justthars, $
 justacena = justacena, $
@@ -1063,7 +1065,11 @@ datearr=[ $
 '141109', $
 '141110', $
 '141111', $
-'141112' $
+'141112', $
+'141113', $
+'141114', $
+'141115', $
+'141116' $
 ]
 
 
@@ -1086,6 +1092,7 @@ for i=0, n_elements(datearr)-1 do begin
     print, 'Now running specialty log on date ',datearr[i],' ', systime()
 	if keyword_set(justthars) then chi_thar_log, log
     ;print, 'Now running chi_acena_log on date ',datearr[i],' ', systime()
+    if keyword_set(justenv) then chi_create_tp_log, date=datearr[i]
 	if keyword_set(justacena) then chi_acena_log, log
 	if keyword_set(justacenb) then chi_acenb_log, log
 	if keyword_set(justtau) then chi_tauceti_log, log
