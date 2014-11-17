@@ -61,7 +61,7 @@ usersymbol, 'circle', /fill, size_of_sym = 0.5
 
 ;make sure the date was entered as a string with no spaces:
 date = strt(date)
-print, 'Now working on date: ', date, systime()
+print, 'Now working on date: ', date, ' ', systime()
 
 logdir = '/home/matt/data/CHIRPS/tps/'
 arxivlogdir = '/home/matt/data_archive/CHIRPS/logstructs/tplogs/'
@@ -159,10 +159,12 @@ if ndays gt 0 then begin
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
 	print, 'Checking insttemp for duplicates...', systime()
-	for i=0, ndays-1 do begin
-	  dup = where(strt(insttemp.insttempts) eq strt(insttemp_new[i].insttempts), ndups)
-	  if ndups lt 1 then insttemp = [insttemp, insttemp_new[i]]
+	uniques = lonarr(ndays) + 1L
+	for i=0L, ndays-1 do begin
+	  dup = where(insttemp.insttempjd eq insttemp_new[i].insttempjd, ndups)
+	  if ndups gt -1 then uniques[i] = 0
 	endfor
+	insttemp = [insttemp, insttemp_new[where(uniques gt 0)]]
   endif else insttemp = insttemp_new
   print, 'Saving main insttemp structure...', systime()
   save, insttemp, filename=logdir+'insttemp.sav'
@@ -201,10 +203,12 @@ if ndays gt 0 then begin
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
 	print, 'Checking for dettemp duplicates...', systime()
+	uniques = lonarr(ndays) + 1L
 	for i=0, ndays-1 do begin
-	  dup = where(strt(dettemps.dettempts) eq strt(dettemps_new[i].dettempts), ndups)
-	  if ndups lt 1 then dettemps = [dettemps, dettemps_new[i]]
+	  dup = where(dettemps.dettempjd eq dettemps_new[i].dettempjd, ndups)
+	  if ndups gt -1 then uniques[i] = 0
 	endfor
+	dettemps = [dettemps, dettemps_new[where(uniques gt 0)]]
   endif else dettemps = dettemps_new
   print, 'Saving main dettemp structure...', systime()
   save, dettemps, filename=logdir+'dettemps.sav'
@@ -242,10 +246,12 @@ if cpndays gt 0 then begin
   print, 'Checking and saving chipress...', systime()
   if ~keyword_set(reset) then begin
 	;now add them to the existing structure, but don't add duplicates:
+	uniques = lonarr(cpndays) + 1L
 	for i=0, cpndays-1 do begin
-	  dup = where(strt(chipress.chipressts) eq strt(chipress_new[i].chipressts), ndups)
-	  if ndups lt 1 then chipress = [chipress, chipress_new[i]]
+	  dup = where(chipress.chipressjd eq chipress_new[i].chipressjd, ndups)
+	  if ndups gt -1 then uniques[i] = 0
 	endfor
+	chipress = [chipress, chipress_new[where(uniques gt 0)]]
   endif else chipress = chipress_new
   save, chipress, filename=logdir+'chipress.sav'
   save, chipress, filename = arxivlogdir+'chipress/'+date+'chipress.sav'
