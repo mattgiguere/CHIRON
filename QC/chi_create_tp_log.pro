@@ -163,7 +163,7 @@ if ndays gt 0 then begin
 	uniques = lonarr(ndays) + 1L
 	for i=0L, ndays-1 do begin
 	  dup = where(insttemp.insttempjd eq insttemp_new[i].insttempjd, ndups)
-	  if ndups gt -1 then uniques[i] = 0
+	  if ndups gt 0 then uniques[i] = 0
 	endfor
 	insttemp = [insttemp, insttemp_new[where(uniques gt 0)]]
   endif else insttemp = insttemp_new
@@ -207,7 +207,7 @@ if ndays gt 0 then begin
 	uniques = lonarr(ndays) + 1L
 	for i=0, ndays-1 do begin
 	  dup = where(dettemps.dettempjd eq dettemps_new[i].dettempjd, ndups)
-	  if ndups gt -1 then uniques[i] = 0
+	  if ndups gt 0 then uniques[i] = 0
 	endfor
 	dettemps = [dettemps, dettemps_new[where(uniques gt 0)]]
   endif else dettemps = dettemps_new
@@ -250,7 +250,7 @@ if cpndays gt 0 then begin
 	uniques = lonarr(cpndays) + 1L
 	for i=0, cpndays-1 do begin
 	  dup = where(chipress.chipressjd eq chipress_new[i].chipressjd, ndups)
-	  if ndups gt -1 then uniques[i] = 0
+	  if ndups gt 0 then uniques[i] = 0
 	endfor
 	chipress = [chipress, chipress_new[where(uniques gt 0)]]
   endif else chipress = chipress_new
