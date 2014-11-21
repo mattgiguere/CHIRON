@@ -169,8 +169,10 @@ if ndays gt 0 then begin
   endif else insttemp = insttemp_new
   if keyword_set(verbose) then print, 'Saving main insttemp structure...', systime()
   save, insttemp, filename=logdir+'insttemp.sav'
+  spawn, 'chmod 777 '+logdir+'insttemp.sav'
   if keyword_set(verbose) then print, 'Saving archive insttemp structure...', systime()
   save, insttemp, filename = arxivlogdir+'insttemp/'+date+'insttemp.sav'
+  spawn, 'chmod 777 '+arxivlogdir+'insttemp/'+date+'insttemp.sav'
 endif;ndays > 0
 endif;filetest(filename)
 
@@ -257,7 +259,9 @@ if cpndays gt 0 then begin
 	chipress = [chipress, chipress_new[where(uniques gt 0)]]
   endif else chipress = chipress_new
   save, chipress, filename=logdir+'chipress.sav'
+  spawn, 'chmod 777 '+logdir+'chipress.sav'
   save, chipress, filename = arxivlogdir+'chipress/'+date+'chipress.sav'
+  spawn, 'chmod 777 '+arxivlogdir+'chipress/'+date+'chipress.sav'
 endif;cpndays > 0
 endif;filetest(chipfn)
 
