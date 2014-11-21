@@ -213,8 +213,10 @@ if ndays gt 0 then begin
   endif else dettemps = dettemps_new
   if keyword_set(verbose) then print, 'Saving main dettemp structure...', systime()
   save, dettemps, filename=logdir+'dettemps.sav'
+  spawn, 'chmod 777 '+logdir+'dettemps.sav'
   if keyword_set(verbose) then print, 'Saving archive dettemp structure...', systime()
   save, dettemps, filename = arxivlogdir+'dettemp/'+date+'dettemps.sav'
+  spawn, 'chmod 777 '+arxivlogdir+'dettemp/'+date+'dettemps.sav'
 endif
 endif;filetest(dettfn)
 
