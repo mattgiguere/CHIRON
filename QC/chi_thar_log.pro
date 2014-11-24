@@ -156,9 +156,21 @@ if keyword_set(postplot) then begin
 endif
 
 ;lfn = ldir+'/tharlog.dat'
-save, tharlog, filename=lfn
-save, tharlog, filename=arxdir+mdir+'tharlog'+date+'.dat'
-spawn, 'chmod 777 '+lfn
-spawn, 'chmod 777 '+arxdir+mdir+'tharlog'+date+'.dat'
+tharlog_i = tharlog
+repeat begin
+	;set tharlog to its initial structure value (IDL type 8):
+	tharlog = tharlog_i
+	save, tharlog, filename=lfn
+	save, tharlog, filename=arxdir+mdir+'tharlog'+date+'.dat'
+	;set the permissions so everyone can rwx:
+	spawn, 'chmod 777 '+lfn
+	spawn, 'chmod 777 '+arxdir+mdir+'tharlog'+date+'.dat'
+	;now set it to 0 (IDL type 0) for test purposes
+	tharlog = 0
+	restore, lfn
+	;if it saved properly, the structure should restore as a 
+	;type 8. If not, it will still be zero (type 2). Repeat
+	;until is saves/restores properly.
+endrep until size(tharlog, /type) eq 8
 ;stop
 end;chi_thar_log.pro
