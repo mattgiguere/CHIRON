@@ -54,6 +54,9 @@ if strmid(objname, 0, 2) eq 'HR' then objname = 'HR '+strmid(objname, 2, strlen(
 ;find the indeces for observations in the nightly logstructure that are of the objects of interest:
 newstarob = where(strt(log.object) eq objname, newstarct)
 
+;only do the above if there were actually observations of this star...
+if newstarct gt 0 then begin
+
 if file_test(lfn) then begin
   restore, lfn
   for i=0, newstarct-1 do begin
@@ -83,5 +86,7 @@ endif else starlog = log[newstarob]
 
 save, starlog, filename=lfn
 spawn, 'chmod 777 '+lfn
+endif else print, 'There were no observations of '+objname+' on '+date
+
 ;stop
 end;chi_star_log.pro
