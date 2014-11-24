@@ -40,7 +40,11 @@ endif
 
 readcol, starfn, stars, f='A'
 for i=0, n_elements(stars)-1 do begin
-	chi_star_log, log, hdnum=stars[i]
+	dum = where(strt(log.object) eq stars[i], nobs)
+	if nobs gt 0 then begin
+		print, 'Now making starlog for : ', stars[i]
+		chi_star_log, log, hdnum=stars[i]
+	endif
 endfor
 
 ;stop
