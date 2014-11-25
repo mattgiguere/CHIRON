@@ -85,7 +85,9 @@ if file_test(lfn) then begin
 endif else starlog = log[newstarob]
 
 save, starlog, filename=lfn
+save, starlog, filename=mdir+'data_archive/CHIRPS/logstructs/starlogs/'+date+objname+'log.dat'
 spawn, 'chmod 777 '+lfn
+spawn, 'chmod 777 '+mdir+'data_archive/CHIRPS/logstructs/starlogs/'+date+objname+'log.dat'
 endif else print, 'There were no observations of '+objname+' on '+date
 
 ;stop
