@@ -36,7 +36,7 @@
 ;			chi_update_qc_index.
 ;		REPIPE: Rerun the reduction pipeline for the dates of interest, but don't add
 ;			anything new to the barycentric correction ASCII table (avoid duplicates).
-;               FLATFITS: Convert the master flats to FITS files
+;       FLATFITS: Convert the master flats to FITS files
 ;		JUSTENV: Create just the environment (temperature and pressure) logs.
 ;		JUSTLOG: Don't create the QC, just the log and count check
 ;		JUSTTHARS: Create the ThAr log
@@ -1113,6 +1113,7 @@ for i=0, n_elements(datearr)-1 do begin
 		  '/'+strt(datearr[i])+'.log'
 	   qbarylog, lfn, prefix='chi'+datearr[i], justtest=justtest
     endif;kw(bary)
+    if keyword_set(flatfits) then chi_convert_flats, date=datearr[i]
 endfor
 
 if keyword_set(bary) then barystruct_dbl, observatory='ctio'
