@@ -36,6 +36,7 @@
 ;			chi_update_qc_index.
 ;		REPIPE: Rerun the reduction pipeline for the dates of interest, but don't add
 ;			anything new to the barycentric correction ASCII table (avoid duplicates).
+;               FLATFITS: Convert the master flats to FITS files
 ;		JUSTENV: Create just the environment (temperature and pressure) logs.
 ;		JUSTLOG: Don't create the QC, just the log and count check
 ;		JUSTTHARS: Create the ThAr log
@@ -61,6 +62,7 @@
 pro chi_create_many_logs, $
 bary = bary, $
 postplot = postplot, $
+flatfits = flatfits, $
 justenv = justenv, $
 justlog = justlog, $
 justthars = justthars, $
